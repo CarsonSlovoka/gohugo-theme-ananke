@@ -18,15 +18,18 @@
     {{ $stylesheet := .Site.Data.webpack_assets.app }}
       {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
     {{ with $stylesheet.css }}
-      {{/* 在app這個物件之中又剛好有.css  */}}
-      {{/* 所以這邊的 . 就表示: css/app.4fc0b62e4b82c997bb0041217cd6b979.css 這個文件 */}}
-      {{/* 最後這個檔案是指: static/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css */}}
+      {{/* 在app這個物件之中又剛好有.css
+        所以這邊的 . 就表示: css/app.4fc0b62e4b82c997bb0041217cd6b979.css 這個文件
+        最後這個檔案是指: static/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css
+      */}}
       <link href="{{ relURL (printf "%s%s" "dist/" .) }}" rel="stylesheet">
     {{ end }}
 
     {{ range .Site.Params.custom_css }}
-      {{/* 有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"] */}}
-      {{/* 指: static/css/{foo.css, bar.css} */}}
+      {{/*
+      有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
+      指: static/css/{foo.css, bar.css}
+      */}}
       <link rel="stylesheet" href="{{ relURL (.) }}">
     {{ end }}
 
