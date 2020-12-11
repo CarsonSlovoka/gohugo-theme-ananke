@@ -1,33 +1,50 @@
 {{/*
-  Use Hugo's native Table of contents feature. You must set `toc: true` in your parameters for this to show.
-  https://gohugo.io/content-management/toc/
+  reference: https://github.com/gohugoio/hugo/issues/1778#issuecomment-313895910
 */}}
+{{ $headers := findRE "<h[2-4].*?>(.|\n])+?</h[2-4]>" .Content }}
+{{ $has_headers := ge (len $headers) 1 }}
+{{ $show_toc := (eq $.Params.toc true) }}
+{{ if and $has_headers $show_toc }}
+{{ $base := ($.Page.File.LogicalName) }}
+<nav id="navbar" class="navbar navbar-light navbar-right">
+  <a class="navbar-brand" href="#">{{- i18n "tableOfContents" -}}</a>
+  <nav class="nav nav-pills flex-column">
+    {{ range $headers }}
+        {{ $header := . }}  {{/* $header 類似這種東西 <h2 id="xxx">xxx</h2> */}}
+        {{ $content := ( $header | plainify | htmlUnescape ) }}
 
-{{- if .Params.toc -}}
-  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
-    <p class="f5 b mb3">{{ i18n "whatsInThis" . }}</p>
-      {{ .TableOfContents }}
-  </div>
-{{- end -}}
+        {{ range first 1 (findRE "<h[2-4]" $header 1) }}
+            {{/* . 像是 <h2 所以我們還要再找一次得出數字才行 */}}
+            {{ range findRE "[2-4]" . 1 }}
+                {{/* $anchorId := ($header | plainify | htmlEscape | urlize) */}}
+                {{ $anchorId := ($header | plainify | htmlUnescape | anchorize) }}
+                {{/*
+                  $href := delimit (slice $base $anchorId) "#" | string
+                  $href := delimit (slice $base $anchorId) "#" | string | strings.TrimPrefix " "
+                */}}
+                {{ $href := (printf `href="#%s"` $anchorId ) | string }}
+                {{ $max_heading := (int .) }}
 
-{{/*
-  Use Hugo's native related content feature to pull in content that may have similar parameters, like tags. etc.
-  https://gohugo.io/content-management/related/
-*/}}
+                {{ range seq $max_heading }}
+                {{/*
+                  注意 是要用2-不是1-，如果用1會多一層，導致鼠標再移動的時候會對不上主題
+                */}}
+                  <nav class="nav nav-pills flex-column">
+                {{ end }}
 
-{{ $related := .Site.RegularPages.Related . | first 15 }}
+                {{/*
+                    用href後面的中文字會自動被URL ENCODING，所以找尋會有問題
+                    <a class="nav-link ms-{{ $max_heading }}" href="{{ $href | safeHTMLAttr  }}">{{ $content }}</a>
+                */}}
+                <a class="nav-link ms-{{ $max_heading }}" {{ $href | safeHTMLAttr  }}>{{ $content }}</a>
 
-{{ with $related }}
-  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
-    <p class="f5 b mb3">{{ i18n "related" }}</p>
-    <ul class="pa0 list">
-	   {{ range . }}
-	     <li  class="mb2">
-          <a href="{{ .RelPermalink }}">
-            {{- .Title -}}
-          </a>
-        </li>
-	    {{ end }}
-    </ul>
-</div>
+                {{ range seq $max_heading }}
+                    {{/*  補上結尾標簽 (有幾層就補幾個 */}}
+                  </nav>
+                {{ end }}
+            {{end}}
+        {{ end }}
+    {{ end }}
+  </nav>
+</nav>
 {{ end }}

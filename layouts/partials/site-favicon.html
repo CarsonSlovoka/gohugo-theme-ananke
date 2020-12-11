@@ -1,3 +1,7 @@
 {{ if .Site.Params.favicon }}
+{{/* 放在href都是只在static的資料夾下，
+[params]
+  favicon = "/images/my_icon.jpg"  # static/my_icon.jpg
+*/}}
 <link rel="shortcut icon" href="{{ relURL ($.Site.Params.favicon) }}" type="image/x-icon" />
 {{ end }}

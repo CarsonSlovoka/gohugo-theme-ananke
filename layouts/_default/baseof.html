@@ -25,6 +25,15 @@
       <link href="{{ relURL (printf "%s%s" "dist/" .) }}" rel="stylesheet">
     {{ end }}
 
+    {{/* $enable_bootstrap := $.Params.bootstrap */}}
+    {{ $enable_bootstrap := ( index $.Params "bootstrap" ) | default false }}
+    {{ if $enable_bootstrap }}
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    {{ end }}
+
+    {{ $body_spy_scroll_attr := (cond $enable_bootstrap ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
+
     {{ range .Site.Params.custom_css }}
       {{/*
       有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
@@ -34,6 +43,7 @@
     {{ end }}
 
     {{ block "favicon" . }}
+      {{/* 指tab頁籤上的圖片 */}}
       {{ partialCached "site-favicon.html" . }}
     {{ end }}
 
@@ -55,7 +65,8 @@
 	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
   </head>
 
-  <body class="ma0 {{ $.Param "body_classes"  | default "avenir bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
+  {{/* safeHTMLAttr 沒有加上會出現 ZgotmplZ 的字眼，這個字眼是固定的 */}}
+  <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param "body_classes"  | default "avenir bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
 
     {{ block "header" . }}{{ partial "site-header.html" .}}{{ end }}
     <main class="pb7" role="main">
