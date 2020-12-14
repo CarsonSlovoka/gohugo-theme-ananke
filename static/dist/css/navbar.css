@@ -1,0 +1,29 @@
+@media only screen and (max-width: 1248px) {
+/*
+  "only screen" here is used to prevent older browsers that do not support media
+  只有當螢幕超過1248的時候才會顯示id為navbar的項目
+*/
+    #navbar {
+        display: none;
+    }
+}
+
+.navbar-right {
+  position: fixed;
+  right: 5%;
+  width: 20%;
+  height: 600px;
+  top: 1%;
+  line-height: 24px;
+  display: block;
+  overflow-y: auto;  /* Trigger vertical scroll    */
+  overflow-x: auto;  /* Hide the horizontal scroll */
+}
+
+.navbar-right a {
+  color: #ccc;
+}
+
+.navbar-right a:hover {
+  color: #0d6efd;
+}
