@@ -1,5 +1,6 @@
 {{- if .Params.toc -}}
-<div id="navbar" class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+{{/* bg-light-gray */}}
+<div id="navbar" class="large-screen-only pa3 nested-list-reset nested-copy-line-height nested-links">
   {{/*
     reference: https://github.com/gohugoio/hugo/issues/1778#issuecomment-313895910
     注意我們只需要找尋有id的header, 避免 figure 也會產生h的問題
@@ -65,7 +66,8 @@
 
 {{ $related := .Site.RegularPages.Related . | first 15 }}
 {{ with $related }}
-  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+  {{/* bg-light-gray */}}
+  <div class="large-screen-only pa3 nested-list-reset nested-copy-line-height nested-links">
     <p class="f5 b mb3">{{ i18n "related" }}</p>
     <ul class="pa0 list">
 	   {{ range . }}

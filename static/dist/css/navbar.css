@@ -3,8 +3,8 @@
   "only screen" here is used to prevent older browsers that do not support media
   只有當螢幕超過1248的時候才會顯示id為navbar的項目
 */
-    #navbar {
-        display: none;
+    .large-screen-only {
+      display: none;
     }
 }
 
@@ -16,6 +16,7 @@
   top: 1%;
   line-height: 24px;
   display: block;
+  background-color: hsla(240, 100%, 90%, 0);
   overflow-y: auto;  /* Trigger vertical scroll    */
   overflow-x: auto;  /* Hide the horizontal scroll */
 }
