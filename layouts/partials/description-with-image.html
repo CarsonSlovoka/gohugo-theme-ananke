@@ -1,0 +1,18 @@
+{{ $article_image := default "" .Params.article_image }}
+{{ $font_color := default "" .Params.article_image }}
+<figure>
+  {{ $color := "black" }}
+  {{ if $article_image }}
+    {{ $color = default "black" (index .Params.article_image "color") }}
+    {{ $src := index $article_image "src" }}
+    {{ $src = (trim $src "/") | absURL }}  {{/* 移除/ 並使用absURL預設會用relURL(它會以目前的section當作開始) */}}
+    <a href="{{.Permalink}}"><img src={{ $src }} style="width:100%" alt="image from {{ .Title }}"/></a>
+  {{ end }}
+  <div>
+    <figcaption class="text-block text-block-{{ $color }}">
+      <a class="link dim {{ cond (eq $color "black") "white" "black" }}" href="{{ .Permalink }}"><h2>{{.Title}}</h2></a>
+      <p>{{- .Params.Description -}}</p>
+    </figcaption>
+  </div>
+
+</figure>
