@@ -4,7 +4,8 @@
     "css": [
       "css/app.4fc0b62e4b82c997bb0041217cd6b979.css",
       "css/navbar.css",
-      "css/text_block.css"
+      "css/text_block.css",
+      "css/utils.css"
     ]
   }
 }
