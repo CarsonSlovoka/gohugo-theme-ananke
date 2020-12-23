@@ -32,6 +32,13 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     {{ end }}
 
+    {{/* 如果網站本身已經宣告要使用font-awesome則視為所有頁面都套用，不然則依造頁面的設定 */}}
+    {{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
+    {{ if $enable_fontawesome }}
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+    {{ end }}
+
     {{ $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
 
     {{ range .Site.Params.custom_css }}
@@ -69,7 +76,7 @@
   <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param "body_classes"  | default "avenir bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
 
     {{ block "header" . }}
-      {{/* 主題頁的導欄設定(含主題圖片等等) */}}
+      {{/* 包含頁面上方的featured_image、左上角的.Site.Params.site_logo、Menu清單  */}}
       {{ partial "site-header.html" .}}
     {{ end }}
 

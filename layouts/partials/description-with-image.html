@@ -1,6 +1,6 @@
 {{ $article_image := default "" .Params.article_image }}
 {{ $font_color := default "" .Params.article_image }}
-<figure class="zoom_in">
+<figure class="zoom-in">
   {{ $color := "black" }}
   {{ if $article_image }}
     {{ $color = default "black" (index .Params.article_image "color") }}
