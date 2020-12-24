@@ -1,19 +1,26 @@
 {{ $article_image := default "" .Params.article_image }}
 {{ $font_color := default "" .Params.article_image }}
-<figure class="zoom-in">
-  {{ $color := "black" }}
+<figure class="card-post zoom-in mt0 mb5">
+  {{ $bg_color := "bg-primary" }}  {{/* 需要啟用bootstrap */}}
   {{ if $article_image }}
-    {{ $color = default "black" (index .Params.article_image "color") }}
+    {{ $bg_color = default "bg-primary" (index .Params.article_image "color") }}
     {{ $src := index $article_image "src" }}
     {{ $src = (trim $src "/") | absURL }}  {{/* 移除/ 並使用absURL預設會用relURL(它會以目前的section當作開始) */}}
     <a href="{{.Permalink}}"><img class="w-100" src={{ $src }} alt="image from {{ .Title }}"/></a>
   {{ end }}
-  <div>
-    <figcaption class="text-block text-block-{{ $color }}">
-      <a class="link dim {{ cond (eq $color "black") "white" "black" }}" href="{{ .Permalink }}" style="color: inherit;"
-      ><h2>{{.Title}}</h2></a>
+  <figcaption class="{{ $bg_color }}
+  {{ cond (eq $article_image ``) `card-smooth` ``}}
+  {{ cond (in (slice `bg-warning` `bg-light` `bg-white`) $bg_color) `black` `white`}}
+  "
+  >
+    <div class="card-body">
+      <a class="link dim" href="{{ .Permalink }}" style="color: inherit;"
+      ><h2 class="mt0">{{- .Title -}}</h2></a>
       <p>{{- .Params.Description -}}</p>
-    </figcaption>
-  </div>
-
+    </div>
+    {{ if .Date }}
+      <hr class="mt3">
+      <span class="ml2">{{ .Date.Format "2006, Jan 2, Mon " }}</span>
+    {{ end }}
+  </figcaption>
 </figure>
