@@ -1916,7 +1916,7 @@
         return this._myIndex;
       }
     }, {
-      key: "search",
+      key: "search",  // fastsearch.js fuse.search(term); 會執行這個函數
       value: function search(query) {
         var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
             _ref$limit = _ref.limit,

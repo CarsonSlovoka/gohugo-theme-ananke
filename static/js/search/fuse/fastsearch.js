@@ -12,8 +12,8 @@ var resultsAvailable = false; // Did we get any search results?
 //
 document.addEventListener('keydown', function(event) {
   // CMD-/ to show / hide Search
-  // if (event.metaKey && event.which === 191) {
-  if (event.altKey && event.which === 191) {
+  // if (event.metaKey && event.which === 191) {  windows鍵 + /
+  if (event.altKey && event.which === 191) {  // 使用 alt + /
       // Load json search index if first time invoking search
       // Means we don't load json unless searches are going to happen; keep user payload small unless needed
       if(firstRun) {
@@ -122,6 +122,7 @@ function loadSearch() {
 // in the search box
 //
 function executeSearch(term) {
+  // 從這邊開始讀起
   let results = fuse.search(term); // the actual query being run using fuse.js
   let searchitems = ''; // our results bucket
 
@@ -131,7 +132,7 @@ function executeSearch(term) {
   } else { // build our html
     let cur_item;
     for (let item in results.slice(0,5)) { // only show first 5 results
-      cur_item = results[item].item
+      cur_item = results[item].item  // 你可能要觀察一下，版本的問題，我的版本他會多一個item的變數，所以才多了一個cur_item的變數
       searchitems = searchitems + '<li><a href="' + cur_item.permalink + '" tabindex="0">' + '<span class="title">' + cur_item.title + '</span><br /> <span class="sc">'+ cur_item.section +'</span> — ' + cur_item.date + ' — <em>' + cur_item.desc + '</em></a></li>';
     }
     resultsAvailable = true;

@@ -1,6 +1,6 @@
 {{- $.Scratch.Add "index" slice -}}
 {{- range .Site.RegularPages -}}
-    {{/* 這裡對應 fastsearch.js */}}
+    {{/* 這裡對應 fastsearch.js  */}}
     {{- $.Scratch.Add "index" (dict "title" .Title "date" .Date "desc" .Description "tags" .Params.tags "section" .Section "categories" .Params.categories "contents" .Plain "permalink" .Permalink) -}}
 {{- end -}}
 {{- $.Scratch.Get "index" | jsonify -}}
