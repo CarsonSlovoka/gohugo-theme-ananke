@@ -4,7 +4,7 @@ create a post card with the bootstrap.
 
 {{ $article_image := default "" .Params.article_image }}
 {{ $font_color := default "" .Params.article_image }}
-<section class="zoom-in card" style="width: 20rem;">
+<section class="zoom-in mt4 card" style="width: 20rem;">
   {{ $bg_color := "bg-light" }}
   {{ $btn_color := "btn-primary" }}
   {{ $text_muted_color := "text-muted" }}
@@ -28,7 +28,7 @@ create a post card with the bootstrap.
   ">
     <a class="link dim" href="{{.Permalink}}" style="color: inherit;"><h3 class="card-title">{{- .Title -}}</h3></a>
     <p class="card-text">{{- default .Summary .Description -}}</p>
-    <a href="#" class="btn {{$btn_color}}">{{ i18n "readMore" }}</a>
+    <a href="{{.Permalink}}" class="btn {{$btn_color}}">{{ i18n "readMore" }}</a>
     {{with .Date}}<p class="card-text"><small class="{{$text_muted_color}} float-end">{{ .Format "2006, Jan 2, Mon " }}</small></p>{{end}}
   </div>
 </section>
