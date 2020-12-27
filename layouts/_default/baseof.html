@@ -91,7 +91,11 @@
     {{ if $enable_search_fuse }}
       {{ block "search" . }}{{ partialCached "search/site-search-fuse.html" . }}{{ end }}
     {{ end }}
+    {{/* partialCached只有當腳本的內容有更改，例如site-scripts.html的md5不一樣時才會再次渲染
+      也就是他不是適用於常常需要變更的文件
+    */}}
     {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
     {{ block "scripts" . }}{{ partialCached "site-scripts.html" . }}{{ end }}
+    {{ block "plugin-scripts" . }}{{ partial "plugin-scripts" . }}{{ end }}
   </body>
 </html>
