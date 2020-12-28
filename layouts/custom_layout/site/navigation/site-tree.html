@@ -1,0 +1,4 @@
+{{ range .Site.Sections }}
+  <h1><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
+  {{ partial "site-navigation-with-tree" (slice 1 .) }}
+{{ end }}
