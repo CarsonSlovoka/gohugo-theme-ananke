@@ -1,0 +1,8 @@
+{{/*
+https://www.srihash.org
+*/}}
+{{ if or .Page.Params.plantuml .Site.Params.plantuml }}
+  {{/* <script src="https://cdn.jsdelivr.net/npm/plantuml-encoder@1.4.0/dist/plantuml-encoder.min.js" integrity="sha256-eRScmk4VrcNB654K41xHWfTcj/+u+spbMkI7g+cAA+k=" crossorigin="anonymous"></script> */}}
+  <script src="https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js" integrity="sha256-Qsk2KRBCN5qVZX7B+8+2IvQl1Aqc723qV1tBCQaVoqo=" crossorigin="anonymous"></script>
+  <script src="{{ relURL `js/uml/plantuml_encoder.js` }}"></script>
+{{ end }}

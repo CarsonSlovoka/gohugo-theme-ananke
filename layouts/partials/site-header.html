@@ -1,13 +1,24 @@
+{{/*
+  這個區塊分為兩個部份，一個是如果你有給予featured_image那麼它就會在頁面上方呈現該內容，
+  如果沒有給，頁面上方的就以文字來取代
+  featured_image可以在front matter中加入
+  p.s. 如果您的主頁也想要加入，請建立一個content/_index.md，並在此_index.md中加入featured_image
+*/}}
 {{ $featured_image := .Param "featured_image"}}
 {{ if $featured_image }}
-  {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
+  {{/*
+    Trimming the slash and adding absURL make sure the image works no matter where our site lives
+  */}}
   {{ $featured_image := (trim $featured_image "/") | absURL }}
+  {{ $img_style := cond (isset .Params "featured_image_style") (printf "style='%s'" .Params.featured_image_style) ""}}
   <header class="cover bg-top" style="background-image: url('{{ $featured_image }}');">
-    <div class="{{ .Site.Params.cover_dimming_class | default "bg-black-60" }}">
+    <div class="{{ .Site.Params.cover_dimming_class | default "bg-black-60" }}"
+    {{ $img_style | safeHTMLAttr }}
+    >
       {{ partial "site-navigation.html" .}}
       <div class="tc-l pv4 pv6-l ph3 ph4-ns">
         <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
-          {{ .Title | default .Site.Title }}
+          {{- default .Site.Title .Title -}}  {{/* 如果網站的front matter已經有宣告title就以他為主，否則就使用.Site.Title */}}
         </h1>
         {{ with .Params.description }}
           <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3">
@@ -18,12 +29,13 @@
     </div>
   </header>
 {{ else }}
+  {{/* 給index.html主題頁使用的 (首頁的圖片用site_logo) */}}
   <header>
     <div class="pb3-m pb6-l {{ .Site.Params.background_color_class | default "bg-black" }}">
-      {{ partial "site-navigation.html" . }}
+      {{ partial "site-navigation.html" . }}  {{/* 掌管Menu，包含主題頁左上角的site_logo */}}
       <div class="tc-l pv3 ph3 ph4-ns">
         <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
-          {{ .Title | default .Site.Title }}
+          {{- default .Site.Title .Title -}}  {{/* 頁面頂部中間區域的文字 */}}
         </h1>
         {{ with .Params.description }}
           <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">

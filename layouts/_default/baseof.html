@@ -16,15 +16,46 @@
     {{ end }}
 
     {{ $stylesheet := .Site.Data.webpack_assets.app }}
-    {{ with $stylesheet.css }}
-      <link href="{{ relURL (printf "%s%s" "dist/" .) }}" rel="stylesheet">
+      {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
+    {{ range $stylesheet.css }}
+      {{/*
+        在app這個物件之中又剛好有.css
+      */}}
+      <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
     {{ end }}
 
+    {{ $enable_search_fuse := ( index .Site.Params "enable_search_fuse" ) | default false }}
+    {{ if $enable_search_fuse }}
+      <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">
+    {{ end }}
+
+    {{/* $enable_bootstrap := $.Params.bootstrap */}}
+    {{ $enable_bootstrap := ( index $.Params "bootstrap" ) | default false }}
+    {{ $enable_toc := default false (index .Params "toc") }}
+    {{ if $enable_bootstrap }}
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    {{ end }}
+
+    {{/* 如果網站本身已經宣告要使用font-awesome則視為所有頁面都套用，不然則依造頁面的設定 */}}
+    {{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
+    {{ if $enable_fontawesome }}
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+    {{ end }}
+
+    {{ $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
+
     {{ range .Site.Params.custom_css }}
+      {{/*
+      有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
+      指: static/css/{foo.css, bar.css}
+      */}}
       <link rel="stylesheet" href="{{ relURL (.) }}">
     {{ end }}
 
     {{ block "favicon" . }}
+      {{/* 指tab頁籤上的圖片 */}}
       {{ partialCached "site-favicon.html" . }}
     {{ end }}
 
@@ -34,7 +65,7 @@
       <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
       {{ end }}
     {{ end }}
-    
+
     {{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
     {{- template "_internal/opengraph.html" . -}}
     {{- template "_internal/schema.html" . -}}
@@ -46,13 +77,25 @@
 	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
   </head>
 
-  <body class="ma0 {{ $.Param "body_classes"  | default "avenir bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
+  {{/* safeHTMLAttr 沒有加上會出現 ZgotmplZ 的字眼，這個字眼是固定的 */}}
+  <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param `body_classes`  | default `avenir bg-near-white`}}{{ with getenv `HUGO_ENV` }} {{ . }}{{ end }}">
 
-    {{ block "header" . }}{{ partial "site-header.html" .}}{{ end }}
+    {{ block "header" . }}
+      {{/* 包含頁面上方的featured_image、左上角的.Site.Params.site_logo、Menu清單  */}}
+      {{ partial "site-header.html" .}}
+    {{ end }}
     <main class="pb7" role="main">
       {{ block "main" . }}{{ end }}
     </main>
+
+    {{ if $enable_search_fuse }}
+      {{ block "search" . }}{{ partialCached "search/site-search-fuse.html" . }}{{ end }}
+    {{ end }}
+    {{/* partialCached只有當腳本的內容有更改，例如site-scripts.html的md5不一樣時才會再次渲染
+      也就是他不是適用於常常需要變更的文件
+    */}}
     {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
     {{ block "scripts" . }}{{ partialCached "site-scripts.html" . }}{{ end }}
+    {{ block "plugin-scripts" . }}{{ partial "plugin-scripts" . }}{{ end }}
   </body>
 </html>

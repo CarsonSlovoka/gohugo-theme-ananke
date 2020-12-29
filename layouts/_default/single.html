@@ -6,6 +6,10 @@
 {{ define "main" }}
   {{ $section := .Site.GetPage "section" .Section }}
   <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    {{/*
+          https://getbootstrap.com/docs/4.4/utilities/spacing/
+          p - for classes that set padding
+    */}}
     <header class="mt4 w-100">
       <aside class="instapaper_ignoref b helvetica tracked">
           {{/*
@@ -57,10 +61,15 @@
       {{ end }}
       </div>
     </div>
-
-    <aside class="w-30-l mt6-l">
+    <aside class="w-30-l mt6-l navbar-right">
+      {{/*
+      https://getbootstrap.com/docs/4.4/utilities/spacing/
+      l - for classes that set margin-left or padding-left
+      m - for classes that set margin
+      t - for classes taht set margin-top or padding-top
+      w-30 width:30%
+      */}}
       {{- partial "menu-contextual.html" . -}}
     </aside>
-
   </article>
 {{ end }}

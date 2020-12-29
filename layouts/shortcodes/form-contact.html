@@ -1,6 +1,7 @@
 {{ $.Scratch.Add "labelClasses" "f6 b db mb1 mt3 sans-serif mid-gray" }}
 {{ $.Scratch.Add "inputClasses" "w-100 f5 pv3 ph3 bg-light-gray bn" }}
 
+{{/* 在formspree中當您建立完畢之後她會給你一個action的url 例如: <form action="https://formspree.io/f/xxxoooiiippp" method="POST"> ... </form>  當您提交之後他會自動 用這個url去處理您的form進而傳送到您的email  */}}
 <form class="black-80 sans-serif" accept-charset="UTF-8" action="{{ .Get "action" }}" method="POST" role="form">
 
     <label class="{{ $.Scratch.Get "labelClasses" }}"  for="name">{{ i18n "yourName" }}</label>
