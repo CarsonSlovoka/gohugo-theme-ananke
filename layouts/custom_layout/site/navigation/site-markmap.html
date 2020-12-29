@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{{ printf "%s | %s" .Title .Site.Title }}</title>
+  <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
+</head>
+<body>
+
+{{ $tree := slice }}
+{{ range .Site.Sections }}
+  {{ $cur_level := 1 }}
+  {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
+  {{ $tree = $tree | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
+{{ end }}
+
+{{/* DEBUG ONLY
+  {{ delimit $tree ", " }}
+*/}}
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@6.3.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script>
+<script>
+  ((e,t)=>{const{Markmap:r}=e();
+  window.mm=r.create("svg#mindmap",null,t)})(
+  ()=>window.markmap,{
+    "t":"root","d":0,"v":"","c":[
+      {{ delimit $tree ", " | safeJS }}
+    ]
+    }
+  );
+</script>
+{{/*
+  {{ $cur_list := slice }}
+  {{- range .Site.Sections -}}
+    {{- $cur_list =  $cur_list | append ( printf `{"t":"heading", "d":1, "v": "%s", "p":{}, "c":[] }` .Title ) -}}
+  {{- end -}}
+  {{ $cur_list }}
+  <script>
+  ((e,t)=>{const{Markmap:r}=e();
+  window.mm=r.create("svg#mindmap",null,t)})(
+  ()=>window.markmap,{
+    "t":"root","d":0,"v":"","c":[
+      {{- delimit $cur_list "," | safeJS -}}
+    ]
+    }
+  );
+  </script>
+*/}}
+
+{{/*
+  <script>
+  ((e,t)=>{const{Markmap:r}=e();
+  window.mm=r.create("svg#mindmap",null,t)})(
+  ()=>window.markmap,{
+    "t":"root","d":0,"v":"","c":[
+      {"t":"heading","d":1,"p":{},"v":"教學", "c":[
+          {"t":"heading","d":2,"p":{},"v":"<a href=\"https://markmap.js.org/repl/\">Hugo</a>"},
+          {"t":"heading","d":2,"p":{},"v":"JS", "c":[
+              {"t": "heading", "d":3, "p":{}, "v":"jquery"},
+              {"t": "heading", "d":3, "p":{}, "v":"bootstrap"}
+            ]
+          }
+        ]},
+        {"t":"heading","d":1,"p":{},"v":"科技", "c":[]}
+    ]
+    }
+  );
+  </script>
+*/}}
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{{ $parent_level := .parent_level | int}}
+{{ $cur_level := add $parent_level 1 }}
+{{ $cur_page := .page }}
+
+{{ $container := slice }}
+{{ range $cur_page.Sections }}
+  {{ $sub_container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
+  {{ $container = $container | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $sub_container) 0) (printf ", c:[%s]" (delimit $sub_container ", ")) "") )}}
+{{ else }}
+  {{ range $cur_page.Pages }}
+    {{/* <li title="{{default .Summary .Description}}"><a href="{{ .Permalink }}">{{ .Title }}</a></li> */}}
+    {{ $container = $container | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{}}` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title)) }}
+  {{ end }}
+{{ end }}
+
+{{ return $container }}

@@ -1,0 +1,12 @@
+{{ $parent_level := index . 0 | int}}
+{{ $cur_level := add $parent_level 1 }}
+{{ $cur_node := index . 1 }}
+
+{{ range $cur_node.Sections }}
+  <h{{$cur_level}}><a href="{{ .Permalink }}">{{ .Title }}</a></h>
+  {{ partial "site-navigation-with-tree" (slice $cur_level .) }}
+{{ else }}
+  {{ range $cur_node.Pages }}
+    <li title="{{default .Summary .Description}}"><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,36 @@
+{{/*
+您可以隨便建立一個md檔案，並寫下
++++
+type = "search"
+layout = "fuse/search-fuse"
++++
+就表示本html來渲染該頁面
+
+{{ .Sections }} Pages(0)
+{{ .File }}  search.md
+{{.Content}}
+*/}}
+<section>
+  <div>
+    {{/* .baseURL/[.File.BaseFileName].md  */}}
+    <form action="{{ .File.BaseFileName | absURL }}">
+      <input id="search-query" name="s"/>
+    </form>
+    <div id="search-results">
+     <h3>Matching pages</h3>
+    </div>
+  </div>
+</section>
+<script id="search-result-template" type="text/x-js-template">
+  {{/* ${} 這些是指smart-search的變數 */}}
+  <div id="summary-${key}">
+    <h4><a href="${link}">${title}</a></h4>
+    <p>${snippet}</p>
+    ${ isset tags }<p>Tags: ${tags}</p>${ end }
+    ${ isset categories }<p>Categories: ${categories}</p>${ end }
+  </div>
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.6/fuse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<script src="{{ `js/search/fuse/smart-search.js` | absURL }}"></script>

@@ -13,7 +13,7 @@ create a post card with the bootstrap.
     {{ $bg_color = default "light" (index .Params.article_image "bg-color") }}
     {{ $bg_color = printf "bg-%s" $bg_color }}
 
-    {{ $btn_color = default "btn-primary" (index .Params.article_image "btn-color") }}
+    {{ $btn_color = default "primary" (index .Params.article_image "btn-color") }}
     {{ $btn_color = printf "btn-%s" $btn_color }}
 
     {{ $text_muted_color = default "text-muted" (index .Params.article_image "text-muted_color") }}
