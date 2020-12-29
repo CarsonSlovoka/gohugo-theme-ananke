@@ -7,6 +7,6 @@
   {{ partial "site-navigation-with-tree" (slice $cur_level .) }}
 {{ else }}
   {{ range $cur_node.Pages }}
-    <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+    <li title="{{default .Summary .Description}}"><a href="{{ .Permalink }}">{{ .Title }}</a></li>
   {{ end }}
 {{ end }}
