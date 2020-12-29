@@ -4,7 +4,19 @@
 
 為了避免和官方版本混淆，我將使用版號100.0.0作為開頭
 
-## [100.0.0]
+## 100.1.0
+
+主要是針對自定義頁面做擴充
+
+### New Features
+
+1. ``layouts/custom_layout/search/fuse/search-fuse.html`` 顯示search-fuse的UI介面 ``SHA1: a659eb09e2``
+2. ``layouts/custom_layout/site/navigation/site-tree.html`` 這是一個用tree來顯示網站上有哪些sections的頁面 ``SHA1: c3522cf4b1``
+3. ★``layouts/custom_layout/site/navigation/site-markmap.html``: 使用心智圖來顯示網站所有的section，這是很強大的顯示！ ``SHA1: 5642515019``
+
+5642515019
+
+## 100.0.0
 
 這版本主要以踏入Hugo為主，偏向教學居多
 
@@ -35,7 +47,4 @@
 
 
 
-SHA1: 6492bcf353
-SHA1: 375ed0e897
-      0f1e8d294b
-
+[SHA1]: 0123456789
