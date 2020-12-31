@@ -552,7 +552,7 @@
             } = this.options, {
                 id: n
             } = this.state;
-            return `.${n} a { color: #0097e6; }\n.${n} a:hover { color: #00a8ff; }\n.${n}-g > path { fill: none; }\n.${n}-fo > div { display: inline-block; font: ${e}; white-space: nowrap; }\n.${n}-fo code { font-size: calc(1em - 2px); color: #555; background-color: #f0f0f0; border-radius: 2px; }\n.${n}-fo :not(pre) > code { padding: .2em .4em; }\n.${n}-fo del { text-decoration: line-through; }\n.${n}-fo em { font-style: italic; }\n.${n}-fo strong { font-weight: bolder; }\n.${n}-fo pre { margin: 0; padding: .2em .4em; }\n.${n}-g > g { cursor: pointer; }\n${"function"==typeof t?t(n):""}\n`
+            return `.${n} a { color: #0097e6; }\n.${n} a:hover { color: #00a8ff; }\n.${n}-g > path { fill: none; }\n.${n}-fo > div { display: inherit; font: ${e}; white-space: nowrap; }\n.${n}-fo code { font-size: calc(1em - 2px); color: #555; background-color: #f0f0f0; border-radius: 2px; }\n.${n}-fo :not(pre) > code { padding: .2em .4em; }\n.${n}-fo del { text-decoration: line-through; }\n.${n}-fo em { font-style: italic; }\n.${n}-fo strong { font-weight: bolder; }\n.${n}-fo pre { margin: 0; padding: .2em .4em; }\n.${n}-g > g { cursor: pointer; }\n${"function"==typeof t?t(n):""}\n`
         }
         updateStyle() {
             this.svg.attr("class", j(this.svg.attr("class"), this.state.id)), this.styleNode.text(this.getStyleContent())
@@ -659,6 +659,7 @@
                 return null != (e = t.data.p) && e.f && t.data.c ? h(t.data) : "#fff"
             }));
             const R = X.selectAll(O("foreignObject")).data((t => [t]), (t => t.data.p.k)).join((t => {
+                {{/* foreignObject 的 .attr("y", 0) 可以影響他的位置，例如y=-5可以往上移動 */}}
                 const e = t.append("foreignObject").attr("class", `${l}-fo`).attr("x", s).attr("y", 0).style("opacity", 0).attr("height", (t => t.xSize));
                 return e.append("xhtml:div").select((function(t) {
                     const e = t.data.p.el.cloneNode(!0);

@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{{ printf "%s | %s" .Title .Site.Title }}</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+{{ hugo.Generator }}
+{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+  <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+{{ else }}
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+{{ end }}
+
+{{ $stylesheet := .Site.Data.webpack_assets.app }}
+{{ range $stylesheet.css }}
+  <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
+{{ end }}
+
+{{ if .Params.markmap }}
+  <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
+{{ end }}
+
+{{ $enable_search_fuse := ( index .Site.Params "enable_search_fuse" ) | default false }}
+{{ if $enable_search_fuse }}
+  <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">
+{{ end }}
+
+{{ $enable_bootstrap := ( index $.Params "bootstrap" ) | default false }}
+{{ $enable_toc := default false (index .Params "toc") }}
+{{ if $enable_bootstrap }}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+{{ end }}
+
+{{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
+{{ if $enable_fontawesome }}
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+{{ end }}
+
+{{ range .Site.Params.custom_css }}
+  <link rel="stylesheet" href="{{ relURL (.) }}">
+{{ end }}
+
+{{ if .Site.Params.favicon }}
+  {{/* 指tab頁籤上的圖片 */}}
+  {{ partialCached "site-favicon.html" . }}
+{{ end }}
+
+{{ if .OutputFormats.Get "RSS" }}
+{{ with .OutputFormats.Get "RSS" }}
+  <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  {{ end }}
+{{ end }}
+
+{{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
+{{- template "_internal/opengraph.html" . -}}
+{{- template "_internal/schema.html" . -}}
+{{- template "_internal/twitter_cards.html" . -}}
+
+{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+  {{ template "_internal/google_analytics_async.html" . }}
+{{ end }}

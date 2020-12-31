@@ -3,8 +3,14 @@
   padding: 0;
 }
 
-#mindmap {
-  display: block;
+.mindmap {
   width: 100vw;
   height: 100vh;
+}
+
+.mindmap a {
+  /* font-family: "Font Awesome 5 Free",  */
+  font-family: cursive, sans-serif;
+  font-size: 0.8em;
+  text-decoration: none;
 }

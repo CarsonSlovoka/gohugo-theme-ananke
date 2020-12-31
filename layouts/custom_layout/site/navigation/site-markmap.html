@@ -1,75 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ $.Site.LanguageCode | default `en` }}">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>{{ printf "%s | %s" .Title .Site.Title }}</title>
-  <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
+  {{ partial "custom_layout/site/templates/site-header.html" . }}
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  {{/* <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script> */}}
+  <script src="{{ `js/uml/markmap-view@0.2.0.js` | relURL  }}"></script>
 </head>
 <body>
+  <main>
+    {{ partial "site-header.html" . }}
+    <h2 class="mt5" style="text-align: center;">By Sections
+      <svg id="mindmap-section" class="mindmap"></svg>
+    </h2>
+    <h2 class="mt5" style="text-align: center;">By Date
+      <svg id="mindmap-date" class="mindmap"></svg>
+    </h2>
+    {{ partialCached "site-footer.html" . }}
+  </main>
 
-{{ $tree := slice }}
-{{ range .Site.Sections }}
-  {{ $cur_level := 1 }}
-  {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
-  {{ $tree = $tree | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
-{{ end }}
+  {{ $tree_section := slice }}
+  {{ range .Site.Sections }}
+    {{ $cur_level := 1 }}
+    {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
+    {{ $tree_section = $tree_section | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
+  {{ end }}
 
-{{/* DEBUG ONLY
-  {{ delimit $tree ", " }}
-*/}}
-<svg id="mindmap"></svg>
-<script src="https://cdn.jsdelivr.net/npm/d3@6.3.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script>
-<script>
-  ((e,t)=>{const{Markmap:r}=e();
-  window.mm=r.create("svg#mindmap",null,t)})(
-  ()=>window.markmap,{
-    "t":"root","d":0,"v":"","c":[
-      {{ delimit $tree ", " | safeJS }}
-    ]
-    }
-  );
-</script>
-{{/*
-  {{ $cur_list := slice }}
-  {{- range .Site.Sections -}}
-    {{- $cur_list =  $cur_list | append ( printf `{"t":"heading", "d":1, "v": "%s", "p":{}, "c":[] }` .Title ) -}}
-  {{- end -}}
-  {{ $cur_list }}
+  {{ $tree_date := slice }}
+  {{ range .Site.Sections }}
+    {{/* Todo 這邊要把各個文章日期 (未完成) */}}
+  {{ end }}
   <script>
-  ((e,t)=>{const{Markmap:r}=e();
-  window.mm=r.create("svg#mindmap",null,t)})(
-  ()=>window.markmap,{
-    "t":"root","d":0,"v":"","c":[
-      {{- delimit $cur_list "," | safeJS -}}
-    ]
-    }
-  );
+    (
+      (e,t)=>{
+        const{Markmap:r}=e();
+        window.mm=r.create("svg#mindmap-section",null,t)
+      }
+    )(
+      ()=>window.markmap,{
+          "t":"root","d":0,"v":"","c":[
+            {{ delimit $tree_section ", " | safeJS }}
+          ]
+        }
+     );
   </script>
-*/}}
 
-{{/*
   <script>
-  ((e,t)=>{const{Markmap:r}=e();
-  window.mm=r.create("svg#mindmap",null,t)})(
-  ()=>window.markmap,{
-    "t":"root","d":0,"v":"","c":[
-      {"t":"heading","d":1,"p":{},"v":"教學", "c":[
-          {"t":"heading","d":2,"p":{},"v":"<a href=\"https://markmap.js.org/repl/\">Hugo</a>"},
-          {"t":"heading","d":2,"p":{},"v":"JS", "c":[
-              {"t": "heading", "d":3, "p":{}, "v":"jquery"},
-              {"t": "heading", "d":3, "p":{}, "v":"bootstrap"}
-            ]
-          }
-        ]},
-        {"t":"heading","d":1,"p":{},"v":"科技", "c":[]}
-    ]
-    }
-  );
+    (
+      (e,t)=>{
+        const{Markmap:r}=e();
+        window.mm=r.create("svg#mindmap-date",null,t)
+      }
+    )(
+      ()=>window.markmap,{
+          "t":"root","d":0,"v":"","c":[
+            {{ delimit $tree_date ", " | safeJS }}
+          ]
+        }
+     );
   </script>
-*/}}
-
 </body>
 </html>
