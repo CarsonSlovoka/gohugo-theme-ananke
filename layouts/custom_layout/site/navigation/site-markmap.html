@@ -31,31 +31,23 @@
   {{ end }}
   <script>
     (
-      (e,t)=>{
+      (e, section_json, date_json)=>{
         const{Markmap:r}=e();
-        window.mm=r.create("svg#mindmap-section",null,t)
+        window.mm=r.create("svg#mindmap-section",null,section_json);
+        window.mm=r.create("svg#mindmap-date",null,date_json);
       }
     )(
-      ()=>window.markmap,{
-          "t":"root","d":0,"v":"","c":[
-            {{ delimit $tree_section ", " | safeJS }}
-          ]
-        }
-     );
-  </script>
-
-  <script>
-    (
-      (e,t)=>{
-        const{Markmap:r}=e();
-        window.mm=r.create("svg#mindmap-date",null,t)
+      ()=>window.markmap,
+      {
+        "t":"root","d":0,"v":"","c":[
+          {{ delimit $tree_section ", " | safeJS }}
+        ]
+      },
+      {
+        "t":"root","d":0,"v":"","c":[
+          {{ delimit $tree_date ", " | safeJS }}
+        ]
       }
-    )(
-      ()=>window.markmap,{
-          "t":"root","d":0,"v":"","c":[
-            {{ delimit $tree_date ", " | safeJS }}
-          ]
-        }
      );
   </script>
 </body>
