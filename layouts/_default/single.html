@@ -71,7 +71,14 @@
       t - for classes taht set margin-top or padding-top
       w-30 width:30%
       */}}
-      {{- partial "menu-contextual.html" . -}}
+      {{ if .Params.toc_bootstrap }}
+        {{- partial "toc/toc_bootstrap" . -}}  {{/* 使用bootstrap的樣式產生toc */}}
+      {{ else if (and .Params.markmap .Params.markmap_toc) }}
+        {{- partial "toc/toc_markmap" . -}}  {{/* 使用markmap的樣子來產生toc */}}
+      {{ else if .Params.toc }}
+        {{ .TableOfContents }}  {{/* 用Hugo內建提供的樣板產生toc */}}
+      {{ end }}
+      {{- partial "toc/toc_related" . -}}  {{/* 相關文章 */}}
     </aside>
   </article>
 {{ end }}

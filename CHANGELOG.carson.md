@@ -6,6 +6,18 @@
 
 ## 100.1.1
 
+### New Features
+
+- 能在markdwon中的code-block餵入json檔案，就可以獲得markmap ``sha1: 51bf7f3bc``
+
+### Changes
+
+- 調整single.html的中心可讀區寬度，從``w-two-thirds-l`` 改為 ``w-90-l``  ``sha1: bf48fe1c9f``
+- 將navbar的overflow-x改為隱藏
+- table of contents支持兩種格是:
+    1. toc: 使用原生的 {{.TableOfContents}}
+    2. toc_bootstrap
+
 ### bug-fixes
 
 - 解決site-markmap的markmap只有渲染子資料夾並沒有渲染當前網頁的問題 ``sha1: cb20cf09a6``
