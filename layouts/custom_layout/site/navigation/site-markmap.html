@@ -22,7 +22,7 @@
   {{ range .Site.Sections }}
     {{ $cur_level := 1 }}
     {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
-    {{ $tree_section = $tree_section | append (printf `{"t":"heading", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
+    {{ $tree_section = $tree_section | append (printf `{"t":"h", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
   {{ end }}
 
   {{ $tree_date := slice }}
