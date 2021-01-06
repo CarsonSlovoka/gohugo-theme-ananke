@@ -100,5 +100,6 @@
     {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
     {{ block "scripts" . }}{{ partialCached "site-scripts.html" . }}{{ end }}
     {{ block "plugin-scripts" . }}{{ partial "plugin-scripts" . }}{{ end }}
+    {{ block "body_end" . }}{{ end }}
   </body>
 </html>
