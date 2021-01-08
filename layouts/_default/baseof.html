@@ -15,15 +15,6 @@
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
     {{ end }}
 
-    {{ $stylesheet := .Site.Data.webpack_assets.app }}
-      {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
-    {{ range $stylesheet.css }}
-      {{/*
-        在app這個物件之中又剛好有.css
-      */}}
-      <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
-    {{ end }}
-
     {{ if .Params.markmap }}
       <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
     {{ end }}
@@ -55,6 +46,16 @@
       指: static/css/{foo.css, bar.css}
       */}}
       <link rel="stylesheet" href="{{ relURL (.) }}">
+    {{ end }}
+
+    {{ $stylesheet := .Site.Data.webpack_assets.app }}
+      {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
+    {{ range $stylesheet.css }}
+      {{/*
+        在app這個物件之中又剛好有.css
+        注意css有順序性，所以如果您要引入一些其他的CSS不建議放在這之後
+      */}}
+      <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
     {{ end }}
 
     {{ block "favicon" . }}
