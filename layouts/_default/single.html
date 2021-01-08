@@ -63,7 +63,7 @@
       {{ end }}
       </div>
     </div>
-    <aside class="w-30-l mt6-l navbar-right">
+    <aside class="w-30-l mt6-l navbar-right large-screen-only">
       {{/*
       https://getbootstrap.com/docs/4.4/utilities/spacing/
       l - for classes that set margin-left or padding-left
@@ -71,14 +71,19 @@
       t - for classes taht set margin-top or padding-top
       w-30 width:30%
       */}}
-      {{ if .Params.toc_bootstrap }}
-        {{- partial "toc/toc_bootstrap" . -}}  {{/* 使用bootstrap的樣式產生toc */}}
-      {{ else if (and .Params.markmap .Params.markmap_toc) }}
-        {{- partial "toc/toc_markmap" . -}}  {{/* 使用markmap的樣子來產生toc */}}
-      {{ else if .Params.toc }}
-        {{ .TableOfContents }}  {{/* 用Hugo內建提供的樣板產生toc */}}
+      {{ if (and .Params.markmap .Params.toc_markmap) }}
+        {{ .TableOfContents }}
+        <script defer src="{{ relURL `js/uml/toc_markmap.js` }}"></script>  {{/* 使用markmap的樣子來產生toc */}}
       {{ end }}
-      {{- partial "toc/toc_related" . -}}  {{/* 相關文章 */}}
+
+      <div id="toc">
+        {{ if .Params.toc_bootstrap }}
+          {{- partial "toc/toc_bootstrap" . -}}  {{/* 使用bootstrap的樣式產生toc */}}
+        {{ else if .Params.toc }}
+          {{ .TableOfContents }}  {{/* 用Hugo內建提供的樣板產生toc，因為toc_markmap會和這個產生衝突，所以兩者只能選一個 */}}
+        {{ end }}
+        {{- partial "toc/toc_related" . -}}  {{/* 相關文章 */}}
+      </div>
     </aside>
   </article>
 {{ end }}
