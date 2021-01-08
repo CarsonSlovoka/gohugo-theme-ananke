@@ -57,7 +57,7 @@ class Toc {
     const toc = new Toc(node_nav);
     const dict_data = toc.convert2dict();
     const id_name = 'mindmap-toc';
-    let node_svg = getNode("svg", {id: id_name});
+    let node_svg = getNode("svg", {id: id_name, class: 'mindmap'});
     // node_nav.appendChild(node_svg);
     node_nav.replaceWith(node_svg);
     toc.create_mind_map(id_name, dict_data);
