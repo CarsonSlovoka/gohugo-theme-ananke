@@ -34,8 +34,8 @@
 
 #mindmap-toc:hover {
     position: relative;
-    top: 200px;
-    left: -600px;
+    top: 15em;
+    /* left: -600px; 在toc_markmap.js中來動態決定*/
     background-color: rgb(0, 0, 0);
     display: block;
     margin: auto;

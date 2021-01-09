@@ -45,11 +45,40 @@ class Toc {
     const result_dict = {t: 'root', d: 0, v: "", c:sub_c};
     const level = 1
     this._get_element(root_ul, sub_c, level);
-    console.log(result_dict)
-    console.log(JSON.stringify(result_dict, null, 2))
     return result_dict
   }
 };
+
+const init_svg_hover_attr = (svg) => {
+  /*
+  const element_toc = document.getElementById('toc');
+  if element_toc !== null {
+  }
+  */
+  const node_main = document.getElementsByTagName('main')[0];
+  const domrect_node_main = node_main.getBoundingClientRect();
+  const domrect_svg = svg.getBoundingClientRect();
+  const new_x = (domrect_node_main.width - domrect_svg.width) / 2
+  const left = -(domrect_svg.x - new_x);
+  /*
+  svg.style["background-color"] = "rgb(0, 0, 0)";
+  svg.style.transform = "scale(5)";
+  svg.style.position = "relative";
+  */
+  //document.styleSheets
+  const sheetName = "navbar"  // .css
+  SetStyleRule(sheetName, "#mindmap-toc:hover", "left:-600px");
+  // SetStyleRule(sheetName, "#mindmap-toc:hover", "background-color: rgb(255, 0, 0)");
+}
+
+const SetStyleRule = (sheetName, selector, rule) => {
+    let stylesheet = document.querySelector('link[href*=' + sheetName + ']')
+
+    if( stylesheet ){
+        stylesheet = stylesheet.sheet
+        stylesheet.insertRule(selector + '{ ' + rule + '}', stylesheet.cssRules.length)
+    }
+}
 
 (
   ()=>{
@@ -57,7 +86,8 @@ class Toc {
     const toc = new Toc(node_nav);
     const dict_data = toc.convert2dict();
     const id_name = 'mindmap-toc';
-    let node_svg = getNode("svg", {id: id_name, class: 'mindmap'});
+    let node_svg = getNode("svg", {id: id_name, class: 'mindmap' /*, onmouseover: "mouse_hover_markmap(this)" */});
+    init_svg_hover_attr(node_svg)
     // node_nav.appendChild(node_svg);
     node_nav.replaceWith(node_svg);
     toc.create_mind_map(id_name, dict_data);
