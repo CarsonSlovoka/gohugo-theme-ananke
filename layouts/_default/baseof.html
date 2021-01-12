@@ -58,6 +58,14 @@
       <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
     {{ end }}
 
+    {{ $sass_options := dict "outputStyle" "compressed" "enableSourceMap" false }}
+    {{ range $stylesheet.sass }}
+      {{ $sass_file_path := . }}
+      {{ $style := resources.Get $sass_file_path | resources.ToCSS $sass_options | minify | fingerprint "sha256" }}
+      <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{ end }}
+
+
     {{ block "favicon" . }}
       {{/* 指tab頁籤上的圖片 */}}
       {{ partialCached "site-favicon.html" . }}

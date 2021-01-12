@@ -5,8 +5,10 @@
       "css/app.4fc0b62e4b82c997bb0041217cd6b979.css",
       "css/navbar.css",
       "css/card_post.css",
-      "css/utils.css",
-      "css/custom_header.css"
+      "css/utils.css"
+    ],
+    "sass": [
+      "sass/main.sass"
     ]
   }
 }
