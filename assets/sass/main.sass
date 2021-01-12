@@ -1,20 +1,12 @@
-/*
-  sass main.sass:_test.temp.css --style compressed --no-source-map
-  sass main.sass:_test.temp.css --no-source-map
+// sass main.sass:_test.temp.css --style compressed --no-source-map
+// sass main.sass:_test.temp.css --no-source-map
+// sass main.sass:main_sass.css --no-source-map 因為目前Hugo還是用libSass所以有些語法不支持，暫時先拿產出後的css文件
+//
+// https://gohugo.io/hugo-pipes/scss-sass/
+// https://stackoverflow.com/questions/34877603/sass-for-h1-h6-style
+// https://sass-lang.com/documentation/values/lists
 
-  https://gohugo.io/hugo-pipes/scss-sass/
-  https://stackoverflow.com/questions/34877603/sass-for-h1-h6-style
-  https://sass-lang.com/documentation/values/lists */
-
-$h_margin_list: 0.67, 0.83, 1, 1.33, 1.67, 2.33
-$h_font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
-
-@for $i from 1 through 6
-  h#{$i}  /* #{} 加上這個會把引號取消，成為unquoted */
-    display: block
-    font-size: nth($h_font_size_list, $i) + em
-    margin-top: nth($h_margin_list, $i) + em
-    margin-bottom: nth($h_margin_list, $i) + em
-    margin-left: 0
-    margin-right: 0
-    font-weight: bold
+@use 'src/headers'  /* 很遺憾目前hugo還是使用libSass而不是DartSass 尚不支持use的用法，但我不想放棄這種優雅的寫法，所以將手動編譯後，在Hugo中直接拿取該CSS */
+@include headers.init_headers()
+// @include headers.init_headers(null, (30, 20, 1.17, 1, 0.83, 0.67))
+// @include headers.init_headers((0.67, 0.83, 1, 1.33, 1.67, 2.33), (30, 20, 1.17, 1, 0.83, 0.67))

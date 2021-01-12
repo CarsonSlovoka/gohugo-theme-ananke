@@ -1,0 +1,29 @@
+$-margin_list: 0.67, 0.83, 1, 1.33, 1.67, 2.33
+$-font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
+
+@mixin configure($margin_list: null, $font_size_list: null)
+  // 可以透過此設定來修改本腳本的全域變數
+  @if $margin_list
+    $-margin_list: $margin_list !global  // global表示修改全域的數值
+  @if $font_size_list
+    $-font_size_list: $font_size_list !global
+
+@mixin init_headers($margin_list: $-margin_list, $font_size_list: $-font_size_list)
+  @if $margin_list == null
+    $margin_list: $-margin_list
+
+  @if $font_size_list == null
+    $font_size_list: $-font_size_list
+
+  @for $i from 1 through length($margin_list)
+    $cur_font_size: nth($font_size_list, $i)
+    $cur_mt: nth($margin_list, $i)
+    $cur_mb: nth($margin_list, $i)
+    h#{$i}  // #{} 加上這個會把引號取消，成為unquoted
+      display: block
+      font-size: $cur_font_size + em
+      margin-top: $cur_mt + em
+      margin-bottom: $cur_mb + em
+      margin-left: 0
+      margin-right: 0
+      font-weight: bold

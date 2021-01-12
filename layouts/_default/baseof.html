@@ -58,12 +58,14 @@
       <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
     {{ end }}
 
+    {{/* 等到Hugo完全支持Dart Sass會重新以這種方法撰寫
     {{ $sass_options := dict "outputStyle" "compressed" "enableSourceMap" false }}
     {{ range $stylesheet.sass }}
       {{ $sass_file_path := . }}
       {{ $style := resources.Get $sass_file_path | resources.ToCSS $sass_options | minify | fingerprint "sha256" }}
       <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
     {{ end }}
+    */}}
 
 
     {{ block "favicon" . }}
