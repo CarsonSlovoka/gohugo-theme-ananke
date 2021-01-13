@@ -1,0 +1,31 @@
+{{/*
+USAGE:
+
+  使用預設值
+  {{< table/bootstrap-table >}}
+  | Animal  | Sounds |
+  |---------|--------|
+  | Cat     | Meow   |
+  {{< /table/bootstrap-table >}}
+
+  指定為danger
+  {{< table/bootstrap-table class="table-primary" >}}  引號可加可不加
+  {{< table/bootstrap-table "table-danger" >}}
+  | Animal  | Sounds |
+  |---------|--------|
+  | Cat     | Meow   |
+  {{< /table/bootstrap-table >}}
+
+  table-striped: 偶數列和基數列的顏色會不一樣 to add zebra-striping to any table row within the <tbody>
+  table-bordered: 有邊框
+*/}}
+
+{{ $class := "" }}
+{{ if .IsNamedParams }}
+  {{ $class = .Get "class" }}
+{{ else }}
+  {{ $class = .Get 0 }}
+{{ end }}
+
+{{ $class := printf `table %s table-sm table-striped table-bordered` (default "table-dark" $class) }}
+{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class) }}

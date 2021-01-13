@@ -57,3 +57,26 @@ h6 {
   margin-right: 0;
   font-weight: bold;
 }
+
+table {
+  font-size: 0.7em;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+  table-layout: fixed;
+}
+table thead th {
+  border-bottom: 1px solid #ddd;
+}
+table tr th:empty {
+  display: none;
+}
+
+th, td {
+  padding: 5px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+tr:nth-child(even) {
+  background: #eee;
+}

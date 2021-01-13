@@ -1,0 +1,12 @@
+{{/*
+USAGE:
+
+  {{< table/my-table "table table-primary table-striped table-bordered" >}}
+  | Animal  | Sounds |
+  |---------|--------|
+  | Cat     | Meow   |
+  {{< /table/my-table >}}
+*/}}
+
+{{ $class := .Get 0 }}
+{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class) }}
