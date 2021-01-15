@@ -1,3 +1,5 @@
 @mixin init_code_block()
   .highlight pre
-      overflow: initial
+      max-height: 30rem  // 最好用max-height不要用height，因為有可能東西沒有那麼多，這樣就會造成很多空白的地方跑出來
+      overflow-y: hidden
+      overflow: auto  // 這個很重要，有了這個才可以有滾動條

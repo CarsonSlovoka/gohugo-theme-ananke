@@ -1,5 +1,6 @@
 {{ $html_table := .html_table }}
 {{ $class := .class }}
+{{ $scrollable := .scrollable }}  {{/* https://stackoverflow.com/questions/8232713/how-to-display-scroll-bar-onto-a-html-table */}}
 
 {{ $old := "<table>" }}
 {{ $new := printf "<table class=\"%s\">" $class }}
@@ -19,4 +20,6 @@
   {{ end }}
 {{ end }}
 
-{{ return ($html_table | safeHTML) }}
+{{ $html_table := $html_table | safeHTML }}
+
+{{ return (cond $scrollable (printf `<div style="max-height:30rem; overflow:auto;">%s</div>` $html_table | safeHTML) $html_table ) }}

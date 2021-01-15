@@ -18,14 +18,20 @@ USAGE:
 
   table-striped: 偶數列和基數列的顏色會不一樣 to add zebra-striping to any table row within the <tbody>
   table-bordered: 有邊框
+
+  垂直滾動調
+  {{< table/bootstrap-table scrollable=true >}}
 */}}
 
 {{ $class := "" }}
+{{ $scrollable := false }}
 {{ if .IsNamedParams }}
-  {{ $class = .Get "class" }}
+  {{ $class = default "" (.Get "class") }}
+  {{ $scrollable = default false (.Get "scrollable") }}
 {{ else }}
-  {{ $class = .Get 0 }}
+  {{ $class = default "" (.Get 0) }}
+  {{ $scrollable = default false (.Get 1) }}
 {{ end }}
 
 {{ $class := printf `table %s table-sm table-striped table-bordered` (default "table-dark" $class) }}
-{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class) }}
+{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) }}

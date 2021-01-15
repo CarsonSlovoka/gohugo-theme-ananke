@@ -82,5 +82,7 @@ tr:nth-child(even) {
 }
 
 .highlight pre {
-  overflow: initial;
+  max-height: 30rem;
+  overflow-y: hidden;
+  overflow: auto;
 }
