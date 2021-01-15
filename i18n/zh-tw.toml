@@ -36,3 +36,9 @@ other = "標籤為 “{{ .Title }}” 的頁面如下"
 
 [tableOfContents]
 other = "大綱"
+
+[previousPage]
+other = "前一頁"
+
+[nextPage]
+other = "下一頁"
