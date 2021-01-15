@@ -37,8 +37,9 @@
     {{/* 如果網站本身已經宣告要使用font-awesome則視為所有頁面都套用，不然則依造頁面的設定 */}}
     {{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
     {{ if $enable_fontawesome }}
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+      {{/* https://cdnjs.com/libraries/font-awesome */}}
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/all.min.js" integrity="sha512-UwcC/iaz5ziHX7V6LjSKaXgCuRRqbTp1QHpbOJ4l1nw2/boCfZ2KlFIqBUA/uRVF0onbREnY9do8rM/uT/ilqw==" crossorigin="anonymous"></script>
     {{ end }}
 
     {{ $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
