@@ -1,3 +1,9 @@
+{{ define "extra_css" }}
+  {{ if .Site.Params.pygmentsUseClasses }}
+    <link href="{{ relURL `css/syntax.css` }}" rel="stylesheet">
+  {{ end }}
+{{ end }}
+
 {{ define "header" }}
    {{/* We can override any block in the baseof file be defining it in the template */}}
   {{ partial "page-header.html" . }}

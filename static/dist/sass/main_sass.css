@@ -80,3 +80,7 @@ th, td {
 tr:nth-child(even) {
   background: #eee;
 }
+
+.highlight pre {
+  overflow: initial;
+}

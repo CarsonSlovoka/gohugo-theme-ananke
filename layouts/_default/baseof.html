@@ -19,6 +19,9 @@
       <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
     {{ end }}
 
+    {{ block "extra_css" . }}
+    {{ end }}
+
     {{ $enable_search_fuse := ( index .Site.Params "enable_search_fuse" ) | default false }}
     {{ if $enable_search_fuse }}
       <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">

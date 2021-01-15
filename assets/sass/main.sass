@@ -9,8 +9,10 @@
 @use 'src/utils'
 @use 'src/tables'
 @use 'src/headers'  /* 很遺憾目前hugo還是使用libSass而不是DartSass 尚不支持use的用法，但我不想放棄這種優雅的寫法，所以將手動編譯後，在Hugo中直接拿取該CSS */
+@use 'src/code_block'
 @include headers.init_headers()
 // @include headers.init_headers(null, (30, 20, 1.17, 1, 0.83, 0.67))
 // @include headers.init_headers((0.67, 0.83, 1, 1.33, 1.67, 2.33), (30, 20, 1.17, 1, 0.83, 0.67))
 
 @include tables.init_tables()
+@include code_block.init_code_block()
