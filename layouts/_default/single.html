@@ -60,7 +60,22 @@
     w-80-l"  {{/* w-two-thirds-l: https://tachyons.io/docs/layout/widths/ */}}
     >
       {{- .Content -}}
-      {{- partial "tags.html" . -}}
+
+      {{ if .Params.next_and_previous.link }}
+        {{ $cur_page := . }}
+        {{ with .Params.next_and_previous.link }}
+          <div class="mt3">
+            {{- partial "next-and-previous" (slice .previous_page .next_page .previous_section .next_section $cur_page) -}}
+          </div>
+        {{ end }}
+      {{ end }}
+
+      {{ if .Params.tags }}
+        <div class="mt4">
+          {{- partial "tags.html" . -}}
+        </div>
+      {{ end }}
+
       <div class="mt6 instapaper_ignoref">
       {{ if .Site.DisqusShortname }}
         {{ template "_internal/disqus.html" . }}
