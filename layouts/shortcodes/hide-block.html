@@ -1,0 +1,17 @@
+{{/*
+USAGE:
+
+  {{< hide-block my_title>}}
+             linenos=false
+  ```python {linenos=table, hl_lines=[123, "127-129"], linenostart=1}
+  {{< /hide-block>}}
+
+  這個的缺點就是前面不能有空白！
+*/}}
+
+{{ $title := default "" (cond .IsNamedParams (.Get "title") (.Get 0)) }}
+
+<details>
+    <summary>{{- $title -}}</summary>
+    {{- .Inner | markdownify -}}
+</details>

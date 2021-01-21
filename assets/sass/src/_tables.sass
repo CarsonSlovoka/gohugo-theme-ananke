@@ -1,0 +1,21 @@
+@mixin init_tables()
+  table
+    font-size: 0.7em
+    // margin: auto
+    border-top: 1px solid #666
+    border-bottom: 1px solid #666
+    table-layout: fixed  /* 這可以讓寬度不會爆長，太長會換行 */
+
+    thead th
+      border-bottom: 1px solid #ddd
+
+    tr th:empty
+      display: none
+
+  th, td
+    padding: 5px
+    word-wrap: break-word
+    word-break: break-all /* break-word 會自動斷行，如果是英文不會把單字斷開，但有壞處如果您的連字很長，在第一個單字結束之後可能就直接新的列了 */
+
+  tr:nth-child(even)  /* 偶數列的行為 */
+    background: #eee

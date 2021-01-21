@@ -4,6 +4,44 @@
 
 為了避免和官方版本混淆，我將使用版號100.0.0作為開頭
 
+## 100.1.1
+
+### New Features
+
+- ★ site-markmap.html頁面: 新增以修改日期來排序文章  ``sha1: 474e9e8aec2b5cf4d``
+- 能在markdwon中的code-block餵入json檔案，就可以獲得markmap ``sha1: 51bf7f3bc``
+- 新增site-tree: ``sha1: ae9240c7d``
+
+    可以透過
+
+    ```toml
+    type = "custom_layout"
+    layout = "site/navigation/site-tree"
+    ```
+
+    來指定使用``layouts/custom_layout/site/navigation/site-tree.html``來渲染頁面
+
+- 新增``shortcodes/next-and-previous.html``: 可以動態決定上一頁、下一頁、上一章、前一章的連結  ``sha1:17b490e2``
+- 新增``partials/next-and-previous.html``: 可藉由front matter來自動產生:{上一頁、下一頁、上一章、前一章}的連結在結尾  ``sha1: 44f2e7ba2117``
+- 引入bootstrap-table並能選擇是否允許垂直滾動條 ``sha1:c2189ace5ac``  ``sha1:6a51ef5cb5ca``
+- 一些常項設定改用scss來完成 ``sha1: ae2d5816021``
+
+### Changes
+
+- ~~調整single.html的中心可讀區寬度，從``w-two-thirds-l`` 改為 ``w-90-l``~~  ``sha1: bf48fe1c9f``
+- 調整頁面閱讀區的寬度 (w-90-l -> w-80-l) 並將 padding移除  ``sha1: ea6c3d100cc2``
+- 將navbar的overflow-x改為隱藏
+- table of contents支持兩種格是:
+    1. toc: 使用原生的 {{.TableOfContents}}
+    2. toc_bootstrap
+- 調整h1~h6的margin  ``sha1:29e1fbf5241``
+- font-awesome ``5.15.1`` 更新至 ``5.15.2`` ``sha1:6f4692fd1ab2``
+- ``archetypes/default.md``  添加更多的內容，讓使用者清楚目前有哪些格式可供選擇
+
+### bug-fixes
+
+- 解決site-markmap的markmap只有渲染子資料夾並沒有渲染當前網頁的問題 ``sha1: cb20cf09a6``
+
 ## 100.1.0
 
 主要是針對自定義頁面做擴充

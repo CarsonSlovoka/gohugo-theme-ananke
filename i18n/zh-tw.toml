@@ -36,3 +36,21 @@ other = "標籤為 “{{ .Title }}” 的頁面如下"
 
 [tableOfContents]
 other = "大綱"
+
+[videoNotSupport]
+other = "Your browser does not support the video tag."
+
+[introduction]
+other = "簡介"
+
+[previousPage]
+other = "前一頁"
+
+[previousSection]
+other = "前一章"
+
+[nextPage]
+other = "下一頁"
+
+[nextSection]
+other = "下一章"

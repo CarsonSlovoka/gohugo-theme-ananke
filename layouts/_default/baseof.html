@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $.Site.LanguageCode | default "en" }}">
+<html lang="{{ $.Site.LanguageCode | default `en` }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -15,17 +15,11 @@
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
     {{ end }}
 
-    {{ $stylesheet := .Site.Data.webpack_assets.app }}
-      {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
-    {{ range $stylesheet.css }}
-      {{/*
-        在app這個物件之中又剛好有.css
-      */}}
-      <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
-    {{ end }}
-
     {{ if .Params.markmap }}
       <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
+    {{ end }}
+
+    {{ block "extra_css" . }}
     {{ end }}
 
     {{ $enable_search_fuse := ( index .Site.Params "enable_search_fuse" ) | default false }}
@@ -33,9 +27,8 @@
       <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">
     {{ end }}
 
-    {{/* $enable_bootstrap := $.Params.bootstrap */}}
-    {{ $enable_bootstrap := ( index $.Params "bootstrap" ) | default false }}
-    {{ $enable_toc := default false (index .Params "toc") }}
+    {{ $enable_bootstrap := or (default false .Site.Params.bootstrap) (default false .Params.bootstrap) }}
+    {{ $enable_toc := or (default false .Params.toc) (default false .Params.toc_bootstrap) }}
     {{ if $enable_bootstrap }}
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -44,8 +37,9 @@
     {{/* 如果網站本身已經宣告要使用font-awesome則視為所有頁面都套用，不然則依造頁面的設定 */}}
     {{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
     {{ if $enable_fontawesome }}
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+      {{/* https://cdnjs.com/libraries/font-awesome */}}
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/all.min.js" integrity="sha512-UwcC/iaz5ziHX7V6LjSKaXgCuRRqbTp1QHpbOJ4l1nw2/boCfZ2KlFIqBUA/uRVF0onbREnY9do8rM/uT/ilqw==" crossorigin="anonymous"></script>
     {{ end }}
 
     {{ $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
@@ -57,6 +51,26 @@
       */}}
       <link rel="stylesheet" href="{{ relURL (.) }}">
     {{ end }}
+
+    {{ $stylesheet := .Site.Data.webpack_assets.app }}
+      {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
+    {{ range $stylesheet.css }}
+      {{/*
+        在app這個物件之中又剛好有.css
+        注意css有順序性，所以如果您要引入一些其他的CSS不建議放在這之後
+      */}}
+      <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
+    {{ end }}
+
+    {{/* 等到Hugo完全支持Dart Sass會重新以這種方法撰寫
+    {{ $sass_options := dict "outputStyle" "compressed" "enableSourceMap" false }}
+    {{ range $stylesheet.sass }}
+      {{ $sass_file_path := . }}
+      {{ $style := resources.Get $sass_file_path | resources.ToCSS $sass_options | minify | fingerprint "sha256" }}
+      <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{ end }}
+    */}}
+
 
     {{ block "favicon" . }}
       {{/* 指tab頁籤上的圖片 */}}
@@ -81,7 +95,7 @@
 	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
   </head>
 
-  {{/* safeHTMLAttr 沒有加上會出現 ZgotmplZ 的字眼，這個字眼是固定的 */}}
+  {{/* safeHTMLAttr 沒有加上會出現 #ZgotmplZ 的字眼，這個字眼是固定的 */}}
   <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param `body_classes`  | default `avenir bg-near-white`}}{{ with getenv `HUGO_ENV` }} {{ . }}{{ end }}">
 
     {{ block "header" . }}
@@ -101,5 +115,6 @@
     {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
     {{ block "scripts" . }}{{ partialCached "site-scripts.html" . }}{{ end }}
     {{ block "plugin-scripts" . }}{{ partial "plugin-scripts" . }}{{ end }}
+    {{ block "body_end" . }}{{ end }}
   </body>
 </html>

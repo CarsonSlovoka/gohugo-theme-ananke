@@ -1,0 +1,39 @@
+{{/*
+  https://gohugo.io/content-management/syntax-highlighting/#example-highlight-shortcode
+  https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
+  https://regex101.com/
+
+USAGE:
+  {{< highlight_block lang=python space=0 hide=true title=XXX options="linenos=table, hl_lines=123 127-129,linenostart=1">}}
+  {{< /highlight_block >}}
+*/}}
+
+{{ $lang := "txt" }}
+{{ $space := 0 }}  {{/* 移除開頭前多少個空白 */}}
+{{ $hide := false }}
+{{ $title := "" }}
+{{ $options := "" }}
+{{ if .IsNamedParams }}
+  {{ $lang = default "txt" (.Get "lang" ) }}
+  {{ $space = default false (.Get "space") }}
+  {{ $hide = default false (.Get "hide") }}
+  {{ $title = default "" (.Get "title") }}
+  {{ $options = default "" (.Get "options") }}
+{{ else }}
+  {{ $lang = default "txt" (.Get 0 ) }}
+  {{ $space = default 0 (.Get 1) }}
+  {{ $hide = default false (.Get 2) }}
+  {{ $title = default "" (.Get 3) }}
+  {{ $options = default "" (.Get 4) }}
+{{ end }}
+
+{{ $inner_text := replaceRE ".*```[a-zA-Z]*" "" .Inner }}
+
+{{ if $hide }}
+  <details>
+      <summary>{{- $title -}}</summary>
+       {{ highlight (trim $inner_text "\n\r") $lang $options }}
+  </details>
+{{ else }}
+  {{ highlight (trim $inner_text "\n\r") $lang $options }}
+{{ end }}

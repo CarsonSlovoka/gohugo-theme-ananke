@@ -1,0 +1,14 @@
+{{/*
+  $.Page 是當前網頁的變, $.Site 是網站的變數。他們都可以在shortcodes中應用
+
+  例如獲得當前的title: {{ $.Page.Params.title }}, {{ $.Site.Title }}
+
+  urls.Parse URL  https://gohugo.io/functions/urls.parse/
+*/}}
+
+{{ $previous_page_link := default "" (.Get "previous_page_link") }}
+{{ $previous_section_link := default "" (.Get "previous_section_link") }}
+{{ $next_page_link := default "" (.Get "next_page_link") }}
+{{ $next_section_link := default "" (.Get "next_section_link") }}
+
+{{- partial "next-and-previous" (slice $previous_page_link $next_page_link $previous_section_link $next_section_link $.Page) -}}

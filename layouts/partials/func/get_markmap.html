@@ -1,0 +1,20 @@
+{{ $json_data := "" }}
+{{ if gt (len .root_name) 0 }}
+  {{ $json_data = printf `"t":"root","d":0,"v":"%s","c":[%s]` .root_name (delimit .json_data ", " | safeJS ) }}
+{{ else }}
+  {{/* 這邊「不加上」 t:"root", "d":0, "v":"", c=[] */}}
+  {{ $json_data = substr (delimit .json_data ", " | safeJS) 1 -1 }}  {{/* 去除頭尾的大括號{ } */}}
+{{ end }}
+<script>
+  (
+    (e, json_data)=>{
+      const{Markmap:r}=e();
+      window.mm=r.create({{- printf "svg#%s" .id -}} ,null,json_data);
+    }
+  )(
+    ()=>window.markmap,
+    {
+      {{ $json_data | safeJS }}
+    }
+   );
+</script>

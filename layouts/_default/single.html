@@ -1,3 +1,9 @@
+{{ define "extra_css" }}
+  {{ if .Site.Params.pygmentsUseClasses }}
+    <link href="{{ relURL `css/syntax.css` }}" rel="stylesheet">
+  {{ end }}
+{{ end }}
+
 {{ define "header" }}
    {{/* We can override any block in the baseof file be defining it in the template */}}
   {{ partial "page-header.html" . }}
@@ -49,9 +55,27 @@
         <span class="f6 mv4 dib tracked"> - {{ .WordCount}} words</span>
       {{ end }}
     </header>
-    <div class="nested-copy-line-height lh-copy {{ $.Param "post_content_classes"  | default "serif"}} f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+    <div class="nested-copy-line-height lh-copy {{ $.Param "post_content_classes"  | default "serif"}} f4 nested-links nested-img mid-gray
+    {{/* 把右側的padding拿掉 pr4-l */}}
+    w-80-l"  {{/* w-two-thirds-l: https://tachyons.io/docs/layout/widths/ */}}
+    >
       {{- .Content -}}
-      {{- partial "tags.html" . -}}
+
+      {{ if .Params.next_and_previous.link }}
+        {{ $cur_page := . }}
+        {{ with .Params.next_and_previous.link }}
+          <div class="mt3">
+            {{- partial "next-and-previous" (slice .previous_page .next_page .previous_section .next_section $cur_page) -}}
+          </div>
+        {{ end }}
+      {{ end }}
+
+      {{ if .Params.tags }}
+        <div class="mt4">
+          {{- partial "tags.html" . -}}
+        </div>
+      {{ end }}
+
       <div class="mt6 instapaper_ignoref">
       {{ if .Site.DisqusShortname }}
         {{ template "_internal/disqus.html" . }}
@@ -61,7 +85,7 @@
       {{ end }}
       </div>
     </div>
-    <aside class="w-30-l mt6-l navbar-right">
+    <aside class="w-30-l mt6-l navbar-right large-screen-only">
       {{/*
       https://getbootstrap.com/docs/4.4/utilities/spacing/
       l - for classes that set margin-left or padding-left
@@ -69,7 +93,19 @@
       t - for classes taht set margin-top or padding-top
       w-30 width:30%
       */}}
-      {{- partial "menu-contextual.html" . -}}
+      {{ if (and .Params.markmap .Params.toc_markmap) }}
+        {{ .TableOfContents }}
+        <script defer src="{{ relURL `js/uml/toc_markmap.js` }}"></script>  {{/* 使用markmap的樣子來產生toc */}}
+      {{ end }}
+
+      <div id="toc">
+        {{ if .Params.toc_bootstrap }}
+          {{- partial "toc/toc_bootstrap" . -}}  {{/* 使用bootstrap的樣式產生toc */}}
+        {{ else if .Params.toc }}
+          {{ .TableOfContents }}  {{/* 用Hugo內建提供的樣板產生toc，因為toc_markmap會和這個產生衝突，所以兩者只能選一個 */}}
+        {{ end }}
+        {{- partial "toc/toc_related" . -}}  {{/* 相關文章 */}}
+      </div>
     </aside>
   </article>
 {{ end }}

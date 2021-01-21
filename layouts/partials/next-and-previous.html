@@ -1,0 +1,73 @@
+{{/*
+USAGE:
+
+    [next_and_previous.link]
+      previous_page=""
+      next_page=""
+      previous_section=""
+      next_section=""
+*/}}
+
+{{ $previous_page_link := default "" (index . 0) }}
+{{ $next_page_link := default "" (index . 1) }}
+{{ $previous_section_link := default "" (index . 2) }}
+{{ $next_section_link := default "" (index . 3) }}
+{{ $cur_page := default "" (index . 4) }}
+
+<hr>
+{{ if or $previous_page_link $next_page_link }}
+  <div class="row">
+  {{ if $previous_page_link }}
+    {{ $previous_page := $cur_page.Site.GetPage $previous_page_link }}  {{/* 不包含domain的名稱 */}}
+    <div class={{ printf (`col-sm-%d`) (cond (gt (len $next_page_link) 0) 6 12) }} >  {{/* 當只有一個項目時，他需要獨自佔滿一整列 */}}
+      <p class="float-start ml3 text-center">
+        <a {{ printf `href="%s"` (ref $cur_page $previous_page_link) | safeHTMLAttr }}
+           class="text-decoration-none"
+           title={{ printf `%s-%s` (i18n `previousPage`) $previous_page.Title }}
+        ><i class="fas fa-arrow-circle-left fa-5x"></i><br>{{- $previous_page.Title -}}</a>
+      </p>
+    </div>
+  {{ end }}
+
+  {{ if $next_page_link }}
+    {{ $next_page := $cur_page.Site.GetPage $next_page_link }}
+    <div class={{ printf (`col-sm-%d`) (cond (gt (len $previous_page_link) 0) 6 12) }}>
+      <p class="float-end mr3 text-center">
+        <a {{ printf `href="%s"` (ref $cur_page $next_page_link) | safeHTMLAttr }}
+           class="text-decoration-none"
+           title={{ printf `%s-%s` (i18n `nextPage`) $next_page.Title }}
+        ><i class="fas fa-arrow-circle-right fa-5x"></i><br>{{- $next_page.Title -}}</a>
+      </p>
+    </div>
+  {{ end }}
+  </div>
+{{ end }}
+
+{{ if or $previous_section_link $next_section_link }}
+  <div class="row">
+  {{ if $previous_section_link }}
+    {{ $previous_section := $cur_page.Site.GetPage $previous_section_link }}  {{/* 不包含domain的名稱 */}}
+    <div class={{ printf (`col-sm-%d`) (cond (gt (len $next_section_link) 0) 6 12) }}>
+      <p class="float-start ml3 text-center">
+        <a {{ printf `href="%s"` (ref $cur_page $previous_section_link) | safeHTMLAttr }}
+           class="text-decoration-none"
+           title={{ printf `%s-%s` (i18n `previousSection`) $previous_section.Title }}
+        ><i class="fas fa-book-open fa-5x"></i><br>{{- $previous_section.Params.title -}}</a>
+      </p>
+    </div>
+  {{ end }}
+
+  {{ if $next_section_link }}
+    {{ $next_section := $cur_page.Site.GetPage $next_section_link }}
+    <div class={{ printf (`col-sm-%d`) (cond (gt (len $previous_section_link) 0) 6 12) }}>
+      <p class="float-end mr3 text-center">
+        <a {{ printf `href="%s"` (ref $cur_page $next_section_link) | safeHTMLAttr }}
+           class="text-decoration-none"
+           title={{ printf `%s-%s` (i18n `nextSection`) $next_section.Title }}
+        ><i class="fas fa-book-open fa-5x"></i><br>{{- $next_section.Title -}}</a>
+      </p>
+    </div>
+  {{ end }}
+  </div>
+{{ end }}
+

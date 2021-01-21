@@ -1,0 +1,17 @@
+{{/*
+USAGE:
+
+  {{< table/my-table "table table-primary table-striped table-bordered" >}}
+  | Animal  | Sounds |
+  |---------|--------|
+  | Cat     | Meow   |
+  {{< /table/my-table >}}
+
+
+  enable overflow-y
+  {{< table/my-table "table" true >}}
+*/}}
+
+{{ $class := .Get 0 }}
+{{ $scrollable := default false (.Get 1) }}
+{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) }}

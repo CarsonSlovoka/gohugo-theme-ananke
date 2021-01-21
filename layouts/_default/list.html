@@ -3,6 +3,13 @@
     <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
       {{- .Content -}}
     </section>
+
+    {{ if or (gt .Sections 0) (gt .Pages 0) }}
+      <section>
+        <svg id="mindmap" class="mindmap" style="width:80vw; height: 30vh;"></svg>
+      </section>
+    {{ end }}
+
     <section class="flex-ns flex-wrap justify-around mt5">
       {{ range .Paginator.Pages }}
         <div class="relative w-100 w-30-l mb4 bg-white">
@@ -12,4 +19,23 @@
     </section>
     {{- template "_internal/pagination.html" . -}}
   </article>
+{{ end }}
+
+{{ define "body_end" }}
+  {{ $tree_section := slice }}
+  {{ range .Sections }}
+    {{ $cur_level := 1 }}
+    {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
+    {{ $tree_section = $tree_section | append (printf `{"t":"h", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
+  {{ else }}
+    {{/* 沒有Sections但是.Pages還是可能會有東西 */}}
+    {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" 1 "page" .) }}
+    {{ $tree_section = $tree_section | append (printf `{"t":"h", "d":%s, "v": "%s", "p":{} %s }` (1 | string) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
+  {{ end }}
+
+  {{ if (gt .Sections 0) }}
+    {{ partial "func/get_markmap" (dict "json_data" $tree_section "id" "mindmap" "root_name" .Title ) }}
+  {{ else if (gt .Pages 0) }}
+    {{ partial "func/get_markmap" (dict "json_data" $tree_section "id" "mindmap" "root_name" "" ) }}
+  {{ end }}
 {{ end }}
