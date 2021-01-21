@@ -1,11 +1,11 @@
 +++
 title = "{{ replace .TranslationBaseName "-" " " | title }}"
+description=""
 date = {{ .Date }}
-publishdate = {{ now.Format "2006-01-02" }}
 lastmod = {{ now.Format "2006-01-02" }}
 featured_image = ""
 draft = false
-weight=
+weight = 0
 tags = []
 markmap = true
 toc_markmap = true
