@@ -6,136 +6,91 @@
     {{ partial "site-navigation-with-tree" (slice 1 .) }}
   {{ end }}
 */}}
-
-<h1>Single</h1>
-<h2>By Last Modify</h2>
-<details>
-  <ul>
-      <!-- orders content according to the "lastmod" field in front matter -->
-      {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
-          <li>
-              <a href="{{ .Permalink }}">{{ .Title }}</a>
-              <time>{{ .Lastmod.Format "2006-01-02" }}</time>
-          </li>
-      {{ end }}
-  </ul>
-</details>
-
-<h2>By Weight</h2>
-<details>
-  <ul>
-      {{ range .Site.RegularPages.ByWeight }}
-          <li>
-              <a href="{{ .Permalink }}">{{ .Title }}</a>
-              <time>{{ .Date.Format "2006-01-02" }}</time>
-          </li>
-      {{ end }}
-  </ul>
-</details>
-
-<hr>
-<h1>Group</h1>
-
-<h2>By Last Modify</h2>
-<!-- Groups content by month according to the "lastMod" field in front matter -->
-{{ range .Site.RegularPages.GroupByLastmod "2006-01" }}  {{/* 日期最新的會在最上面 */}}
-<details>
-  <summary>{{- .Key -}}<small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
-  <ul>
-      {{ range .Pages }}
-      <li>
-      <a href="{{ .Permalink }}">{{ .Title }}</a>
-      <time>{{ .Lastmod.Format "2006-01-02" }}</time>
-      </li>
-      {{ end }}
-  </ul>
-</details>
-{{ end }}
-
-{{/* 以下為將這三者分別輸出  */}}
-{{ $cur_format := slice (slice "YY" "2006") (slice "YY-MM" "2006-01") (slice "YY-MM-DD" "2006-01-02") }}
-{{ $my_site := .Site }}
-{{ range $cur_format }}
-  {{ $name := index . 0 }}
-  {{ $date_format := index . 1 }}
-
-  <h2>By Date {{ printf "(%s)" $name }}</h2>
-  {{/*這邊不能用.Site，因為已經在range之中了，這個.已經不是原來的Page
-    range .Site.RegularPages.GroupByDate "2006-01"
-  */}}
-  {{ range $my_site.RegularPages.GroupByDate $date_format }}
+<!DOCTYPE html>
+<html lang="{{ $.Site.LanguageCode | default `en` }}">
+<head>
+  {{ partial "custom_layout/site/templates/site-header.html" . }}
+</head>
+<body>
+  {{ partial "site-header.html" . }}
+  <main class="ml2">
+    <h1>Single</h1>
+    <h2>By Last Modify</h2>
     <details>
-      <summary>{{- .Key }} <small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
+      <ul>
+          <!-- orders content according to the "lastmod" field in front matter -->
+          {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
+              <li>
+                  <a href="{{ .Permalink }}">{{ .Title }}</a>
+                  <time>{{ .Lastmod.Format "2006-01-02" }}</time>
+              </li>
+          {{ end }}
+      </ul>
+    </details>
+
+    <h2>By Weight</h2>
+    <details>
+      <ul>
+          {{ range .Site.RegularPages.ByWeight }}
+              <li>
+                  <a href="{{ .Permalink }}">{{ .Title }}</a>
+                  <time>{{ .Date.Format "2006-01-02" }}</time>
+              </li>
+          {{ end }}
+      </ul>
+    </details>
+
+    <hr>
+    <h1>Group</h1>
+
+    <h2>By Last Modify</h2>
+    <!-- Groups content by month according to the "lastMod" field in front matter -->
+    {{ range .Site.RegularPages.GroupByLastmod "2006-01" }}  {{/* 日期最新的會在最上面 */}}
+    <details>
+      <summary>{{- .Key -}}<small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
       <ul>
           {{ range .Pages }}
           <li>
           <a href="{{ .Permalink }}">{{ .Title }}</a>
-          <time>{{ .Date.Format "2006-01-02" }}</time>
+          <time>{{ .Lastmod.Format "2006-01-02" }}</time>
           </li>
           {{ end }}
       </ul>
     </details>
-  {{ end }}
-{{ end }}
-
-
-<h2>By Date (YY → MM )</h2>
-{{ range .Site.RegularPages.GroupByDate "2006" }}
-  <details>
-    {{ $cur_year := .Key }}
-    <summary>{{- $cur_year }} <small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
-    {{ $mm := 0 }}
-    {{ $need_end_node := false }}
-    {{ $all_pages := .Pages }}
-    {{ range .Pages }}
-        {{ $cur_date := dateFormat "2006-01-02" .Date }}
-        {{ $cur_date_yy_mm_dd := split $cur_date "-" }}
-        {{ $cur_mm := index $cur_date_yy_mm_dd 1 }}
-        {{ if or (eq $mm 0) (ne $cur_mm $mm) }}
-          {{ $need_end_node = true }}
-
-          {{ if ne $mm 0 }}
-              </ul></details>
-          {{ end }}
-
-          {{ $count_month_items := 0 }} {{/* 此區段計算該月份總共有多少文章 */}}
-          {{ range $my_site.RegularPages.GroupByDate "2006-01" }}
-            {{ range .Pages }}
-              {{ $temp_cur_date := dateFormat "2006-01-02" .Date }}
-              {{ $temp_cur_date_yy_mm_dd := split $temp_cur_date "-" }}
-              {{ $temp_yy := index $temp_cur_date_yy_mm_dd 0 }}
-              {{ $temp_mm := index $temp_cur_date_yy_mm_dd 1 }}
-              {{ if and (eq $temp_mm $cur_mm) (eq $temp_yy $cur_year) }}
-                {{ $count_month_items = add $count_month_items 1 }}
-              {{ end }}
-            {{ end }}
-          {{ end }}
-
-          <details style="margin-left:2em;"><summary>{{- $cur_mm }} <small class="text-muted">{{- printf `(%d)` $count_month_items -}}</small></summary>
-            <ul>
-          {{ $mm = $cur_mm }}
-        {{ end }}
-
-        <li>
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
-          <div><time>{{ .Date.Format "2006-01-02" }}</time></div>
-        </li>
     {{ end }}
 
-    {{ if $need_end_node }}
-      </ul></details>
-    {{ end }}
-  </details>
-{{ end }}
-
-
-{{/* ul和li的版本
-<section id="group-by-date">
+    {{/* 以下為將這三者分別輸出  */}}
+    {{ $cur_format := slice (slice "YY" "2006") (slice "YY-MM" "2006-01") (slice "YY-MM-DD" "2006-01-02") }}
     {{ $my_site := .Site }}
+    {{ range $cur_format }}
+      {{ $name := index . 0 }}
+      {{ $date_format := index . 1 }}
+
+      <h2>By Date {{ printf "(%s)" $name }}</h2>
+      {{/*這邊不能用.Site，因為已經在range之中了，這個.已經不是原來的Page
+        range .Site.RegularPages.GroupByDate "2006-01"
+      */}}
+      {{ range $my_site.RegularPages.GroupByDate $date_format }}
+        <details>
+          <summary>{{- .Key }} <small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
+          <ul>
+              {{ range .Pages }}
+              <li>
+              <a href="{{ .Permalink }}">{{ .Title }}</a>
+              <time>{{ .Date.Format "2006-01-02" }}</time>
+              </li>
+              {{ end }}
+          </ul>
+        </details>
+      {{ end }}
+    {{ end }}
+
+
+    <h2>By Date (YY → MM )</h2>
     {{ range .Site.RegularPages.GroupByDate "2006" }}
-      <ul>
+      <details>
         {{ $cur_year := .Key }}
-        <li>{{- $cur_year -}}<small class="text-muted">{{- printf `%d` (len .Pages) -}}</small></li>
+        <summary>{{- $cur_year }} <small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
         {{ $mm := 0 }}
         {{ $need_end_node := false }}
         {{ $all_pages := .Pages }}
@@ -147,10 +102,10 @@
               {{ $need_end_node = true }}
 
               {{ if ne $mm 0 }}
-                  </ul></ul>
+                  </ul></details>
               {{ end }}
 
-              {{ $count_month_items := 0 }}
+              {{ $count_month_items := 0 }} {{/* 此區段計算該月份總共有多少文章 */}}
               {{ range $my_site.RegularPages.GroupByDate "2006-01" }}
                 {{ range .Pages }}
                   {{ $temp_cur_date := dateFormat "2006-01-02" .Date }}
@@ -163,7 +118,7 @@
                 {{ end }}
               {{ end }}
 
-              <ul><li>{{- $cur_mm -}}<small class="text-muted">{{- printf `%d` $count_month_items -}}</small></li>
+              <details style="margin-left:2em;"><summary>{{- $cur_mm }} <small class="text-muted">{{- printf `(%d)` $count_month_items -}}</small></summary>
                 <ul>
               {{ $mm = $cur_mm }}
             {{ end }}
@@ -175,9 +130,64 @@
         {{ end }}
 
         {{ if $need_end_node }}
-          </ul></ul>
+          </ul></details>
         {{ end }}
-      </ul>
+      </details>
     {{ end }}
-</section>
-*/}}
+
+
+    {{/* ul和li的版本
+    <section id="group-by-date">
+        {{ $my_site := .Site }}
+        {{ range .Site.RegularPages.GroupByDate "2006" }}
+          <ul>
+            {{ $cur_year := .Key }}
+            <li>{{- $cur_year -}}<small class="text-muted">{{- printf `%d` (len .Pages) -}}</small></li>
+            {{ $mm := 0 }}
+            {{ $need_end_node := false }}
+            {{ $all_pages := .Pages }}
+            {{ range .Pages }}
+                {{ $cur_date := dateFormat "2006-01-02" .Date }}
+                {{ $cur_date_yy_mm_dd := split $cur_date "-" }}
+                {{ $cur_mm := index $cur_date_yy_mm_dd 1 }}
+                {{ if or (eq $mm 0) (ne $cur_mm $mm) }}
+                  {{ $need_end_node = true }}
+
+                  {{ if ne $mm 0 }}
+                      </ul></ul>
+                  {{ end }}
+
+                  {{ $count_month_items := 0 }}
+                  {{ range $my_site.RegularPages.GroupByDate "2006-01" }}
+                    {{ range .Pages }}
+                      {{ $temp_cur_date := dateFormat "2006-01-02" .Date }}
+                      {{ $temp_cur_date_yy_mm_dd := split $temp_cur_date "-" }}
+                      {{ $temp_yy := index $temp_cur_date_yy_mm_dd 0 }}
+                      {{ $temp_mm := index $temp_cur_date_yy_mm_dd 1 }}
+                      {{ if and (eq $temp_mm $cur_mm) (eq $temp_yy $cur_year) }}
+                        {{ $count_month_items = add $count_month_items 1 }}
+                      {{ end }}
+                    {{ end }}
+                  {{ end }}
+
+                  <ul><li>{{- $cur_mm -}}<small class="text-muted">{{- printf `%d` $count_month_items -}}</small></li>
+                    <ul>
+                  {{ $mm = $cur_mm }}
+                {{ end }}
+
+                <li>
+                  <a href="{{ .Permalink }}">{{ .Title }}</a>
+                  <div><time>{{ .Date.Format "2006-01-02" }}</time></div>
+                </li>
+            {{ end }}
+
+            {{ if $need_end_node }}
+              </ul></ul>
+            {{ end }}
+          </ul>
+        {{ end }}
+    </section>
+    */}}
+  </main>
+</body>`
+</html>
