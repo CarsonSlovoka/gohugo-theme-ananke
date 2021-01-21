@@ -30,7 +30,7 @@
           {{ $date_list = $date_list | append (slice (slice .Title $last_mod_date $create_date .Permalink)) }}
       {{ end }}
 
-      <p id="article_by_date">{{ $date_list | jsonify }}</p>
+      <p id="article_by_date" hidden>{{ $date_list | jsonify }}</p>
       <svg id="mind-map-by-date" class="mindmap" style="width:80vw; height: 60vh;"></svg>
       <script defer src="{{ relURL `js/uml/markmap_by_date.js` }}"></script>
       {{ partialCached "site-footer.html" . }}

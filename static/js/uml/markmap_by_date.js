@@ -39,10 +39,10 @@ class MarkmapFactory {
             d: 3,
             v:`<a href="${dict_info["link"]}">
               ${dict_info["title"]}
-              <x-small style="color:gray; opacity: 0.5;">
+              <small style="color:gray; opacity: 0.5;">
                 (${cur_mod_date.getMonth()+1 + "-" + cur_mod_date.getDate()})
                 create: (${cur_create_date.toLocaleDateString()})
-              </x-small>
+              </small>
             </a>`})
         })
       }
