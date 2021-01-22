@@ -1,0 +1,31 @@
+{{/*
+USAGE:
+
+  0 user
+  1 project_name
+  2 參數(必要): 表示 項目 如 starts, forks, 具體有哪些請參考: https://shields.io/category/social
+  3 (可選): 可以放入連結
+
+  範例:
+    {{< github/get_info_img forks budparr gohugo-theme-ananke stars "https://www.google.com/"  >}}
+  等同以下:
+    {{ ![stars](https://img.shields.io/github/stars/budparr/gohugo-theme-ananke?style=social)  }}
+*/}}
+
+{{ $user := .Get 0 }}
+{{ $project_name := .Get 1 }}
+{{ $item := .Get 2 }}
+{{ $link_to := default false (.Get 3) }}
+{{/*
+  $target_img := ( path.Join "<img src=https://img.shields.io/github/" ( .Get 2 ) "/budparr/gohugo-theme-ananke?style=social/ >" )
+  $img_src := ( path.Join "https://img.shields.io/github/" ( .Get 2 ) "/budparr/gohugo-theme-ananke?style=social" )
+*/}}
+{{ $img_src := ( printf "https://img.shields.io/github/%s/%s/%s?style=social" $item $user $project_name ) }}
+{{ $target_img := ( printf `<img src="%s" alt="%s"` $img_src  $item | safeHTML ) }}
+{{ if $link_to }}
+  {{/* <a href="{{ $link_to }}" target="_blank"><img src="{{ $target_img }}" alt="{{ .Get 2 }}" style="width:20%" /></a>  */}}
+  <a href="{{ $link_to }}" target="_blank">{{- $target_img -}}</a>
+{{ else }}
+  {{- $target_img -}}
+{{ end }}
+
