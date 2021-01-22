@@ -1,0 +1,3 @@
+{{ $id := lower (.Get 0) }}
+{{ $id = replace $id " " "-" }}
+<span id={{ $id }}>{{ .Get 0 | markdownify }}</span>
