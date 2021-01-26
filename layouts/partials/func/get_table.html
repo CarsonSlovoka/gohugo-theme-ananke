@@ -11,7 +11,7 @@
   | @@w=5em@@name | desc |
   | ---- | ---- ||
 */}}
-{{ $th_list := findRE "<th>.*</th>" $html_table }}
+{{ $th_list := findRE "<th.*>.*</th>" $html_table }}
 {{ range $th_list }}
   {{ $inner_html := replaceRE `.*@@w=(?P<width>.*)@@(?P<value>.*)` "$value" (. | plainify) }}
   {{ $width_value := replaceRE `.*@@w=(?P<width>.*)@@.*` "$width" . }}
