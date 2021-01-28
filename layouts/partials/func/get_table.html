@@ -9,14 +9,25 @@
 
 {{/* 使的欄寬可以用更簡單的方式來設定
   | @@w=5em@@name | desc |
-  | ---- | ---- ||
+  | ---- | ---- |
+
+  也能和text-align(:----:, :----, ----:)互相搭配
+    p.s. 但目前還是有bug存在，所以如果您非要用text-align則寬度就必須要全部設定上去，才不會有bug出現，如下:
+  | @@w=10%@@name | @@w=30%@@Desc | @@w=10%@@Code |  　 |
+  | :----: | :---- | :----: | ---- |
+  | 📝 | Memo | 1F4DD
 */}}
 {{ $th_list := findRE "<th.*>.*</th>" $html_table }}
 {{ range $th_list }}
+  {{ $org_style := default "" (replaceRE `<th (?P<cur_style>style=\".*)\">.*</th>` "$cur_style" . ) }}
   {{ $inner_html := replaceRE `.*@@w=(?P<width>.*)@@(?P<value>.*)` "$value" (. | plainify) }}
   {{ $width_value := replaceRE `.*@@w=(?P<width>.*)@@.*` "$width" . }}
   {{ if not (in $width_value "<th>") }}  {{/* 如果沒找到他會回傳找尋物件的本身(它含有th) 至於如果找到了話就只會有數值5em之類的 */}}
-    {{ $html_table = replace $html_table . (printf `<th style="width:%s;">%s</th>` $width_value $inner_html) }}
+    {{ if in $org_style `style="` }}
+      {{ $html_table = replace $html_table . (printf `<th %s;width:%s">%s</th>` $org_style $width_value $inner_html ) }}
+    {{ else }}
+      {{ $html_table = replace $html_table . (printf `<th style="width:%s;">%s</th>` $width_value $inner_html) }}
+    {{ end }}
   {{ end }}
 {{ end }}
 
