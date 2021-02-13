@@ -4,6 +4,7 @@
       overflow-y: hidden
       overflow: auto  // 這個很重要，有了這個才可以有滾動條
 
+@mixin init_copy_code_block_btn()
   .copy-code-button
     color: #272822
     background-color: #FFF
@@ -15,7 +16,10 @@
     margin-left: auto
     margin-right: 0
 
-    margin-bottom: -2px
+    position: relative
+    z-index: 1000  // position必須是absolute, relative, fixed才會有作用
+    margin-bottom: -1.7em  // 讓它往下跑進去到code-block中(使看起來的效果很像鑲嵌進去的感覺)
+
     padding: 3px 8px
     font-size: 0.8em
 
