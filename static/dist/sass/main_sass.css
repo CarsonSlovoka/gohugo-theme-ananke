@@ -81,6 +81,14 @@ tr:nth-child(even) {
   background: #eee;
 }
 
+.code-by-example {
+  border: none;
+}
+
+.code-by-example td {
+  word-break: break-word;
+}
+
 .highlight pre {
   max-height: 30rem;
   overflow-y: hidden;

@@ -19,3 +19,10 @@
 
   tr:nth-child(even)  /* 偶數列的行為 */
     background: #eee
+
+@mixin init_code-by-example()
+  .code-by-example
+    border: none
+
+  .code-by-example td
+    word-break: break-word  // 使整列過長的詞不會突然被斷
