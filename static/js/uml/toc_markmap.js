@@ -80,13 +80,31 @@ const SetStyleRule = (sheetName, selector, rule) => {
     }
 }
 
+function hide_copy_code_btn() {
+  let copy_btn_list = document.getElementsByClassName("copy-code-button")
+  for (let btn of copy_btn_list) {  // HTMLCollection
+    btn.style.display = "none"
+  }
+}
+
+function show_copy_code_btn() {
+  let copy_btn_list = document.getElementsByClassName("copy-code-button")
+  for (let btn of copy_btn_list) {  // HTMLCollection
+    btn.style.display = ""
+  }
+}
+
 (
   ()=>{
     let node_nav = document.getElementById('TableOfContents');
     const toc = new Toc(node_nav);
     const dict_data = toc.convert2dict();
     const id_name = 'mindmap-toc';
-    let node_svg = getNode("svg", {id: id_name, class: 'mindmap' /*, onmouseover: "mouse_hover_markmap(this)" */});
+    let node_svg = getNode("svg", {id: id_name, class: 'mindmap' /*, onmouseover: "mouse_hover_markmap(this)" */
+
+      // 很奇怪雖然我們嘗試把svg用relative加上z-index但還是沒辦法讓btn不見，所以就用JS來幫忙
+      , onmouseover: "hide_copy_code_btn()", onmouseout: "show_copy_code_btn()"
+    });
     // node_nav.appendChild(node_svg);
     node_nav.replaceWith(node_svg);
     toc.create_mind_map(id_name, dict_data);

@@ -44,7 +44,7 @@ USAGE:
       <div class="as_table-container-col">
     {{ end }}
         {{ if index $col_attr_info 0 }}
-        <h2>{{- index $col_attr_info 0 -}}</h2>
+          <h2>{{- index $col_attr_info 0 -}}</h2>
         {{ end }}
 
         {{ if (findRE "<pre" $contents 1) }}
