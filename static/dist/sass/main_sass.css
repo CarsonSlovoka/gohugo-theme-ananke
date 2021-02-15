@@ -131,36 +131,6 @@ tr:nth-child(even) {
   max-height: 40em;
 }
 
-.copy-code-button {
-  color: #272822;
-  background-color: #FFF;
-  border: 2px solid #272822;
-  border-radius: 3px 3px 0px 0px;
-  /* right-align */
-  display: block;
-  margin-left: auto;
-  margin-right: 0;
-  position: relative;
-  z-index: 1;
-  margin-bottom: -1.7em;
-  padding: 3px 8px;
-  font-size: 0.8em;
-}
-
-.copy-code-button:hover {
-  cursor: pointer;
-  background-color: #F2F2F2;
-}
-
-.copy-code-button:focus {
-  background-color: #E6E6E6;
-  outline: 0;
-}
-
-.copy-code-button:active {
-  background-color: #D9D9D9;
-}
-
 kbd {
   position: relative;
   display: inline-block;
@@ -199,4 +169,34 @@ kbd {
 
 .btn-primary {
   color: #fff !important;
+}
+
+.copy-code-button {
+  color: #272822;
+  background-color: #FFF;
+  border: 2px solid #272822;
+  border-radius: 3px 3px 0px 0px;
+  /* right-align */
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+  position: relative;
+  z-index: 1;
+  margin-bottom: -1.7em;
+  padding: 3px 8px;
+  font-size: 0.8em;
+}
+
+.copy-code-button:hover {
+  cursor: pointer;
+  background-color: #F2F2F2;
+}
+
+.copy-code-button:focus {
+  background-color: #E6E6E6;
+  outline: 0;
+}
+
+.copy-code-button:active {
+  background-color: #D9D9D9;
 }
