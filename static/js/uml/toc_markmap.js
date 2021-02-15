@@ -58,8 +58,8 @@ const init_svg_hover_attr = (svg) => {
   const node_main = document.getElementsByTagName('main')[0];
   const domrect_node_main = node_main.getBoundingClientRect();
   const domrect_svg = svg.getBoundingClientRect();
-  const new_x = (domrect_node_main.width - domrect_svg.width) / 2
-  const left = -(domrect_svg.x - new_x);
+  const new_x = (domrect_node_main.width - domrect_svg.width) / 2  // 計算出兩邊應該留白多少
+  const left = -(domrect_svg.x - new_x);  // 從目前的位置移置到應留白的起始位置 (因為我們已知道svg是在右邊要往左移動所以用-號)
   /*
   svg.style["background-color"] = "rgb(0, 0, 0)";
   svg.style.transform = "scale(5)";
@@ -67,7 +67,7 @@ const init_svg_hover_attr = (svg) => {
   */
   //document.styleSheets
   const sheetName = "navbar"  // .css
-  SetStyleRule(sheetName, "#mindmap-toc:hover", "left:-600px");
+  SetStyleRule(sheetName, "#mindmap-toc:hover", "left:"+ left + "px");
   // SetStyleRule(sheetName, "#mindmap-toc:hover", "background-color: rgb(255, 0, 0)");
 }
 
@@ -87,9 +87,9 @@ const SetStyleRule = (sheetName, selector, rule) => {
     const dict_data = toc.convert2dict();
     const id_name = 'mindmap-toc';
     let node_svg = getNode("svg", {id: id_name, class: 'mindmap' /*, onmouseover: "mouse_hover_markmap(this)" */});
-    init_svg_hover_attr(node_svg)
     // node_nav.appendChild(node_svg);
     node_nav.replaceWith(node_svg);
     toc.create_mind_map(id_name, dict_data);
+    init_svg_hover_attr(node_svg)  // 要放在最後面，因為計算hover的寬度會需要用到svg的位置資訊
   }
 )();
