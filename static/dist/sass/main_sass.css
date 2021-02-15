@@ -82,11 +82,14 @@ tr:nth-child(even) {
 }
 
 .code-by-example {
+  max-height: none;
+  width: 100%;
   border: none;
 }
 
 .code-by-example td {
   word-break: break-word;
+  vertical-align: top;
 }
 
 .highlight pre {
@@ -159,4 +162,8 @@ kbd {
 
 kbd {
   color: #555;
+}
+
+.btn-primary {
+  color: #fff !important;
 }

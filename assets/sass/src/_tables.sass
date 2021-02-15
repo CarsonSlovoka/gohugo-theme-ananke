@@ -22,7 +22,10 @@
 
 @mixin init_code-by-example()
   .code-by-example
+    max-height: none
+    width: 100%  // 才不會讓寬度爆表
     border: none
 
   .code-by-example td
     word-break: break-word  // 使整列過長的詞不會突然被斷
+    vertical-align: top
