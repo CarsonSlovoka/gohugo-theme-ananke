@@ -1,34 +1,57 @@
 {{/*
+REFERENCE: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_equal_height
+
 USAGE:
 
-{{< table/code-by-example >}}
+  Example 0:
+    沒有欄位名稱，欄寬使用預設值
+    {{< table/code-by-example >}}
+    {{< /table/code-by-example >}}
 
-DESC
+  Example 1:
+    {{< table/code-by-example "Desc | 60%" "Code | 40%" >}}
 
-@@NEW-COL@@
+    DESC
 
-這樣的意思表示9和4-6會高亮顯示(因為line number從2開始)
-linenuos: Valid values are true, false, table, or inline. 用table對複製貼上比較有好，但是有點醜
-```html {linenos=inline,hl_lines=[8,"3-5"],linenostart=2}
-```
+    @@NEW-COL@@
 
-{{< /table/code-by-example >}}
+    這樣的意思表示9和4-6會高亮顯示(因為line number從2開始)
+    linenuos: Valid values are true, false, table, or inline. 用table對複製貼上比較有好，但是有點醜
+    ```html {linenos=inline,hl_lines=[8,"3-5"],linenostart=2}
+    ```
+
+    {{< /table/code-by-example >}}
+
+  Example 2:
+
+    {{< table/code-by-example "|30%">}}  只設定第一欄位的寬度
+    {{< /table/code-by-example >}}
+
+    {{< table/code-by-example "|20%" "|80%">}}  也可以用這種方式來設定每一個欄位的寬度
+    {{< /table/code-by-example >}}
 
 */}}
 
-<table class="code-by-example">
-  <thead>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    {{ $td_list := split .Inner "@@NEW-COL@@" }}
-    {{ range $td_list }}
-      <td>{{ . | markdownify }}</td>
+<div class="as_fixed_table-container set_highlight-pre_mh40">
+  {{ $col_list := split .Inner "@@NEW-COL@@" }}
+  {{ range $idx, $col := $col_list  }}
+    {{ $contents := $col | markdownify }}
+    {{ $col_attr_info := default `|` ($.Get $idx) }}  {{/* 要取得頂層的資料用$.用.表示range之類的東西 */}}
+    {{ $col_attr_info = split $col_attr_info "|" }}
+    {{ if index $col_attr_info 1 }}
+      <div class="as_table-container-col" style="width:{{- index $col_attr_info 1 | safeHTMLAttr -}};"> {{/* style="background:orange" */}}
+    {{ else }}
+      <div class="as_table-container-col">
     {{ end }}
-  </tr>
-  </tbody>
-</table>
+        {{ if index $col_attr_info 0 }}
+        <h2>{{- index $col_attr_info 0 -}}</h2>
+        {{ end }}
+
+        {{ if (findRE "<pre" $contents 1) }}
+          {{ $contents }}  {{/* code-block中已自帶overflow了 */}}
+        {{ else }}
+          <div class="block_scroll_h-40em">{{ $contents }}</div>
+        {{ end }}
+    </div>
+  {{ end }}
+</div>

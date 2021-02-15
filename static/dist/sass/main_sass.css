@@ -92,10 +92,43 @@ tr:nth-child(even) {
   vertical-align: top;
 }
 
+.set_highlight-pre_mh40 .highlight pre {
+  max-height: 40rem;
+}
+
+.as_table-container {
+  display: table;
+}
+
+.as_table-container_fixed {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.as_fixed_table-container {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.as_table-container-col {
+  display: table-cell;
+  padding: 2px;
+}
+
 .highlight pre {
   max-height: 30rem;
   overflow-y: hidden;
   overflow: auto;
+}
+
+.block_scroll, .block_scroll_h-40em {
+  overflow: auto;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+}
+.block_scroll_h-40em {
+  max-height: 40em;
 }
 
 .copy-code-button {
@@ -108,7 +141,7 @@ tr:nth-child(even) {
   margin-left: auto;
   margin-right: 0;
   position: relative;
-  z-index: 1000;
+  z-index: 1;
   margin-bottom: -1.7em;
   padding: 3px 8px;
   font-size: 0.8em;
