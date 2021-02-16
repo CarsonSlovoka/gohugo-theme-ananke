@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {{/*
 USAGE:
 
@@ -7,34 +8,29 @@ USAGE:
     type = "custom_layout"
     layout = "site/navigation/site-search"
     +++
+
+REFERENCE: https://levelup.gitconnected.com/implement-search-feature-on-a-web-page-in-plain-javascript-adad27e48
 */}}
-<!DOCTYPE html>
 <html lang="{{ $.Site.LanguageCode | default `en` }}">
 <head>
   {{ partial "custom_layout/site/templates/site-header.html" . }}
+  <script defer src="{{ `/js/search/simple-search.js` | relURL  }}"></script>
+  <style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+    ul {list-style: none;}
+    li {padding: 10px 0; line-height: 1.2rem;}
+  </style>
 </head>
 <body>
-  {{ partial "site-header.html" . }}
-  <main class="ml2">
-    <h2>By Last Modify</h2>
-    <ul>
-        {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
-            <li><a href="{{ .Permalink }}">{{ .Title }}</a>
-                <details open><summary><small>Info</small></summary>
-                <time>{{ .Lastmod.Format "2006-01-02" }}</time>
-                {{ $my_dict := dict "desc" .Description "tags" (default "" .Params.tags) "section" .Section "categories" (default "" .Params.categories) }}
-                <ul>
-                  {{ range $key, $value := $my_dict }}
-                    <li>{{- printf `%s:%s` $key $value -}}</li>
-                  {{ end }}
-                </ul>
-                </details>
-                <details open><summary><small>TOC</small></summary>
-                {{ .TableOfContents }}
-                </details>
-            </li>
-        {{ end }}
-    </ul>
+  <main>
+    {{ partial "site-header.html" . }}
+    <form id="search-pages">
+      <label for="search">Search:</label>
+      <input type="text" name="search" id="search">
+      <button name="search_btn">Search</button>
+      <button name="reset" type="reset">Reset</button>
+    </form>
+    <div id="app"></div>
   </main>
-</body>`
+</body>
 </html>
