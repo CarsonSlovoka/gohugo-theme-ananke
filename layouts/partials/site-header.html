@@ -21,7 +21,8 @@
           {{- default .Site.Title .Title -}}  {{/* 如果網站的front matter已經有宣告title就以他為主，否則就使用.Site.Title */}}
         </h1>
         {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3">
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3"
+              style="background-color:initial;">
             {{ . }}
           </h2>
         {{ end }}
@@ -38,7 +39,8 @@
           {{- default .Site.Title .Title -}}  {{/* 頁面頂部中間區域的文字 */}}
         </h1>
         {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4"
+              style="background-color:initial;">
             {{ . }}
           </h2>
         {{ end }}
