@@ -1,1 +1,9 @@
-{{.Inner}}
+{{- with .Parent -}}
+  {{/*
+    有可能為nested-shortcode
+    https://gohugo.io/templates/shortcode-templates/#nested-shortcode-image-gallery
+  */}}
+  {{.Inner}}
+{{- else }}
+  {{.Inner}}
+{{- end }}
