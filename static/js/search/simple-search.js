@@ -1,6 +1,6 @@
 class SimpleSearch {
-  constructor(app, data_array) {
-    this.app = app  // HTMLElement
+  constructor(output_node, data_array) {
+    this.app = output_node  // HTMLElement
     this.data_array = data_array;
     /* document.addEventListener('submit', simpleSearch.handleSearch); 這樣的用法是錯的，傳過去到裡面的this會是HTMLObject，而非這個類別的instance*/
     document.addEventListener('submit', (submit_event) => {  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event
@@ -49,49 +49,69 @@ class SimpleSearch {
     }
   }
 
+  convertTOC2a(tocHTML, baseURI) {
+    const parser = new DOMParser()
+    const documentToc = parser.parseFromString(tocHTML, "text/xml")
+
+    /*
+    // const collectionNav = documentToc.getElementsByTagName('nav')  // HTMLCollection
+    const nodeNav = documentToc.getElementById("TableOfContents")
+    const collectionUl = nodeNav.getElementsByTagName("ul")  // HTMLCollection
+
+    let collectionLi, li;
+    for (const ul of collectionUl) {
+      collectionLi = nodeNav.getElementsByTagName("li")
+      for (li of collectionLi) {
+        console.log(li.textContent)
+      }
+    }
+   */
+    const collectionLi = documentToc.querySelectorAll("li")
+    let a
+    const resultList = []
+    for (const li of collectionLi) {
+      // console.log(li.textContent)
+      a = li.querySelector("a")
+      if (a &&  a.hasAttribute("href")) {
+        // a.attributes.href.baseURI
+        resultList.push(`<a href="${baseURI + a.getAttribute('href')}">🔗 ${li.textContent}</a>`)
+      }
+    }
+    return resultList.join("")
+  }
+
   render(data_array) {
     this.app.innerHTML = '<ul>' +
-      data_array.map((obj_page) => {  // 剛好他每一個元素都是一個obj
-        return '<li>' +
-          '<strong>Title: </strong>' + obj_page.title + '<br/>' +
-          '<strong>Subtitle: </strong>' + obj_page.subtitle + '<br/>' +
-          '<strong>Author: </strong>' + obj_page.author + '<br/>' +
-          '<strong>Category: </strong>' + obj_page.category + '<br/>' +
-          '<strong>Publisher: </strong>' + obj_page.publisher + '<br/>' +
-          '</li>';
+      data_array.map((objPage) => {  // 剛好他每一個元素都是一個obj
+        const curLink = objPage.permalink
+        const fieldList = [
+          ["Title", `<a href="${curLink}">${objPage.title}</a>`],
+          ["Desc", objPage.desc],
+          ["Tags", objPage.tags],
+          ["TOC", this.convertTOC2a(objPage.toc, curLink)],
+          ["lastModData", objPage.lastModDate],
+          ["createData", objPage.createDate]
+        ]
+        let resultString = ''
+        fieldList.forEach((field) => {
+          const [key, val] = field
+          if (val) {
+            resultString += `<strong>${key}:</strong>${val}<br/>`
+          }
+        })
+        return `<li>${resultString}</li>`
       }).join('') + '</ul>';
   }
 }
-
 
 (
   () => {
     let appNode = document.getElementById('app')
 
-    const pages = [
-      {
-        "title": "Cracking the coding interview",
-        "subtitle": "189 programming questions and solutions",
-        "author": "Gayle Laakmann McDowell",
-        "category": "Programming",
-        "publisher": "CareerCup, LLC"
-      },
-      {
-        "title": "No friend but the mountains",
-        "subtitle": "Writing from manu prison",
-        "author": "Behrouz Boochani",
-        "category": "Literature",
-        "publisher": "Pan Macmillan Australia"
-      },
-      {
-        "title": "Indian Harvest",
-        "subtitle": "Classic and contemporary vegetarian dishes",
-        "author": "Vikas Khanna",
-        "category": "Cuisine",
-        "publisher": "Bloomsbury USA"
-      },
-    ]
-    const simpleSearch = new SimpleSearch(appNode, pages)
+    const node_json = document.getElementById('data_array');
+    const data_array = JSON.parse(node_json.innerText);
+
+    const simpleSearch = new SimpleSearch(appNode, data_array)
     simpleSearch.render(simpleSearch.data_array)
   }
 )();

@@ -23,7 +23,8 @@
   <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">
 {{ end }}
 
-{{ $enable_bootstrap := ( index $.Params "bootstrap" ) | default false }}
+{{/* $enable_bootstrap := ( index $.Params "bootstrap" ) | default false */}}
+{{ $enable_bootstrap := or (default false .Site.Params.bootstrap) (default false .Params.bootstrap) }}
 {{ $enable_toc := default false (index .Params "toc") }}
 {{ if $enable_bootstrap }}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
