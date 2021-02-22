@@ -40,23 +40,11 @@ REFERENCE:
       border: 0;
       outline: 0;
       background: none;
-      width: 16rem;
       padding: 0 1rem;
       caret-color:red;
       line-height: 2rem;
       transition: width 0.4s linear;
-    }
-
-    @media only screen and (min-width: 720px) {
-      .search_input {
-        width: 25rem;
-      }
-    }
-
-    @media only screen and (max-width: 540px) {
-      .search_input {
-        width: 13rem;
-      }
+      width: 90%;
     }
 
     .searchbar:hover > .search_icon{
@@ -74,7 +62,7 @@ REFERENCE:
       border-radius: 50%;
       color:white;
       background-color: #353b48;
-      margin-right: 0.1em;
+      margin-right: 0.3em;
       border-style: hidden;
       text-decoration:none;
     }
@@ -93,18 +81,26 @@ REFERENCE:
     <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
 
     <div class="container h-100 mt3">
-      <div class="d-flex justify-content-center h-100">
-        <form id="search-pages" autocomplete="off">
-          <div class="searchbar">
-            <label for="search"></label>
-            <input class="search_input" type="text" name="search" id="search"
-                   placeholder="Search...">
-            <button class="search_icon" name="reset" type="reset"><i class="fas fa-undo" style="color: #2096eb;"></i></button>
-            <button class="search_icon" name="search_btn"><i class="fas fa-search"></i></button>  {{/* 🔎 */}}
-          </div>
-        </form>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <form id="search-pages" autocomplete="off">
+            <div class="searchbar">
+              <label for="search"></label>
+              <input class="search_input" type="text" name="search" id="search"
+                     placeholder="Search...">
+              <button class="search_icon" name="reset" type="reset"><i class="fas fa-undo" style="color: #2096eb;"></i></button>
+              <button class="search_icon" name="search_btn"><i class="fas fa-search"></i></button>  {{/* 🔎 */}}
+            </div>
+          </form>
+        </div>
+        <div class="col-md-1"></div>
       </div>
-      <div id="app"></div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9" id="app"></div>
+        <div class="col-md-2"></div>
+      </div>
     </div>
   </main>
 </body>
