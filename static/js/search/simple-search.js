@@ -63,7 +63,7 @@ class SimpleSearch {
     const flags = caseSensitive ? 'g' : 'gi'
     // Sort longer matches first to avoid
     // highlighting keywords within keywords.
-    keywords.sort((a, b) => b.length - a.length)  // 希望誰的長度比較長就擺在前面 // https://www.w3schools.com/js/js_array_sort.asp#midcontentadcontainer
+    keywords.sort((a, b) => b.length - a.length)  // 如果b的長度比較長就放在前面 // https://www.w3schools.com/js/js_array_sort.asp#midcontentadcontainer
     const keywordRegex = RegExp(keywords.join('|'), flags)
     Array.from(elem.childNodes).forEach(child => {
       if (child.nodeType !== 3) { // 1: element 2: attribute 3: text 8: comment  // https://www.w3schools.com/jsref/prop_node_nodetype.asp

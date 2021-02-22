@@ -1,5 +1,6 @@
 /*
 * https://datatables.net/examples/data_sources/js_array
+* https://datatables.net/extensions/rowgroup/examples/initialisation/range
 * */
 
 function convertTOC2a(tocHTML, baseURI, searchItems = []) {
