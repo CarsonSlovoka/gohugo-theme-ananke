@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{{/*
+USAGE:
+
+  xxx.md
+
+    +++
+    type = "custom_layout"
+    layout = "site/navigation/site-search-simple"
+    +++
+
+REFERENCE:
+  https://levelup.gitconnected.com/implement-search-feature-on-a-web-page-in-plain-javascript-adad27e48
+
+  search:
+    - https://bootsnipp.com/snippets/GaeQR
+    - https://bootsnipp.com/tags/search
+*/}}
+<html lang="{{ $.Site.LanguageCode | default `en` }}">
+<head>
+  {{ partial "custom_layout/site/templates/site-header.html" . }}
+  <script defer src="{{ `/js/search/simple-search.js` | relURL  }}"></script>
+  <style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+    ul {list-style: none;}
+    li {padding: 10px 0; line-height: 1.2rem;}
+
+    .searchbar{
+      display: flex;
+      margin-bottom: auto;
+      margin-top: auto;
+      height: 3rem;
+      background-color: #353b48;
+      border-radius: 1.5rem;
+      padding: 0.5rem;
+    }
+
+    .search_input{
+      color: white;
+      border: 0;
+      outline: 0;
+      background: none;
+      padding: 0 1rem;
+      caret-color:red;
+      line-height: 2rem;
+      transition: width 0.4s linear;
+      width: 90%;
+    }
+
+    .searchbar:hover > .search_icon{
+      background: white;
+      color: #e74c3c;
+    }
+
+    .search_icon{
+      height: 2rem;
+      width: 2rem;
+      float: right;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      color:white;
+      background-color: #353b48;
+      margin-right: 0.3em;
+      border-style: hidden;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    {{ partial "site-header.html" . }}
+
+    {{ $data_array := slice }}
+    {{ range .Site.RegularPages.ByLastmod.Reverse }}
+    {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
+    {{ $create_date := .Params.date.Format "2006-01-02" }}
+    {{ $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) }}
+    {{ end }}
+    <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
+
+    <div class="container h-100 mt3">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <form id="search-pages" autocomplete="off">
+            <div class="searchbar">
+              <label for="search"></label>
+              <input class="search_input" type="text" name="search" id="search"
+                     placeholder="Search...">
+              <button class="search_icon" name="reset" type="reset"><i class="fas fa-undo" style="color: #2096eb;"></i></button>
+              <button class="search_icon" name="search_btn"><i class="fas fa-search"></i></button>  {{/* 🔎 */}}
+            </div>
+          </form>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9" id="app"></div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

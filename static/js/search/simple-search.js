@@ -145,8 +145,8 @@ class SimpleSearch {
           ["Desc", objPage.desc],
           ["Tags", objPage.tags],
           ["TOC", this._convertTOC2a(objPage.toc, curLink, searchItems)],
-          ["lastModData", objPage.lastModDate],
-          ["createData", objPage.createDate]
+          ["lastModDate", objPage.lastModDate],
+          ["createDate", objPage.createDate]
         ]
         let resultString = ''
         fieldList.forEach((field) => {
