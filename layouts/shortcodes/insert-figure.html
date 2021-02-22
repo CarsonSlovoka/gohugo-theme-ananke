@@ -1,0 +1,31 @@
+{{/*
+  與官方內建的figure不同之處是，這個版本用的是absURL，而官方的圖片位子預設是和markdown文件相同目錄當作開始
+  {{< figure src="../../images/tab_icon.jpg" title="神氣的媽媽熊" >}}
+
+  USAGE:
+
+    {{< insert-figure "images/issues_position.png" >}}
+
+    {{< insert-figure "images/issues_position.png" "titleName" >}}  // static/images/issues_position.png
+
+    {{< insert-figure src="images/issues_position.png" title="titleName" >}}
+*/}}
+
+{{ $src := "" }}
+{{ $title := "" }}
+{{ if .IsNamedParams }}
+  {{ $src = default "" (.Get "src" ) }}
+  {{ $title = default "" (.Get "title") }}
+{{ else }}
+  {{ $src = default "" (.Get 0 ) }}
+  {{ $title = default "" (.Get 1) }}
+{{ end }}
+
+<figure>
+  <img src="{{ $src | absURL}}"/>
+  {{ if $title }}
+    <figcaption>
+        <h4>{{- $title -}}</h4>
+    </figcaption>
+  {{ end }}
+</figure>

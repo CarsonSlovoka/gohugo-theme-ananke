@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {{/*
 USAGE:
 
@@ -8,33 +9,36 @@ USAGE:
     layout = "site/navigation/site-search"
     +++
 */}}
-<!DOCTYPE html>
 <html lang="{{ $.Site.LanguageCode | default `en` }}">
 <head>
   {{ partial "custom_layout/site/templates/site-header.html" . }}
+  <link href="{{ `/css/datatable/jquery.dataTables.min.css` | relURL  }}" rel="stylesheet">
+  <link href="{{ `/css/searchbar.css` | relURL  }}" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script defer src="{{ `/js/search/dataTables/jquery.dataTables.js` | relURL  }}"></script>
+  <script defer src="{{ `/js/search/dataTables/search-by-datatable.js` | relURL  }}"></script>
 </head>
 <body>
-  {{ partial "site-header.html" . }}
-  <main class="ml2">
-    <h2>By Last Modify</h2>
-    <ul>
-        {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
-            <li><a href="{{ .Permalink }}">{{ .Title }}</a>
-                <details open><summary><small>Info</small></summary>
-                <time>{{ .Lastmod.Format "2006-01-02" }}</time>
-                {{ $my_dict := dict "desc" .Description "tags" (default "" .Params.tags) "section" .Section "categories" (default "" .Params.categories) }}
-                <ul>
-                  {{ range $key, $value := $my_dict }}
-                    <li>{{- printf `%s:%s` $key $value -}}</li>
-                  {{ end }}
-                </ul>
-                </details>
-                <details open><summary><small>TOC</small></summary>
-                {{ .TableOfContents }}
-                </details>
-            </li>
-        {{ end }}
-    </ul>
+  <main>
+    {{ partial "site-header.html" . }}
+
+    {{ $data_array := slice }}
+    {{ range .Site.RegularPages.ByLastmod.Reverse }}
+    {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
+    {{ $create_date := .Params.date.Format "2006-01-02" }}
+    {{ $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) }}
+    {{ end }}
+    <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
+
+    <div class="container h-100 mt3">
+      <div class="row mt-3">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <table id="app" class="display col-md-9"></table>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
   </main>
-</body>`
+</body>
 </html>
