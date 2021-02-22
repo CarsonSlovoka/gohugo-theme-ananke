@@ -91,7 +91,7 @@ class SimpleSearch {
     });
   }
 
-  _convertTOC2a(tocHTML, baseURI, searchItems=[]) {
+  _convertTOC2a(tocHTML, baseURI, searchItems = []) {
     const parser = new DOMParser()
     const documentToc = parser.parseFromString(tocHTML, "text/xml")
 
@@ -120,7 +120,13 @@ class SimpleSearch {
     for (const li of collectionLi) {
       // console.log(li.textContent)
       a = li.querySelector("a")
-      if (a && a.hasAttribute("href")) {
+
+      if (a &&
+      a.hasAttribute("href") &&
+      searchItems.length === 0 ? true : searchItems.some((item) => {
+        return a.innerHTML.toLowerCase().includes(item)
+      })
+      ) {
         // a.attributes.href.baseURI
         // https://stackoverflow.com/a/66304412/
         // #:~:text=[prefix-,]textStart[,textEnd][,-suffix][&text=]
@@ -130,7 +136,7 @@ class SimpleSearch {
     return resultList.join("")
   }
 
-  render(data_array, searchItems=[]) {
+  render(data_array, searchItems = []) {
     this.app.innerHTML = '<ul>' +
       data_array.map((objPage) => {  // 剛好他每一個元素都是一個obj
         const curLink = objPage.permalink
