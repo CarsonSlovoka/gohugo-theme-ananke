@@ -27,3 +27,10 @@ $-font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
       margin-left: 0
       margin-right: 0
       font-weight: bold
+      background-color: get_header_bk_color($i)
+
+@function get_header_bk_color($layer)
+  @if $layer == 1
+    @return initial
+  @else
+    @return bisque

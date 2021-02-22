@@ -1,0 +1,34 @@
+{{/*
+USAGE:
+
+{{< table/code-by-example-table >}}
+
+DESC
+
+@@NEW-COL@@
+
+這樣的意思表示9和4-6會高亮顯示(因為line number從2開始)
+linenuos: Valid values are true, false, table, or inline. 用table對複製貼上比較有好，但是有點醜
+```html {linenos=inline,hl_lines=[8,"3-5"],linenostart=2}
+```
+
+{{< /table/code-by-example-table >}}
+
+*/}}
+
+<table class="code-by-example">
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    {{ $td_list := split .Inner "@@NEW-COL@@" }}
+    {{ range $td_list }}
+      <td>{{ . | markdownify }}</td>
+    {{ end }}
+  </tr>
+  </tbody>
+</table>

@@ -2,3 +2,9 @@
 {{ range $script.js }}
   <script src="{{ relURL (printf `%s%s` `dist/` .) }}"></script>
 {{ end }}
+
+{{/*
+  .Content在這邊是沒有效的，因為這時候Content的內容還沒有被渲染出來
+  {{ if (findRE "<pre" .Content 1) }}
+  {{ end }}
+*/}}

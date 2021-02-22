@@ -19,3 +19,43 @@
 
   tr:nth-child(even)  /* 偶數列的行為 */
     background: #eee
+
+
+@mixin init_table-container()
+  // 這是一個使用div來模擬table的樣式
+  .as_table-container
+    display: table
+
+  .as_table-container_fixed
+    table-layout: fixed
+    width: 100%
+
+  .as_fixed_table-container
+    display: table
+    table-layout: fixed  // 寬度不會爆表格，而且設定每一個子cell的寬度%也才會有效
+    width: 100%
+
+  .as_table-container-col
+    display: table-cell
+    padding: 2px
+
+
+@mixin init_code-by-example()
+  // 使用table的方式不方便，改用container來取代
+  .code-by-example
+    max-height: none
+    width: 100%  // 才不會讓寬度爆表
+    border: none
+
+  .code-by-example td
+    word-break: break-word  // 使整列過長的詞不會突然被斷
+    vertical-align: top
+
+  // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_equal_height_media
+  // @media only screen and (max-width: 600px)
+  //  .code-by-example-col
+  //    display: block  // 螢幕太小的時候變為一列
+  //    width: 100%
+
+  .set_highlight-pre_mh40 .highlight pre
+    max-height: 40rem
