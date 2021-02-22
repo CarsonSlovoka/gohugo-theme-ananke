@@ -13,7 +13,7 @@ USAGE:
 <head>
   {{ partial "custom_layout/site/templates/site-header.html" . }}
   <link href="{{ `/css/datatable/jquery.dataTables.min.css` | relURL  }}" rel="stylesheet">
-  <link href="{{ `/css/searchbar.css` | relURL  }}" rel="stylesheet">
+  {{/* <link href="{{ `/css/searchbar.css` | relURL  }}" rel="stylesheet"> */}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script defer src="{{ `/js/search/dataTables/jquery.dataTables.js` | relURL  }}"></script>
   <script defer src="{{ `/js/search/dataTables/search-by-datatable.js` | relURL  }}"></script>
