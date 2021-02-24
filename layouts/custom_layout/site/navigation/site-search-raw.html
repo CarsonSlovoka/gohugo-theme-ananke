@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {{/*
 USAGE:
 
@@ -9,13 +8,9 @@ USAGE:
     layout = "site/navigation/site-search-raw"
     +++
 */}}
-<html lang="{{ $.Site.LanguageCode | default `en` }}">
-<head>
-  {{ partial "custom_layout/site/templates/site-header.html" . }}
-</head>
-<body>
-  {{ partial "site-header.html" . }}
-  <main class="ml2">
+
+{{ define "main" }}
+  <div class="ml2">
     <h2>By Last Modify</h2>
     <ul>
         {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
@@ -35,6 +30,5 @@ USAGE:
             </li>
         {{ end }}
     </ul>
-  </main>
-</body>`
-</html>
+  </div>
+{{ end }}

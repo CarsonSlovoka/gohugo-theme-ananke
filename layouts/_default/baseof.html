@@ -15,8 +15,17 @@
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
     {{ end }}
 
+    {{ if or .Params.plantuml .Site.Params.plantuml }}  {{/* 要用.Page.Params或者.Params都可以  */}}
+      {{/* <script defer src="https://cdn.jsdelivr.net/npm/plantuml-encoder@1.4.0/dist/plantuml-encoder.min.js" integrity="sha256-eRScmk4VrcNB654K41xHWfTcj/+u+spbMkI7g+cAA+k=" crossorigin="anonymous"></script> */}}
+      <script defer src="https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js" integrity="sha256-Qsk2KRBCN5qVZX7B+8+2IvQl1Aqc723qV1tBCQaVoqo=" crossorigin="anonymous"></script>
+      <script defer src="{{ relURL `js/uml/plantuml_encoder.js` }}"></script>
+    {{ end }}
+
     {{ if .Params.markmap }}
       <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
+      <script src="https://d3js.org/d3.v6.min.js"></script>
+      <script src="{{ `js/uml/markmap-view@0.2.0.js` | relURL  }}"></script> {{/* <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script> */}}
+      <script src="{{ relURL `js/uml/markmap.js` }}"></script>
     {{ end }}
 
     {{ block "extra_css" . }}
@@ -90,7 +99,7 @@
     {{- template "_internal/twitter_cards.html" . -}}
 
     {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
-      {{ template "_internal/google_analytics_async.html" . }}
+      {{ template "_internal/google_analytics_async.html" . }}  {{/* https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
     {{ end }}
 	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
   </head>

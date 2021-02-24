@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {{/*
 USAGE:
 
@@ -8,37 +7,36 @@ USAGE:
     type = "custom_layout"
     layout = "site/navigation/site-search"
     +++
+
+注意事項:
+  客製化的樣板，仍然可以取得到baseof.html的內容，只要您都是用define baseof.html的東西就可以了
+  注意！當您寫了其他元素是在define以外，那麼他就不會套用baseof.html
 */}}
-<html lang="{{ $.Site.LanguageCode | default `en` }}">
-<head>
-  {{ partial "custom_layout/site/templates/site-header.html" . }}
+
+{{ define "head" }}
   <link href="{{ `/css/datatable/jquery.dataTables.min.css` | relURL  }}" rel="stylesheet">
   {{/* <link href="{{ `/css/searchbar.css` | relURL  }}" rel="stylesheet"> */}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script defer src="{{ `/js/search/dataTables/jquery.dataTables.js` | relURL  }}"></script>
   <script defer src="{{ `/js/search/dataTables/search-by-datatable.js` | relURL  }}"></script>
-</head>
-<body>
-  <main>
-    {{ partial "site-header.html" . }}
+{{ end }}
 
-    {{ $data_array := slice }}
-    {{ range .Site.RegularPages.ByLastmod.Reverse }}
-    {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
-    {{ $create_date := .Params.date.Format "2006-01-02" }}
-    {{ $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) }}
-    {{ end }}
-    <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
+{{ define "main" }}
+  {{ $data_array := slice }}
+  {{ range .Site.RegularPages.ByLastmod.Reverse }}
+  {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
+  {{ $create_date := .Params.date.Format "2006-01-02" }}
+  {{ $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) }}
+  {{ end }}
+  <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
 
-    <div class="container h-100 mt3">
-      <div class="row mt-3">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-          <table id="app" class="display col-md-9"></table>
-        </div>
-        <div class="col-md-1"></div>
+  <div class="container h-100 mt3">
+    <div class="row mt-3">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+        <table id="app" class="display col-md-9"></table>
       </div>
+      <div class="col-md-1"></div>
     </div>
-  </main>
-</body>
-</html>
+  </div>
+{{ end }}

@@ -6,14 +6,9 @@
     {{ partial "site-navigation-with-tree" (slice 1 .) }}
   {{ end }}
 */}}
-<!DOCTYPE html>
-<html lang="{{ $.Site.LanguageCode | default `en` }}">
-<head>
-  {{ partial "custom_layout/site/templates/site-header.html" . }}
-</head>
-<body>
-  {{ partial "site-header.html" . }}
-  <main class="ml2">
+
+{{ define "main" }}
+  <div class="ml2">
     <h1>Single</h1>
     <h2>By Last Modify</h2>
     <details>
@@ -188,6 +183,5 @@
         {{ end }}
     </section>
     */}}
-  </main>
-</body>`
-</html>
+  </div>
+{{ end }}
