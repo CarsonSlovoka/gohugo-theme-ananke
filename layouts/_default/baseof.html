@@ -98,8 +98,8 @@
     {{- template "_internal/schema.html" . -}}
     {{- template "_internal/twitter_cards.html" . -}}
 
-    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
-      {{ template "_internal/google_analytics_async.html" . }}  {{/* https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
+    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}  {{/* getenv可以取得系統的環境變數 */}}
+      {{ template "_internal/google_analytics_async.html" . }}  {{/* template是hugo所提供的樣板，如果對實做有興趣，可以參考:https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
     {{ end }}
 	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
   </head>
