@@ -1,0 +1,5 @@
+blank_issues_enabled: true  # option allows you to show or hide the Create a blank issue choice when users select New(blank) issue
+contact_links:
+  - name: View an example (Carson Blog)
+    url: https://carsonslovoka.github.io/
+    about: Open it to see an example.
