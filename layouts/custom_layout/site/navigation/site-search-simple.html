@@ -16,7 +16,7 @@ REFERENCE:
     - https://bootsnipp.com/tags/search
 */}}
 
-{{ define "head" }}
+{{- define "head" -}}
   <script defer src="{{ `/js/search/simple-search.js` | relURL  }}"></script>
   <link href="{{ `/css/searchbar.css` | relURL  }}" rel="stylesheet">
   <style>
@@ -24,17 +24,17 @@ REFERENCE:
     ul {list-style: none;}
     li {padding: 10px 0; line-height: 1.2rem;}
   </style>
-{{ end }}
+{{- end -}}
 
-{{ define "main" }}
+{{- define "main" -}}
 
-  {{ $data_array := slice }}
-  {{ range .Site.RegularPages.ByLastmod.Reverse }}
-  {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
-  {{ $create_date := .Params.date.Format "2006-01-02" }}
-  {{ $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) }}
-  {{ end }}
-  <p id="data_array" hidden>{{ $data_array | jsonify }}</p>
+  {{- $data_array := slice -}}
+  {{- range .Site.RegularPages.ByLastmod.Reverse -}}
+    {{- $last_mod_date := .Params.lastmod.Format "2006-01-02" -}}
+    {{- $create_date := .Params.date.Format "2006-01-02" -}}
+    {{- $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) -}}
+  {{- end -}}
+  <p id="data_array" hidden>{{- $data_array | jsonify -}}</p>
 
   <div class="container h-100 mt3">
     <div class="row">
@@ -58,4 +58,4 @@ REFERENCE:
       <div class="col-md-2"></div>
     </div>
   </div>
-{{ end }}
+{{- end -}}

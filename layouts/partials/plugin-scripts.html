@@ -1,10 +1,10 @@
 {{/*
 https://www.srihash.org
 */}}
-{{ if (findRE "<pre" .Content 1) }}
+{{- if (findRE "<pre" .Content 1) -}}
   {{/*
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha512-hDWGyh+Iy4Mr9AHOzUP2+Y0iVPn/BwxxaoSleEjH/i1o4EVTF/sh0/A1Syii8PWOae+uPr+T/KHwynoebSuAhw==" crossorigin="anonymous"></script>
     https://www.dannyguo.com/blog/how-to-add-copy-to-clipboard-buttons-to-code-blocks-in-hugo/
   */}}
   <script src="{{ relURL `js/clipboard/copy-code-block.js` }}"></script>
-{{ end }}
+{{- end -}}

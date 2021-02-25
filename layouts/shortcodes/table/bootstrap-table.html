@@ -23,15 +23,15 @@ USAGE:
   {{< table/bootstrap-table scrollable=true >}}
 */}}
 
-{{ $class := "" }}
-{{ $scrollable := false }}
-{{ if .IsNamedParams }}
-  {{ $class = default "" (.Get "class") }}
-  {{ $scrollable = default false (.Get "scrollable") }}
-{{ else }}
-  {{ $class = default "" (.Get 0) }}
-  {{ $scrollable = default false (.Get 1) }}
-{{ end }}
+{{- $class := "" -}}
+{{- $scrollable := false -}}
+{{- if .IsNamedParams -}}
+  {{- $class = default "" (.Get "class") -}}
+  {{- $scrollable = default false (.Get "scrollable") -}}
+{{- else -}}
+  {{- $class = default "" (.Get 0) -}}
+  {{- $scrollable = default false (.Get 1) -}}
+{{- end -}}
 
-{{ $class := printf `table %s table-sm table-striped table-bordered` (default "table-dark" $class) }}
-{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) }}
+{{- $class := printf `table %s table-sm table-striped table-bordered` (default "table-dark" $class) -}}
+{{- partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) -}}

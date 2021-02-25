@@ -33,25 +33,25 @@ USAGE:
 */}}
 
 <div class="as_fixed_table-container set_highlight-pre_mh40">
-  {{ $col_list := split .Inner "@@NEW-COL@@" }}
-  {{ range $idx, $col := $col_list  }}
-    {{ $contents := $col | markdownify }}
-    {{ $col_attr_info := default `|` ($.Get $idx) }}  {{/* 要取得頂層的資料用$.用.表示range之類的東西 */}}
-    {{ $col_attr_info = split $col_attr_info "|" }}
-    {{ if index $col_attr_info 1 }}
+  {{- $col_list := split .Inner "@@NEW-COL@@" -}}
+  {{- range $idx, $col := $col_list  -}}
+    {{- $contents := $col | markdownify -}}
+    {{- $col_attr_info := default `|` ($.Get $idx) -}}  {{/* 要取得頂層的資料用$.用.表示range之類的東西 */}}
+    {{- $col_attr_info = split $col_attr_info "|" -}}
+    {{- if index $col_attr_info 1 -}}
       <div class="as_table-container-col" style="width:{{- index $col_attr_info 1 | safeHTMLAttr -}};"> {{/* style="background:orange" */}}
-    {{ else }}
+    {{- else -}}
       <div class="as_table-container-col">
-    {{ end }}
-        {{ if index $col_attr_info 0 }}
+    {{- end -}}
+        {{- if index $col_attr_info 0 -}}
           <h2 style="background-color:initial">{{- index $col_attr_info 0 -}}</h2>
-        {{ end }}
+        {{- end -}}
 
-        {{ if (findRE "<pre" $contents 1) }}
-          {{ $contents }}  {{/* code-block中已自帶overflow了 */}}
-        {{ else }}
+        {{- if (findRE "<pre" $contents 1) -}}
+          {{- $contents -}}  {{/* code-block中已自帶overflow了 */}}
+        {{- else -}}
           <div class="block_scroll_h-40em">{{ $contents }}</div>
-        {{ end }}
+        {{- end -}}
     </div>
-  {{ end }}
+  {{- end -}}
 </div>

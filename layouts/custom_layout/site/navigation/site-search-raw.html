@@ -9,26 +9,26 @@ USAGE:
     +++
 */}}
 
-{{ define "main" }}
+{{- define "main" -}}
   <div class="ml2">
     <h2>By Last Modify</h2>
     <ul>
-        {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
-            <li><a href="{{ .Permalink }}">{{ .Title }}</a>
+        {{- range .Site.RegularPages.ByLastmod.Reverse -}}  {{/* 這邊先出來的是日期是最舊的所以用Reverse來幫忙 */}}
+            <li><a href="{{ .Permalink }}">{{ .Title -}}</a>
                 <details open><summary><small>Info</small></summary>
-                <time>{{ .Lastmod.Format "2006-01-02" }}</time>
-                {{ $my_dict := dict "desc" .Description "tags" (default "" .Params.tags) "section" .Section "categories" (default "" .Params.categories) }}
+                <time>{{- .Lastmod.Format "2006-01-02" -}}</time>
+                {{- $my_dict := dict "desc" .Description "tags" (default "" .Params.tags) "section" .Section "categories" (default "" .Params.categories) -}}
                 <ul>
-                  {{ range $key, $value := $my_dict }}
+                  {{- range $key, $value := $my_dict -}}
                     <li>{{- printf `%s:%s` $key $value -}}</li>
-                  {{ end }}
+                  {{- end -}}
                 </ul>
                 </details>
                 <details open><summary><small>TOC</small></summary>
-                {{ .TableOfContents }}
+                {{- .TableOfContents -}}
                 </details>
             </li>
-        {{ end }}
+        {{- end -}}
     </ul>
   </div>
-{{ end }}
+{{- end -}}

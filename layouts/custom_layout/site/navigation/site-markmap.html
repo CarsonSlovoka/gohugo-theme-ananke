@@ -1,30 +1,30 @@
-{{ define "head" }}
+{{- define "head" -}}
   <script defer src="{{ relURL `js/uml/markmap_by_date.js` }}"></script>  {{/* 渲染第二個svg的腳本 */}}
-{{ end }}
+{{- end -}}
 
-{{ define "main" }}
+{{- define "main" -}}
   <section>
     <h2 class="mt5" style="text-align: center;">By Sections</h2>
     <svg id="mindmap-section" class="mindmap" style="width:80vw; height: 60vh;"></svg>
-      {{ $tree_section := slice }}
-      {{ range .Site.Sections }}
-        {{ $cur_level := 1 }}
-        {{ $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
-        {{ $tree_section = $tree_section | append (printf `{"t":"h", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) }}
-      {{ end }}
+      {{- $tree_section := slice -}}
+      {{- range .Site.Sections -}}
+        {{- $cur_level := 1 -}}
+        {{- $container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) -}}
+        {{- $tree_section = $tree_section | append (printf `{"t":"h", "d":%s, "v": "%s", "p":{} %s }` ($cur_level | string ) (printf `<a href=\"%s\">%s</a>` .Permalink .Title) (cond (gt (len $container) 0) (printf ", c:[%s]" (delimit $container ", ")) " ")) -}}
+      {{- end -}}
 
       {{/*
-      {{ $tree_date := dict }}
+      {{- $tree_date := dict -}}
       {{- range .Site.RegularPages -}}
-          {{ if .Date }}
-            {{ $cur_date := dateFormat "2006-01-02" .Date }}
-            {{ $cur_date_yy_mm_dd := split $cur_date "-" }}
-            {{ $yy := index $cur_date_yy_mm_dd 0 }}
-            {{ $mm := index $cur_date_yy_mm_dd 1 }}
-            {{ $dd := index $cur_date_yy_mm_dd 2 }}
-            {{ if not (in $tree_date $yy) }}
-            {{ end }}
-          {{ end }}
+          {{- if .Date -}}
+            {{- $cur_date := dateFormat "2006-01-02" .Date -}}
+            {{- $cur_date_yy_mm_dd := split $cur_date "-" -}}
+            {{- $yy := index $cur_date_yy_mm_dd 0 -}}
+            {{- $mm := index $cur_date_yy_mm_dd 1 -}}
+            {{- $dd := index $cur_date_yy_mm_dd 2 -}}
+            {{- if not (in $tree_date $yy) -}}
+            {{- end -}}
+          {{- end -}}
       {{- end -}}
       */}}
 
@@ -47,19 +47,19 @@
 
   <section>
     <h2 class="mt5" style="text-align: center;">By Modified Date</h2>
-    {{ $date_list := slice }}
+    {{- $date_list := slice -}}
 
-    {{ range .Site.RegularPages.ByLastmod.Reverse }}  {{/* 讓日期最後面的跑在最前面所以用Reverse */}}
+    {{- range .Site.RegularPages.ByLastmod.Reverse -}}  {{/* 讓日期最後面的跑在最前面所以用Reverse */}}
         {{/*
           {{ .File }} {{ .Params.title}} {{ $last_mod_date }} {{ $create_date }}
           {{ .Date.Format "2006-01-02" }} 不論管的ByXXX，XXX為何它都是抓date，但是篩選條件還是會造XXX是沒問題的
         */}}
-        {{ $last_mod_date := .Params.lastmod.Format "2006-01-02" }}
-        {{ $create_date := .Params.date.Format "2006-01-02" }}
-        {{ $date_list = $date_list | append (slice (slice .Title $last_mod_date $create_date .Permalink)) }}
-    {{ end }}
+        {{- $last_mod_date := .Params.lastmod.Format "2006-01-02" -}}
+        {{- $create_date := .Params.date.Format "2006-01-02" -}}
+        {{- $date_list = $date_list | append (slice (slice .Title $last_mod_date $create_date .Permalink)) -}}
+    {{- end -}}
 
-    <p id="article_by_date" hidden>{{ $date_list | jsonify }}</p>
+    <p id="article_by_date" hidden>{{- $date_list | jsonify -}}</p>
     <svg id="mind-map-by-date" class="mindmap" style="width:80vw; height: 60vh;"></svg>
   </section>
-{{ end }}
+{{- end -}}

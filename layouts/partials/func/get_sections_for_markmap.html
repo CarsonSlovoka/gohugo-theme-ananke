@@ -1,21 +1,21 @@
-{{ $parent_level := .parent_level | int}}
-{{ $cur_level := add $parent_level 1 }}
-{{ $cur_page := .page }}
+{{- $parent_level := .parent_level | int -}}
+{{- $cur_level := add $parent_level 1 -}}
+{{- $cur_page := .page -}}
 
-{{ $container := slice }}
+{{- $container := slice -}}
 
 {{/* 這個是list.html的站點，也就是其子資料夾 */}}
-{{ range $cur_page.Sections }}
-  {{ $sub_container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) }}
-  {{ $container = $container | append (printf `{"t":"h", "d":%s, "v": "%s"  %s }` ($cur_level | string) (printf `<div title=\"%s-%s\"><a href=\"%s\" target=\"_blank\">%s</a></div>` (default "" .Description)  (default "" .Date) .Permalink .Title) (cond (gt (len $sub_container) 0) (printf ", c:[%s]" (delimit $sub_container ", ")) "") )}}
-{{ end }}
+{{- range $cur_page.Sections -}}
+  {{- $sub_container := partial "func/get_sections_for_markmap" (dict "parent_level" $cur_level "page" .) -}}
+  {{- $container = $container | append (printf `{"t":"h", "d":%s, "v": "%s"  %s }` ($cur_level | string) (printf `<div title=\"%s-%s\"><a href=\"%s\" target=\"_blank\">%s</a></div>` (default "" .Description)  (default "" .Date) .Permalink .Title) (cond (gt (len $sub_container) 0) (printf ", c:[%s]" (delimit $sub_container ", ")) "") ) -}}
+{{- end -}}
 
 {{/* 這是當前section下的頁面 */}}
-{{ range $cur_page.Pages }}
-  {{ if ne .File.BaseFileName "_index" }}  {{/* 如果是_index.md的站點會在上面的section就已經被呈現出來 */}}
+{{- range $cur_page.Pages -}}
+  {{- if ne .File.BaseFileName "_index" -}}  {{/* 如果是_index.md的站點會在上面的section就已經被呈現出來 */}}
     {{/* <li title="{{default .Summary .Description}}"><a href="{{ .Permalink }}">{{ .Title }}</a></li> */}}
-    {{ $container = $container | append (printf `{"t":"h", "d":%s, "v": "%s"}` ($cur_level | string ) (printf `<div title=\"%s-%s\"><a href=\"%s\" target=\"_blank\">%s</a></div>` (default "" .Description)  (default "" .Date) .Permalink .Title)) }}
-  {{ end }}
-{{ end }}
+    {{- $container = $container | append (printf `{"t":"h", "d":%s, "v": "%s"}` ($cur_level | string ) (printf `<div title=\"%s-%s\"><a href=\"%s\" target=\"_blank\">%s</a></div>` (default "" .Description)  (default "" .Date) .Permalink .Title)) -}}
+  {{- end -}}
+{{- end -}}
 
-{{ return $container }}
+{{- return $container -}}

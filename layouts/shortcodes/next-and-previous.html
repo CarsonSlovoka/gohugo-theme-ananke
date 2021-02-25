@@ -6,9 +6,9 @@
   urls.Parse URL  https://gohugo.io/functions/urls.parse/
 */}}
 
-{{ $previous_page_link := default "" (.Get "previous_page_link") }}
-{{ $previous_section_link := default "" (.Get "previous_section_link") }}
-{{ $next_page_link := default "" (.Get "next_page_link") }}
-{{ $next_section_link := default "" (.Get "next_section_link") }}
+{{- $previous_page_link := default "" (.Get "previous_page_link") -}}
+{{- $previous_section_link := default "" (.Get "previous_section_link") -}}
+{{- $next_page_link := default "" (.Get "next_page_link") -}}
+{{- $next_section_link := default "" (.Get "next_section_link") -}}
 
 {{- partial "next-and-previous" (slice $previous_page_link $next_page_link $previous_section_link $next_section_link $.Page) -}}

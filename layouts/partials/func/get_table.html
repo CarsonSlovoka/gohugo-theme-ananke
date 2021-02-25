@@ -1,11 +1,11 @@
-{{ $html_table := .html_table }}
-{{ $class := .class }}
-{{ $scrollable := .scrollable }}  {{/* https://stackoverflow.com/questions/8232713/how-to-display-scroll-bar-onto-a-html-table */}}
+{{- $html_table := .html_table -}}
+{{- $class := .class -}}
+{{- $scrollable := .scrollable -}}  {{/* https://stackoverflow.com/questions/8232713/how-to-display-scroll-bar-onto-a-html-table */}}
 
-{{ $old := "<table>" }}
-{{ $new := printf "<table class=\"%s\">" $class }}
-{{ $html_table = replace $html_table $old $new }}
-{{ $html_table = replace $html_table "\\n" "<br>" }}  {{/* 在裏頭可以使用\n來換行，模擬list */}}
+{{- $old := "<table>" -}}
+{{- $new := printf "<table class=\"%s\">" $class -}}
+{{- $html_table = replace $html_table $old $new -}}
+{{- $html_table = replace $html_table "\\n" "<br>" -}}  {{/* 在裏頭可以使用\n來換行，模擬list */}}
 
 {{/* 使的欄寬可以用更簡單的方式來設定
   | @@w=5em@@name | desc |
@@ -17,20 +17,20 @@
   | :----: | :---- | :----: | ---- |
   | 📝 | Memo | 1F4DD
 */}}
-{{ $th_list := findRE "<th.*>.*</th>" $html_table }}
-{{ range $th_list }}
-  {{ $org_style := default "" (replaceRE `<th (?P<cur_style>style=\".*)\">.*</th>` "$cur_style" . ) }}
-  {{ $inner_html := replaceRE `.*@@w=(?P<width>.*)@@(?P<value>.*)` "$value" (. | plainify) }}
-  {{ $width_value := replaceRE `.*@@w=(?P<width>.*)@@.*` "$width" . }}
-  {{ if not (in $width_value "<th>") }}  {{/* 如果沒找到他會回傳找尋物件的本身(它含有th) 至於如果找到了話就只會有數值5em之類的 */}}
-    {{ if in $org_style `style="` }}
-      {{ $html_table = replace $html_table . (printf `<th %s;width:%s">%s</th>` $org_style $width_value $inner_html ) }}
-    {{ else }}
-      {{ $html_table = replace $html_table . (printf `<th style="width:%s;">%s</th>` $width_value $inner_html) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
+{{- $th_list := findRE "<th.*>.*</th>" $html_table -}}
+{{- range $th_list -}}
+  {{- $org_style := default "" (replaceRE `<th (?P<cur_style>style=\".*)\">.*</th>` "$cur_style" . ) -}}
+  {{- $inner_html := replaceRE `.*@@w=(?P<width>.*)@@(?P<value>.*)` "$value" (. | plainify) -}}
+  {{- $width_value := replaceRE `.*@@w=(?P<width>.*)@@.*` "$width" . -}}
+  {{- if not (in $width_value "<th>") }}  {{/* 如果沒找到他會回傳找尋物件的本身(它含有th) 至於如果找到了話就只會有數值5em之類的 */}}
+    {{- if in $org_style `style="` -}}
+      {{- $html_table = replace $html_table . (printf `<th %s;width:%s">%s</th>` $org_style $width_value $inner_html ) -}}
+    {{- else -}}
+      {{- $html_table = replace $html_table . (printf `<th style="width:%s;">%s</th>` $width_value $inner_html) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
-{{ $html_table := $html_table | safeHTML }}
+{{- $html_table := $html_table | safeHTML -}}
 
-{{ return (cond $scrollable (printf `<div style="max-height:30rem; overflow:auto;">%s</div>` $html_table | safeHTML) $html_table ) }}
+{{- return (cond $scrollable (printf `<div style="max-height:30rem; overflow:auto;">%s</div>` $html_table | safeHTML) $html_table ) -}}

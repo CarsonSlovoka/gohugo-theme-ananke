@@ -12,6 +12,6 @@ USAGE:
   {{< table/my-table "table" true >}}
 */}}
 
-{{ $class := .Get 0 }}
-{{ $scrollable := default false (.Get 1) }}
-{{ partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) }}
+{{- $class := .Get 0 -}}
+{{- $scrollable := default false (.Get 1) -}}
+{{- partial "func/get_table.html" (dict "html_table" (.Inner | markdownify) "class" $class "scrollable" $scrollable) -}}
