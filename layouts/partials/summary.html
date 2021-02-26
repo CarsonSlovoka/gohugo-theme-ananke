@@ -3,11 +3,11 @@
     <span class="f6 db">{{ humanize .Section }}</span>{{/* 是在主題旁邊的字眼 */}}
     <h1 class="f3 near-black">
       <a href="{{ .Permalink }}" class="link black dim">
-        {{ .Title }}
+        {{- .Title -}}
       </a>
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
-      {{ default .Summary .Params.description   }}
+      {{- default .Summary .Params.description   -}}
     </div>
   </div>
 </div>

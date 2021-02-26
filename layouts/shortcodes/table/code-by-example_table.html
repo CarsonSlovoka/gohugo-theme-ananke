@@ -25,10 +25,10 @@ linenuos: Valid values are true, false, table, or inline. 用table對複製貼�
   </thead>
   <tbody>
   <tr>
-    {{ $td_list := split .Inner "@@NEW-COL@@" }}
-    {{ range $td_list }}
+    {{- $td_list := split .Inner "@@NEW-COL@@" -}}
+    {{- range $td_list -}}
       <td>{{ . | markdownify }}</td>
-    {{ end }}
+    {{- end -}}
   </tr>
   </tbody>
 </table>

@@ -1,23 +1,10 @@
 {{/*
 https://www.srihash.org
 */}}
-{{ if or .Page.Params.plantuml .Site.Params.plantuml }}
-  {{/* <script src="https://cdn.jsdelivr.net/npm/plantuml-encoder@1.4.0/dist/plantuml-encoder.min.js" integrity="sha256-eRScmk4VrcNB654K41xHWfTcj/+u+spbMkI7g+cAA+k=" crossorigin="anonymous"></script> */}}
-  <script src="https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js" integrity="sha256-Qsk2KRBCN5qVZX7B+8+2IvQl1Aqc723qV1tBCQaVoqo=" crossorigin="anonymous"></script>
-  <script src="{{ relURL `js/uml/plantuml_encoder.js` }}"></script>
-{{ end }}
-
-{{ if .Page.Params.markmap }}
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <script src="{{ `js/uml/markmap-view@0.2.0.js` | relURL  }}"></script> {{/* <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script> */}}
-  <script src="{{ relURL `js/uml/markmap.js` }}"></script>
-{{ end }}
-
-
-{{ if (findRE "<pre" .Content 1) }}
+{{- if (findRE "<pre" .Content 1) -}}
   {{/*
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha512-hDWGyh+Iy4Mr9AHOzUP2+Y0iVPn/BwxxaoSleEjH/i1o4EVTF/sh0/A1Syii8PWOae+uPr+T/KHwynoebSuAhw==" crossorigin="anonymous"></script>
     https://www.dannyguo.com/blog/how-to-add-copy-to-clipboard-buttons-to-code-blocks-in-hugo/
   */}}
   <script src="{{ relURL `js/clipboard/copy-code-block.js` }}"></script>
-{{ end }}
+{{- end -}}

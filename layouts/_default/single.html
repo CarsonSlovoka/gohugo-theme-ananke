@@ -1,16 +1,16 @@
-{{ define "extra_css" }}
-  {{ if .Site.Params.pygmentsUseClasses }}
+{{- define "extra_css" -}}
+  {{- if .Site.Params.pygmentsUseClasses -}}
     <link href="{{ relURL `css/syntax.css` }}" rel="stylesheet">
-  {{ end }}
-{{ end }}
+  {{- end -}}
+{{- end -}}
 
-{{ define "header" }}
+{{- define "header" -}}
    {{/* We can override any block in the baseof file be defining it in the template */}}
-  {{ partial "page-header.html" . }}
-{{ end }}
+  {{- partial "page-header.html" . -}}
+{{- end -}}
 
-{{ define "main" }}
-  {{ $section := .Site.GetPage "section" .Section }}
+{{- define "main" -}}
+  {{- $section := .Site.GetPage "section" .Section -}}
   <article class="flex-l flex-wrap justify-between mw8 center ph3">
     {{/*
           https://getbootstrap.com/docs/4.4/utilities/spacing/
@@ -24,21 +24,21 @@
           */}}
         {{with .CurrentSection.Title }}{{. | upper }}{{end}}
       </aside>
-      {{ partial "social-share.html" . }}
+      {{- partial "social-share.html" . -}}
       <h1 class="f1 athelas mt3 mb1">
         {{- .Title -}}
       </h1>
-      {{ with .Params.author }}
+      {{- with .Params.author -}}
       <p class="tracked">
           By <strong>
-          {{ if reflect.IsSlice . }}
+          {{- if reflect.IsSlice . -}}
               {{ delimit . ", " | markdownify }}
           {{else}}
-              {{ . | markdownify }}
+              {{- . | markdownify -}}
           {{ end }}
           </strong>
       </p>
-      {{ end }}
+      {{- end -}}
       {{/* Hugo uses Go's date formatting is set by example. Here are two formats */}}
       <time class="f6 mv4 dib tracked" {{ printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safeHTMLAttr }}>
         {{- .Date.Format "January 2, 2006" -}}
@@ -61,28 +61,28 @@
     >
       {{- .Content -}}
 
-      {{ if .Params.next_and_previous.link }}
-        {{ $cur_page := . }}
-        {{ with .Params.next_and_previous.link }}
+      {{- if .Params.next_and_previous.link -}}
+        {{- $cur_page := . -}}
+        {{- with .Params.next_and_previous.link -}}
           <div class="mt3">
             {{- partial "next-and-previous" (slice .previous_page .next_page .previous_section .next_section $cur_page) -}}
           </div>
-        {{ end }}
-      {{ end }}
+        {{- end -}}
+      {{- end -}}
 
-      {{ if .Params.tags }}
+      {{- if .Params.tags -}}
         <div class="mt4">
           {{- partial "tags.html" . -}}
         </div>
-      {{ end }}
+      {{- end -}}
 
       <div class="mt6 instapaper_ignoref">
-      {{ if .Site.DisqusShortname }}
-        {{ template "_internal/disqus.html" . }}
-      {{ end }}
-      {{ if .Site.Params.commentoEnable }}
+      {{- if .Site.DisqusShortname -}}
+        {{- template "_internal/disqus.html" . -}}
+      {{- end -}}
+      {{- if .Site.Params.commentoEnable -}}
         {{- partial "commento.html" . -}}
-      {{ end }}
+      {{- end -}}
       </div>
     </div>
     <aside class="w-30-l mt6-l navbar-right large-screen-only">
@@ -93,19 +93,19 @@
       t - for classes taht set margin-top or padding-top
       w-30 width:30%
       */}}
-      {{ if (and .Params.markmap .Params.toc_markmap) }}
-        {{ .TableOfContents }}
+      {{- if (and .Params.markmap .Params.toc_markmap) -}}
+        {{- .TableOfContents -}}
         <script defer src="{{ relURL `js/uml/toc_markmap.js` }}"></script>  {{/* 使用markmap的樣子來產生toc */}}
-      {{ end }}
+      {{- end -}}
 
       <div id="toc">
-        {{ if .Params.toc_bootstrap }}
+        {{- if .Params.toc_bootstrap -}}
           {{- partial "toc/toc_bootstrap" . -}}  {{/* 使用bootstrap的樣式產生toc */}}
-        {{ else if .Params.toc }}
-          {{ .TableOfContents }}  {{/* 用Hugo內建提供的樣板產生toc，因為toc_markmap會和這個產生衝突，所以兩者只能選一個 */}}
-        {{ end }}
+        {{- else if .Params.toc -}}
+          {{- .TableOfContents -}}  {{/* 用Hugo內建提供的樣板產生toc，因為toc_markmap會和這個產生衝突，所以兩者只能選一個 */}}
+        {{- end -}}
         {{- partial "toc/toc_related" . -}}  {{/* 相關文章 */}}
       </div>
     </aside>
   </article>
-{{ end }}
+{{- end -}}

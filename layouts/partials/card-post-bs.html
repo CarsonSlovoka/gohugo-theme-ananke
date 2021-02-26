@@ -2,26 +2,26 @@
 create a post card with the bootstrap.
 */}}
 
-{{ $article_image := default "" .Params.article_image }}
-{{ $font_color := default "" .Params.article_image }}
+{{- $article_image := default "" .Params.article_image -}}
+{{- $font_color := default "" .Params.article_image -}}
 <section class="zoom-in mt4 card" style="width: 20rem;">
-  {{ $bg_color := "bg-light" }}
-  {{ $btn_color := "btn-primary" }}
-  {{ $text_muted_color := "text-muted" }}
-  {{ if $article_image }}
+  {{- $bg_color := "bg-light" -}}
+  {{- $btn_color := "btn-primary" -}}
+  {{- $text_muted_color := "text-muted" -}}
+  {{- if $article_image -}}
 
-    {{ $bg_color = default "light" (index .Params.article_image "bg-color") }}
-    {{ $bg_color = printf "bg-%s" $bg_color }}
+    {{- $bg_color = default "light" (index .Params.article_image "bg-color") -}}
+    {{- $bg_color = printf "bg-%s" $bg_color -}}
 
-    {{ $btn_color = default "primary" (index .Params.article_image "btn-color") }}
-    {{ $btn_color = printf "btn-%s" $btn_color }}
+    {{- $btn_color = default "primary" (index .Params.article_image "btn-color") -}}
+    {{- $btn_color = printf "btn-%s" $btn_color -}}
 
-    {{ $text_muted_color = default "text-muted" (index .Params.article_image "text-muted_color") }}
+    {{- $text_muted_color = default "text-muted" (index .Params.article_image "text-muted_color") -}}
 
-    {{ $src := index $article_image "src" }}
-    {{ $src = (trim $src "/") | absURL }}
+    {{- $src := index $article_image "src" -}}
+    {{- $src = (trim $src "/") | absURL -}}
     <a href="{{.Permalink}}"><img class="card-img-top" src="{{ $src }}" alt="image from {{ .Title }}"></a>
-  {{ end }}
+  {{- end -}}
   <div class="card-body
   {{ $bg_color }}
   {{ cond (in (slice `bg-warning` `bg-light` `bg-white`) $bg_color) `black` `white`}}

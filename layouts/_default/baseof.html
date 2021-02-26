@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $.Site.LanguageCode | default `en` }}">
+<html lang="{{- $.Site.LanguageCode | default `en` -}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,114 +7,123 @@
     <title>{{ block "title" . }}{{ with .Params.Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
     <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
-    {{ hugo.Generator }}
+    {{- hugo.Generator -}}
     {{/* NOTE: For Production make sure you add `HUGO_ENV="production"` before your build command */}}
-    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+    {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}
       <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
-    {{ else }}
+    {{- else -}}
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
-    {{ end }}
+    {{- end -}}
 
-    {{ if .Params.markmap }}
+    {{- if or .Params.plantuml .Site.Params.plantuml -}}  {{/* 要用.Page.Params或者.Params都可以  */}}
+      {{/* <script defer src="https://cdn.jsdelivr.net/npm/plantuml-encoder@1.4.0/dist/plantuml-encoder.min.js" integrity="sha256-eRScmk4VrcNB654K41xHWfTcj/+u+spbMkI7g+cAA+k=" crossorigin="anonymous"></script> */}}
+      <script defer src="https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js" integrity="sha256-Qsk2KRBCN5qVZX7B+8+2IvQl1Aqc723qV1tBCQaVoqo=" crossorigin="anonymous"></script>
+      <script defer src="{{ relURL `js/uml/plantuml_encoder.js` }}"></script>
+    {{- end -}}
+
+    {{- if .Params.markmap -}}
       <link href="{{ relURL `css/markmap.css` }}" rel="stylesheet">
-    {{ end }}
+      <script src="https://d3js.org/d3.v6.min.js"></script>
+      <script src="{{ `js/uml/markmap-view@0.2.0.js` | relURL  }}"></script> {{/* <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.2.0"></script> */}}
+      <script src="{{ relURL `js/uml/markmap.js` }}"></script>
+    {{- end -}}
 
-    {{ block "extra_css" . }}
-    {{ end }}
+    {{- block "extra_css" . -}}
+    {{- end -}}
 
     {{ $enable_search_fuse := ( index .Site.Params "enable_search_fuse" ) | default false }}
-    {{ if $enable_search_fuse }}
+    {{- if $enable_search_fuse -}}
       <link href="{{ relURL `dist/css/search-fuse.css` }}" rel="stylesheet">
-    {{ end }}
+    {{- end -}}
 
     {{/* 如果網站本身已經宣告要使用font-awesome則視為所有頁面都套用，不然則依造頁面的設定 */}}
     {{ $enable_fontawesome := default false (default (index .Site.Params "font-awesome") (index .Params "font-awesome")) }}
-    {{ if $enable_fontawesome }}
+    {{- if $enable_fontawesome -}}
       {{/* https://cdnjs.com/libraries/font-awesome */}}
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
       <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/all.min.js" integrity="sha512-UwcC/iaz5ziHX7V6LjSKaXgCuRRqbTp1QHpbOJ4l1nw2/boCfZ2KlFIqBUA/uRVF0onbREnY9do8rM/uT/ilqw==" crossorigin="anonymous"></script>
-    {{ end }}
+    {{- end -}}
 
-    {{ range .Site.Params.custom_css }}
+    {{- range .Site.Params.custom_css -}}
       {{/*
       有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
       指: static/css/{foo.css, bar.css}
       */}}
-      <link rel="stylesheet" href="{{ relURL (.) }}">
+      <link rel="stylesheet" href="{{- relURL (.) -}}">
     {{ end }}
 
-    {{ $stylesheet := .Site.Data.webpack_assets.app }}
+    {{- $stylesheet := .Site.Data.webpack_assets.app -}}
       {{/* .Site.Data 指的就是data資料夾，所以有這個文件 data/webpack_assets.json 而 app 是他的json之中的一個物件 */}}
-    {{ range $stylesheet.css }}
+    {{- range $stylesheet.css -}}
       {{/*
         在app這個物件之中又剛好有.css
         注意css有順序性，所以如果您要引入一些其他的CSS不建議放在這之後
       */}}
       <link href="{{ relURL (printf `%s%s` `dist/` .) }}" rel="stylesheet">
-    {{ end }}
+    {{- end -}}
 
     {{/* 等到Hugo完全支持Dart Sass會重新以這種方法撰寫
-    {{ $sass_options := dict "outputStyle" "compressed" "enableSourceMap" false }}
-    {{ range $stylesheet.sass }}
-      {{ $sass_file_path := . }}
-      {{ $style := resources.Get $sass_file_path | resources.ToCSS $sass_options | minify | fingerprint "sha256" }}
+    {{- $sass_options := dict "outputStyle" "compressed" "enableSourceMap" false -}}
+    {{- range $stylesheet.sass -}}
+      {{- $sass_file_path := . -}}
+      {{- $style := resources.Get $sass_file_path | resources.ToCSS $sass_options | minify | fingerprint "sha256" -}}
       <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
-    {{ end }}
+    {{- end -}}
     */}}
 
     {{/* 讓bootstrap可以覆蓋其他css屬性，不然bootstrap的有些樣式會被蓋掉就會很醜 */}}
-    {{ $enable_bootstrap := or (default false .Site.Params.bootstrap) (default false .Params.bootstrap) }}
-    {{ $enable_toc := or (default false .Params.toc) (default false .Params.toc_bootstrap) }}
-    {{ $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") }}
-    {{ if $enable_bootstrap }}
+    {{- $enable_bootstrap := or (default false .Site.Params.bootstrap) (default false .Params.bootstrap) -}}
+    {{- $enable_toc := or (default false .Params.toc) (default false .Params.toc_bootstrap) -}}
+    {{- $body_spy_scroll_attr := (cond (and $enable_bootstrap $enable_toc ) ( printf `data-bs-spy="scroll" data-bs-target="#navbar"` ) "") -}}
+    {{- if $enable_bootstrap -}}
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    {{ end }}
+    {{- end -}}
 
 
-    {{ block "favicon" . }}
+    {{- block "favicon" . -}}
       {{/* 指tab頁籤上的圖片 */}}
-      {{ partialCached "site-favicon.html" . }}
-    {{ end }}
+      {{- partialCached "site-favicon.html" . -}}
+    {{- end -}}
 
-    {{ if .OutputFormats.Get "RSS" }}
-    {{ with .OutputFormats.Get "RSS" }}
-      <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
-      <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
-      {{ end }}
-    {{ end }}
+    {{- if .OutputFormats.Get "RSS" -}}
+    {{- with .OutputFormats.Get "RSS" -}}
+      <link href="{{- .RelPermalink -}}" rel="alternate" type="application/rss+xml" title="{{- $.Site.Title -}}" />
+      <link href="{{- .RelPermalink -}}" rel="feed" type="application/rss+xml" title="{{- $.Site.Title -}}" />
+      {{- end -}}
+    {{- end -}}
 
     {{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
     {{- template "_internal/opengraph.html" . -}}
     {{- template "_internal/schema.html" . -}}
     {{- template "_internal/twitter_cards.html" . -}}
 
-    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
-      {{ template "_internal/google_analytics_async.html" . }}
-    {{ end }}
-	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
+    {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}  {{/* getenv可以取得系統的環境變數 */}}
+      {{- template "_internal/google_analytics_async.html" . -}}  {{/* template是hugo所提供的樣板，如果對實做有興趣，可以參考:https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
+    {{- end -}}
+	{{- block "head" . -}}{{- partial "head-additions.html" . -}}{{- end -}}
   </head>
 
   {{/* safeHTMLAttr 沒有加上會出現 #ZgotmplZ 的字眼，這個字眼是固定的 */}}
   <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param `body_classes`  | default `avenir bg-near-white`}}{{ with getenv `HUGO_ENV` }} {{ . }}{{ end }}">
 
-    {{ block "header" . }}
+    {{- block "header" . -}}
       {{/* 包含頁面上方的featured_image、左上角的.Site.Params.site_logo、Menu清單  */}}
-      {{ partial "site-header.html" .}}
-    {{ end }}
+      {{- partial "site-header.html" . -}}
+    {{- end -}}
     <main class="pb7" role="main">
-      {{ block "main" . }}{{ end }}
+      {{- block "main" . -}}{{- end -}}
     </main>
 
-    {{ if $enable_search_fuse }}
-      {{ block "search" . }}{{ partialCached "search/site-search-fuse.html" . }}{{ end }}
-    {{ end }}
+    {{- if $enable_search_fuse -}}
+      {{- block "search" . -}}{{- partialCached "search/site-search-fuse.html" . -}}{{- end -}}
+    {{- end -}}
     {{/* partialCached只有當腳本的內容有更改，例如site-scripts.html的md5不一樣時才會再次渲染
       也就是他不是適用於常常需要變更的文件
     */}}
-    {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
-    {{ block "scripts" . }}{{ partialCached "site-scripts.html" . }}{{ end }}
-    {{ block "plugin-scripts" . }}{{ partial "plugin-scripts" . }}{{ end }}
-    {{ block "body_end" . }}{{ end }}
+    {{- block "footer" . -}}{{- partialCached "site-footer.html" . -}}{{- end -}}
+    {{- block "scripts" . -}}{{- partialCached "site-scripts.html" . -}}{{- end -}}
+    {{- block "plugin-scripts" . -}}{{- partial "plugin-scripts" . -}}{{- end -}}
+    {{- block "body_end" . -}}{{- end -}}
   </body>
 </html>

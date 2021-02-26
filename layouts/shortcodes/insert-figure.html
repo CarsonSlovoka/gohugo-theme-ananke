@@ -8,21 +8,34 @@
 
     {{< insert-figure "images/issues_position.png" "titleName" >}}  // static/images/issues_position.png
 
+  {{< insert-figure "images/issues_position.png" "titleName" "60%" "40%">}}  // width:60% height:40%
+
     {{< insert-figure src="images/issues_position.png" title="titleName" >}}
 */}}
 
 {{ $src := "" }}
 {{ $title := "" }}
+{{ $width := "" }}
+{{ $height := "" }}
 {{ if .IsNamedParams }}
   {{ $src = default "" (.Get "src" ) }}
   {{ $title = default "" (.Get "title") }}
+  {{ $width = default "" (.Get "w") }}
+  {{ $height = default "" (.Get "h") }}
 {{ else }}
   {{ $src = default "" (.Get 0 ) }}
   {{ $title = default "" (.Get 1) }}
+  {{ $width = default "" (.Get 2) }}
+  {{ $height = default "" (.Get 3) }}
 {{ end }}
 
 <figure>
-  <img src="{{ $src | absURL}}"/>
+  {{ if or $width $height }}
+    {{ $style := printf `style="%s%s"` (cond (gt (len $width) 0) (printf `width:%s;` $width ) "") (cond (gt (len $height) 0) (printf `height:%s;` $height ) "") }}
+    <img src="{{ $src | absURL}}" {{ $style | safeHTMLAttr }}/>
+  {{ else }}
+    <img src="{{ $src | absURL}}" />
+  {{ end }}
   {{ if $title }}
     <figcaption>
         <h4>{{- $title -}}</h4>

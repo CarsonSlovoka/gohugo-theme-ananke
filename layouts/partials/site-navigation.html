@@ -4,37 +4,37 @@
       {{/*
         此區域管理左上角的圖示
       */}}
-      {{ with .Site.Params.site_logo }}
-        {{ if in . "<i" }}
+      {{- with .Site.Params.site_logo -}}
+        {{- if in . "<i" -}}
           {{/* 表示應該是使用fontawesome */}}
-          {{ . | safeHTML }}
-        {{ else }}
+          {{- . | safeHTML -}}
+        {{- else -}}
           <img src="{{ . }}" class="w100 mw5-ns" alt="{{ $.Site.Title }}" />
           {{/*
             也可以考慮這樣子處理圖片，但是要把照片放在assets去
             {{- $image := resources.Get "images/site_logo.jpg" -}}
             <img src="{{ ($image.Fill "1440x642").Permalink }}" class="w1440 mw5-ns" alt="{{ $.Site.Title }}" />
           */}}
-        {{ end }}
-      {{ else }}
-        {{ .Site.Title }}
-      {{ end }}
+        {{- end -}}
+      {{- else -}}
+        {{- .Site.Title -}}
+      {{- end -}}
     </a>
     <div class="flex-l items-center">
-      {{ partial "i18nlist.html" . }}
-      {{ if .Site.Menus.main }}
+      {{- partial "i18nlist.html" . -}}
+      {{- if .Site.Menus.main -}}
         <ul class="pl0 mr3">
-          {{ range .Site.Menus.main }}
+          {{- range .Site.Menus.main -}}
           <li class="zoom-in list f5 f4-ns fw4 dib pr3">
             {{- .Pre -}}
             <a class="hover-white no-underline white-90" href="{{ .URL }}" title="{{ .Name }} page">
-              {{ .Name -}}
+              {{ .Name | safeHTML -}}
             </a>
           </li>
-          {{ end }}
+          {{- end -}}
         </ul>
-      {{ end }}
-      {{ partialCached "social-follow.html" . }}
+      {{- end -}}
+      {{- partialCached "social-follow.html" . -}}
     </div>
   </div>
 </nav>

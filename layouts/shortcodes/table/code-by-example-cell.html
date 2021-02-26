@@ -1,23 +1,23 @@
 {{- with .Parent -}}
-  {{ $cell_data := $.Inner | markdownify }}
-  {{ $col_attr_info := split ($.Get 0) "|" }}
+  {{- $cell_data := $.Inner | markdownify -}}
+  {{- $col_attr_info := split ($.Get 0) "|" -}}
 
-  {{ if index $col_attr_info 1 }}
+  {{- if index $col_attr_info 1 -}}
     <div class="as_table-container-col" style="width:{{- index $col_attr_info 1 | safeHTMLAttr -}};">
-  {{ else }}
+  {{- else -}}
     <div class="as_table-container-col">
-  {{ end }}
+  {{- end -}}
 
-    {{ if index $col_attr_info 0 }}
+    {{- if index $col_attr_info 0 -}}
       <h2>{{- index $col_attr_info 0 -}}</h2>
-    {{ end }}
+    {{- end -}}
 
-    {{ if (findRE "<pre" $cell_data 1) }}
+    {{- if (findRE "<pre" $cell_data 1) -}}
       {{ $.Inner  }}  {{/* code-block中已自帶overflow了 */}}
-    {{ else }}
+    {{- else -}}
       <div class="block_scroll_h-40em">{{ $.Inner  }}</div>
-    {{ end }}
+    {{- end -}}
     </div>
-{{ else }}
+{{- else -}}
   {{ errorf "missing code-by-example-table: %s" .Position }}
-{{ end }}
+{{- end -}}

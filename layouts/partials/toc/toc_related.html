@@ -6,19 +6,19 @@
   可以更通用一點，就不用自己去添加
 */}}
 
-{{ $related := .Site.RegularPages.Related . | first 15 }}
-{{ with $related }}
+{{- $related := .Site.RegularPages.Related . | first 15 -}}
+{{- with $related -}}
   {{/* bg-light-gray */}}
   <div class="pa3 nested-list-reset nested-copy-line-height nested-links">
     <p class="f5 b mb3 ms-2">{{ i18n "related" }}</p>
     <ul class="pa0 list">
-	   {{ range . }}
+	   {{- range . -}}
 	     <li  class="mb2 ms-2">  {{/* {property}{sides}-{size} https://getbootstrap.com/docs/5.0/utilities/spacing/ */}}
           <a href="{{ .RelPermalink }}">
             {{- .Title -}}
           </a>
         </li>
-	    {{ end }}
+	    {{- end -}}
     </ul>
 </div>
 {{- end -}}

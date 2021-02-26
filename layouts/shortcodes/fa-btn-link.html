@@ -6,18 +6,18 @@
   {{<fa-btn-link "https://www.google.com/" true "fas fa-bookmark fa-5x" "#00FF00">}}Google{{</fa-btn-link>}}  更改顏色
 */}}
 
-{{ $is_outer_link := default false (.Get 1) }}
-{{ $link := "" }}  {{/* 如果是外部連結就不轉換直接套用 */}}
-{{ if $is_outer_link }}
-  {{ $link = .Get 0 }}
-{{ else }}
-  {{ $link = ref $.Page (.Get 0) }}
-{{ end }}
+{{- $is_outer_link := default false (.Get 1) -}}
+{{- $link := "" -}}  {{/* 如果是外部連結就不轉換直接套用 */}}
+{{- if $is_outer_link -}}
+  {{- $link = .Get 0 -}}
+{{- else -}}
+  {{- $link = ref $.Page (.Get 0) -}}
+{{- end -}}
 {{/* $class := cond (gt (default 0 (.Get 2)) 0) (printf `fa-%dx` (.Get 2)) "fas fa-link"  | safeHTMLAttr */}}
-{{ $class := default "fas fa-link" (.Get 2) }}
-{{ $style := cond (gt (len (default "" (.Get 3))) 0)  (printf `style="color:%s"` (.Get 3)) "" | safeHTMLAttr }}
+{{- $class := default "fas fa-link" (.Get 2) -}}
+{{- $style := cond (gt (len (default "" (.Get 3))) 0)  (printf `style="color:%s"` (.Get 3)) "" | safeHTMLAttr -}}
 
-{{ $class = (printf `class="%s"` $class) | safeHTMLAttr }}
+{{- $class = (printf `class="%s"` $class) | safeHTMLAttr -}}
 <button class="btn btn-primary" type="button"
         {{ printf `onclick="location.href='%s'"` $link | safeHTMLAttr }}
 ><i {{$class}} {{$style}}></i><br>{{- .Inner -}}</button>
