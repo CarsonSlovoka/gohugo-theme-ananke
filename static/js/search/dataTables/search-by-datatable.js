@@ -65,5 +65,13 @@ function convertTOC2a(tocHTML, baseURI, searchItems = []) {
         ]
       });
     });
+    window.onload = function() {
+      htmlcollectionInput =  document.getElementsByTagName("input")
+      for (let input of htmlcollectionInput) {  // HTMLCollection
+        if (input.type === "search"){  // <input type="search" class="" placeholder="" aria-controls="app">
+          input.focus()
+        }
+      }
+    }
   }
 )();
