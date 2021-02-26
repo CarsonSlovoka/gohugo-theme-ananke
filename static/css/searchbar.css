@@ -39,3 +39,11 @@
   border-style: hidden;
   text-decoration:none;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+  -webkit-box-shadow: 0 0 0 1000px #353b48 inset !important;  /* 背景顏色 */
+  -webkit-text-fill-color: white !important;  /* 前景顏色 */
+}
