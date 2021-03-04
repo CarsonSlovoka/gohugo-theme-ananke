@@ -1,0 +1,6 @@
+{{/*
+usage:
+  {{< btn/download "https://www.postgresql.org/download/" "download" "2x" >}}
+*/}}
+
+<a href="{{ .Get 0 }}" title="{{- .Get 1 -}}"><span class="fas fa-download {{ cond (gt (len ( .Get 2 )) 0)   (printf `fa-%s` (.Get 2) ) ``  -}}"></span></a>
