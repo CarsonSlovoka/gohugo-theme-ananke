@@ -1,0 +1,11 @@
+{{- $target := index . 0 -}}
+{{- $default := index . 1 -}}
+{{- $page := index . 2 -}}
+
+{{- $fonts := $page.Param "fonts" -}}
+
+{{- $fontClass := $default -}}
+{{- with $fonts.class -}}
+  {{- $fontClass = index . $target -}}
+{{- end -}}
+{{- return $fontClass -}}

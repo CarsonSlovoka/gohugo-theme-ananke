@@ -105,7 +105,7 @@
   </head>
 
   {{/* safeHTMLAttr 沒有加上會出現 #ZgotmplZ 的字眼，這個字眼是固定的 */}}
-  <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param `body_classes`  | default `avenir bg-near-white`}}{{ with getenv `HUGO_ENV` }} {{ . }}{{ end }}">
+  <body {{ $body_spy_scroll_attr | safeHTMLAttr  }}  class="ma0 {{ $.Param `body_classes`  | default ` bg-near-white`}} {{ partial `func/get-font-family-class` (slice `body` `avenir` . ) }}">
 
     {{- block "header" . -}}
       {{/* 包含頁面上方的featured_image、左上角的.Site.Params.site_logo、Menu清單  */}}

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap");
 .mark-search {
   background-color: yellow;
   color: black;
@@ -210,4 +211,8 @@ kbd {
 
 .copy-code-button:active {
   background-color: #D9D9D9;
+}
+
+.google-noto-sans-tc {
+  font-family: "Noto Sans TC", sans-serif;
 }

@@ -60,7 +60,7 @@
         <span class="f6 mv4 dib tracked"> - {{ .WordCount}} words</span>
       {{ end }}
     </header>
-    <div class="nested-copy-line-height lh-copy {{ $.Param "post_content_classes"  | default "serif"}} f4 nested-links nested-img mid-gray
+    <div class="nested-copy-line-height lh-copy {{ $.Param `post_content_classes`  | default ``}} {{ partial `func/get-font-family-class` (slice `content` `serif` .) }} f4 nested-links nested-img mid-gray
     {{/* 把右側的padding拿掉 pr4-l */}}
     w-80-l"  {{/* w-two-thirds-l: https://tachyons.io/docs/layout/widths/ */}}
     >
