@@ -10,7 +10,12 @@
 {{- end -}}
 
 {{- define "main" -}}
-  {{- $section := .Site.GetPage "section" .Section -}}
+  {{/*
+    Hugo 0.45以後已經不需要那麼麻煩的寫法
+      > https://gohugo.io/functions/getpage/
+    {{- $section := .Site.GetPage "section" .Section -}}
+  */}}
+  {{- $section := .Site.GetPage .Section -}}
   <article class="flex-l flex-wrap justify-between mw8 center ph3">
     {{/*
           https://getbootstrap.com/docs/4.4/utilities/spacing/
@@ -51,7 +56,7 @@
           3) A page front matter value is set `show_reading_time = true`
         */}}
       {{ if (or (eq (.Param "show_reading_time") true) (eq $section.Params.show_reading_time true) )}}
-        <span class="f6 mv4 dib tracked"> - {{ .ReadingTime}} minutes read</span>
+        <span class="f6 mv4 dib tracked"> - 🕒 {{ .ReadingTime}} minutes read</span>
         <span class="f6 mv4 dib tracked"> - {{ .WordCount}} words</span>
       {{ end }}
     </header>
