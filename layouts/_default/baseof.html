@@ -46,8 +46,8 @@
 
     {{- range .Site.Params.custom_css -}}
       {{/*
-      有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
-      指: static/css/{foo.css, bar.css}
+        有了這個就可以 [params] custom_css = ["css/foo.css", "css/bar.css"]
+        指: static/css/{foo.css, bar.css}
       */}}
       <link rel="stylesheet" href="{{- relURL (.) -}}">
     {{ end }}

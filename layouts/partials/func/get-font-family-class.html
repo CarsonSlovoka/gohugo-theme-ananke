@@ -1,3 +1,31 @@
+{{/*
+在baseof.html中有寫道.Site.Params.custom_css
+因此可以加入自定義的css在static
+
+## google-fonts.css
+  // google fonts可參考: https://fonts.google.com/specimen/Noto+Sans+TC?subset=chinese-traditional&preview.text=%E4%BB%96%E5%80%91%E3%80%82&preview.text_type=custom
+  .mindmap a {
+    font-family: Noto Sans TC, cursive, sans-serif!important; // 對markmap的文字進行更改
+  }
+
+  .google-noto-sans-tc {  // 建立一個新的class為了指定字型的class用
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+## config.toml
+
+  [params]
+    custom_css = [
+      "css/google-fonts.css",  # 放入自定義的css。可以參考以上的css當作範例
+    ]
+  [params.fonts]
+    [params.fonts.class]
+      # 指定您的css名稱。目前共有三個作用域
+      h1 = "google-noto-sans-tc"
+      body = "google-noto-sans-tc"
+      content = "google-noto-sans-tc"
+*/}}
+
 {{- $target := index . 0 -}}
 {{- $default := index . 1 -}}
 {{- $page := index . 2 -}}
