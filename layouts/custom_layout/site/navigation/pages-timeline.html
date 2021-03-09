@@ -1,0 +1,110 @@
+{{/*
+USAGE:
+
+ xxx.md
+
+  +++
+  title="..."
+  date = ...
+  type = "custom_layout"
+  layout = "site/navigation/pages-timeline"
+  +++
+
+*/}}
+
+{{- define "head" }}
+  <link href="{{ relURL `css/timeline.css` }}" rel="stylesheet">
+  <script defer src="{{ relURL `js/auto-open-details.js` }}"></script>
+{{- end -}}
+
+{{/* <div class="container {{ cond (eq (mod ($cur_year | int) 2) 0) `left` `right` }}"> */}}
+
+{{- define "main" -}}
+  <section>
+    <div class="container">
+
+      {{/*
+      <section class="mt-3 row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <h4>Timeline: By Create Date (YY → MM )</h4>
+        </div>
+        <div class="col-md-3"></div>
+      </section>
+      */}}
+
+      <section class="mt-3 row" style="max-height:90%;">
+        <div class="col-md-12">
+          <div class="main-timeline">
+            <div class="timeline"></div>
+
+            {{- range .Site.RegularPages.GroupByDate "2006" -}}
+              {{- $cur_year := .Key -}}
+              <div class="timeline">
+                <div class="timeline-content">
+                  <span class="year">{{ $cur_year }}</span>
+                  <h3 class="title"></h3>
+                  <article class="description">
+                    <details>
+                      <summary>{{- $cur_year }} <small class="text-muted">{{- printf `(%d)` (len .Pages) -}}</small></summary>
+                      {{- $mm := 0 -}}
+                      {{- $need_end_node := false -}}
+                      {{- $all_pages := .Pages -}}
+
+                      {{- range .Pages -}}
+                        {{- $cur_date := dateFormat "2006-01-02" .Date -}}
+                        {{- $cur_date_yy_mm_dd := split $cur_date "-" -}}
+                        {{- $cur_mm := index $cur_date_yy_mm_dd 1 -}}
+
+                        {{/* 此區決定月份。開頭為0或者月份不同時都要放置新的月份 */}}
+                        {{- if or (eq $mm 0) (ne $cur_mm $mm) -}}
+                          {{- $need_end_node = true -}}  {{/* 通知外層(換新的一年時) */}}
+
+                          {{- if ne $mm 0 -}}
+                            </ul></details>  {{/* 放置新的月份如果月份不為0就要先結束掉之前殘留的月份 */}}
+                          {{- end -}}
+
+                          {{- $count_month_items := 0 -}} {{/* 此區段計算該月份總共有多少文章 */}}
+                          {{- range $.Site.RegularPages.GroupByDate "2006-01" -}}
+                            {{- range .Pages -}}
+                              {{- $temp_cur_date := dateFormat "2006-01-02" .Date -}}
+                              {{- $temp_cur_date_yy_mm_dd := split $temp_cur_date "-" -}}
+                              {{- $temp_yy := index $temp_cur_date_yy_mm_dd 0 -}}
+                              {{- $temp_mm := index $temp_cur_date_yy_mm_dd 1 -}}
+                              {{- if and (eq $temp_mm $cur_mm) (eq $temp_yy $cur_year) -}}
+                                {{- $count_month_items = add $count_month_items 1 -}}
+                              {{- end -}}
+                            {{- end -}}
+                          {{- end -}}
+
+                          <details><summary>{{- $cur_mm }} <small class="text-muted">{{- printf `(%d)` $count_month_items -}}</small></summary>
+                            <ul>
+                              {{- $mm = $cur_mm -}}
+                        {{- end -}}
+
+                        {{/* 決定月份內中的資料 */}}
+                        <li>
+                          <div>
+                            <a href="{{ .Permalink }}">{{ .Title }}</a>
+                            <small class="text-muted"><time>{{ .Date.Format "2006-01-02" }}</time></small>
+                          </div>
+                        </li>
+                      {{- end -}}
+
+                      {{/* 離開所有月份時，如果月份中含有資料就要補上結尾 */}}
+                      {{- if $need_end_node -}}
+                        </ul></details>
+                      {{- end -}}
+                    </details>
+                  </article>
+                </div>
+              </div>
+            {{- end -}}
+
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+{{- end -}}
