@@ -116,6 +116,11 @@ h6 a:hover {
   color: #96CCFF !important;
 }
 
+:target {
+  border: 2px solid #D4D4D4;
+  background-color: #e5eecc;
+}
+
 table {
   font-size: 0.7em;
   border-top: 1px solid #666;
