@@ -27,9 +27,24 @@ $-font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
       margin-left: 0
       margin-right: 0
       font-weight: bold
-      background-color: get_header_bk_color($i)
+      // background-color: get_header_color($i)
+      text-shadow: 1px 1px 0 #6d2959
 
-@function get_header_bk_color($layer)
+      @if $i != 1
+        color: #ec22c0
+
+      & a
+        text-decoration: none  // 取消下畫線
+        color: inherit!important  // 使用header本身的顏色。(hover的顏色也會被弄掉，所以如果要有hover的效果顏色要重弄，且如果這邊用的是important那麼hover也要用important才有辦法覆蓋)
+      & a:hover
+        color: #96CCFF!important
+
+      // 這招沒用，因為其他的h1-h6也都是在div內
+      // div &  // 想要讓header的shadow以及color只有在標題運用，在非標題所用到的header不套用此屬性
+      //  text-shadow: none
+      //  color: initial
+
+@function get_header_color($layer)
   @if $layer == 1
     @return initial
   @else

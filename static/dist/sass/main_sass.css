@@ -11,7 +11,14 @@ h1 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: initial;
+  text-shadow: 1px 1px 0 #6d2959;
+}
+h1 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h1 a:hover {
+  color: #96CCFF !important;
 }
 
 h2 {
@@ -22,7 +29,15 @@ h2 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: bisque;
+  text-shadow: 1px 1px 0 #6d2959;
+  color: #ec22c0;
+}
+h2 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h2 a:hover {
+  color: #96CCFF !important;
 }
 
 h3 {
@@ -33,7 +48,15 @@ h3 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: bisque;
+  text-shadow: 1px 1px 0 #6d2959;
+  color: #ec22c0;
+}
+h3 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h3 a:hover {
+  color: #96CCFF !important;
 }
 
 h4 {
@@ -44,7 +67,15 @@ h4 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: bisque;
+  text-shadow: 1px 1px 0 #6d2959;
+  color: #ec22c0;
+}
+h4 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h4 a:hover {
+  color: #96CCFF !important;
 }
 
 h5 {
@@ -55,7 +86,15 @@ h5 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: bisque;
+  text-shadow: 1px 1px 0 #6d2959;
+  color: #ec22c0;
+}
+h5 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h5 a:hover {
+  color: #96CCFF !important;
 }
 
 h6 {
@@ -66,7 +105,15 @@ h6 {
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  background-color: bisque;
+  text-shadow: 1px 1px 0 #6d2959;
+  color: #ec22c0;
+}
+h6 a {
+  text-decoration: none;
+  color: inherit !important;
+}
+h6 a:hover {
+  color: #96CCFF !important;
 }
 
 table {
