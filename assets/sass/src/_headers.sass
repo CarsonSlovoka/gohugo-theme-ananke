@@ -48,9 +48,19 @@ $-font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
       //  text-shadow: none
       //  color: initial
 
+  @keyframes highlight-target
+    from
+      background: inherit
+    50%
+      border: 2px solid #D4D4D4
+      background-color: #fff700
+    to
+      background: inherit
+      border: inherit
+
   :target  // 文章內連結點擊過去的目標屬性設置
-    border: 2px solid #D4D4D4
-    background-color: #e5eecc
+    // https://stackoverflow.com/questions/18894981/sass-not-scss-syntax-for-css3-keyframe-animation
+    -webkit-animation: highlight-target 2.0s linear
 
 @function get_header_color($layer)
   @if $layer == 1

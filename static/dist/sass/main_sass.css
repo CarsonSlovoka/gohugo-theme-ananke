@@ -130,9 +130,21 @@ h6 a:hover {
   color: #96CCFF !important;
 }
 
+@keyframes highlight-target {
+  from {
+    background: inherit;
+  }
+  50% {
+    border: 2px solid #D4D4D4;
+    background-color: #fff700;
+  }
+  to {
+    background: inherit;
+    border: inherit;
+  }
+}
 :target {
-  border: 2px solid #D4D4D4;
-  background-color: #e5eecc;
+  -webkit-animation: highlight-target 2s linear;
 }
 
 table {
