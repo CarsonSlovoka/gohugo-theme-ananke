@@ -33,9 +33,12 @@ $-font_size_list: 2, 1.5, 1.17, 1, 0.83, 0.67
       @if $i != 1
         color: #ec22c0
 
+      & a::before  // hi a::before
+        content: "🔗"  // 在前面加上一個連結的符號
+
       & a
-        text-decoration: none  // 取消下畫線
-        color: inherit!important  // 使用header本身的顏色。(hover的顏色也會被弄掉，所以如果要有hover的效果顏色要重弄，且如果這邊用的是important那麼hover也要用important才有辦法覆蓋)
+        text-decoration: none   // 取消下畫線
+        color: inherit!important   // 使用header本身的顏色。(hover的顏色也會被弄掉，所以如果要有hover的效果顏色要重弄，且如果這邊用的是important那麼hover也要用important才有辦法覆蓋)
       & a:hover
         color: #96CCFF!important
 
