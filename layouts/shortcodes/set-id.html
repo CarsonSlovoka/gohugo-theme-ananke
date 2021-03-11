@@ -1,1 +1,11 @@
+{{/*
+  USAGE:
+
+    {{< set-id "三個資料表" "他要這三個資料表">}}
+
+    [準備資料]({{<ref "#三個資料表" >}})
+
+  如果這個您覺得麻煩，可以參考另一個shortcode: auto-id
+*/}}
+
 <span id={{ (.Get 0) }}>{{ .Get 1 | markdownify }}</span>

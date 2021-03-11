@@ -119,8 +119,10 @@
             {{- end -}}
 
             <li>
-              <a href="{{ .Permalink }}">{{ .Title }}</a>
-              <div><time>{{ .Date.Format "2006-01-02" }}</time></div>
+              <div>
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <small class="text-muted"><time>{{ .Date.Format "2006-01-02" }}</time></small>
+              </div>
             </li>
         {{- end -}}
 
