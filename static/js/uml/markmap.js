@@ -14,10 +14,11 @@ function getNode(n, v) {
 };
 
 (
+
   function(/*para1, para2 ...*/){
-    const plantumlPrefix = "markmap"
+    const markmapPrefix = "markmap"
     var idx = 0;
-    Array.prototype.forEach.call(document.querySelectorAll("[class^=language-" + plantumlPrefix + "]"), function(code){
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=language-" + markmapPrefix + "]"), function(code){
       idx += 1;
       let id_name = 'mindmap' + idx.toString();
       let svg = getNode("svg", {id: id_name, style: "width:60vw; height:40vh;"});  /* <svg id="mindmap"></svg> */
