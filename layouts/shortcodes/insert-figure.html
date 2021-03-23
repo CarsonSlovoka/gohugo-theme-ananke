@@ -17,16 +17,19 @@
 {{ $title := "" }}
 {{ $width := "" }}
 {{ $height := "" }}
+{{ $from := "" }}
 {{ if .IsNamedParams }}
   {{ $src = default "" (.Get "src" ) }}
   {{ $title = default "" (.Get "title") }}
   {{ $width = default "" (.Get "w") }}
   {{ $height = default "" (.Get "h") }}
+  {{ $from = default "" (.Get "from") }}
 {{ else }}
   {{ $src = default "" (.Get 0 ) }}
   {{ $title = default "" (.Get 1) }}
   {{ $width = default "" (.Get 2) }}
   {{ $height = default "" (.Get 3) }}
+  {{ $from = default "" (.Get 4) }}
 {{ end }}
 
 <figure>
@@ -36,9 +39,14 @@
   {{ else }}
     <img src="{{ $src | absURL}}" />
   {{ end }}
+
   {{ if $title }}
     <figcaption>
         <h4>{{- $title -}}</h4>
     </figcaption>
+  {{ end }}
+
+  {{ with $from }}
+    <small style="font-size:0.4em;"><a href="{{ . | safeHTMLAttr }}">👆{{ T "sourceFrom" }}</a></small>
   {{ end }}
 </figure>

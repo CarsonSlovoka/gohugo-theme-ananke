@@ -39,3 +39,6 @@ other = "previous"
 
 [nextPage]
 other = "next"
+
+[sourceFrom]
+other = "source from"
