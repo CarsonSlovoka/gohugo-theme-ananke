@@ -16,7 +16,7 @@
     {{- $section := .Site.GetPage "section" .Section -}}
   */}}
   {{- $section := .Site.GetPage .Section -}}
-  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 {{ $.Param `article_classes`}}">
     {{/*
           https://getbootstrap.com/docs/4.4/utilities/spacing/
           p - for classes that set padding
