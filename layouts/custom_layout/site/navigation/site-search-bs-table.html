@@ -1,0 +1,111 @@
+{{- define "head" -}}
+<script defer src="{{ `/js/search/bootstrap-table/bs-table-search.js` | relURL  }}"></script>
+
+<link href="{{ `/css/bootstrap-table/bs-table.css` | relURL  }}" rel="stylesheet">
+
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous"></script>
+
+<!-- bootstrap-table-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.css"
+      integrity="sha512-5RNDl2gYvm6wpoVAU4J2+cMGZQeE2o4/AksK/bi355p/C31aRibC93EYxXczXq3ja2PJj60uifzcocu2Ca2FBg=="
+      crossorigin="anonymous"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.js"
+        integrity="sha512-Wm00XTqNHcGqQgiDlZVpK4QIhO2MmMJfzNJfh8wwbBC9BR0FtdJwPqDhEYy8jCfKEhWWZe/LDB6FwY7YE9QhMg=="
+        crossorigin="anonymous"></script>
+
+  <!-- bootstrap-table-filter-control
+  沒有成功，好像會和search.bs.table有衝突，所以自己生成會比較快一些
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/bootstrap-table-filter-control.min.css" integrity="sha512-IK+plgQ3Qomdj9Mzq2WbM5LF8JY0PPXHGGfiBqBkwhXUi1tVAIvIaLbt330r3t0Y4EUxqG0YGfEhRrQS0gKeYQ==" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/bootstrap-table-filter-control.min.js" integrity="sha512-nrE3yoRxAz6j1ZhkE59hXcSKV0cewPN+8ZEXJZnsz2qofCEOwmctecuKrBnWQUj7UA5dOnI+Cam52/AdvB6HKQ==" crossorigin="anonymous"></script>
+  -->
+
+<!-- 應該是和其他css有衝突，所以顯示的效果不如預期
+https://stackoverflow.com/a/42167333
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw==" crossorigin="anonymous" />
+-->
+
+<!-- https://multiple-select.wenzhixin.net.cn/docs/en/download -->
+<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+<script defer src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+<style>
+  .ms-choice>span {
+    position: initial; // 和某些css有衝突，所以強制更改
+  overflow: initial;
+  }
+  button.ms-choice {
+    height: 2rem;
+  }
+
+  .group {
+    font-size: 1.5rem;
+  }
+</style>
+
+{{- end -}}
+
+{{- define "main" -}}
+  {{- $data_array := slice -}}
+  {{- range .Site.RegularPages.ByLastmod.Reverse -}}
+  {{- $last_mod_date := .Params.lastmod.Format "2006-01-02" -}}
+  {{- $create_date := .Params.date.Format "2006-01-02" -}}
+  {{- $data_array = $data_array | append (slice (dict "title" .Title "desc" .Description "tags" (default "" .Params.tags) "permalink" .Permalink "toc" .TableOfContents "lastModDate" $last_mod_date "createDate" $create_date )) -}}
+{{- end -}}
+<p id="data_array" hidden>{{- $data_array | jsonify -}}</p>
+
+<article class="mt-3 container">
+  <section class="row offset-md-1"> {{/* 左右各留1，也就是內容的元素總共佔位10單位 */}}
+    <select id="selectTag" class="p-0 col-md-2" data-placeholder="Filter group" style="height:30px;" multiple> {{/* p - for classes that set padding */}}
+      {{ range $curTaxonomiesName, $weightedPageList := .Site.Taxonomies }}
+        {{ $allTags := slice }}
+        <optgroup label="{{$curTaxonomiesName}}"> {{/* t_lang, test_lang 取value的值 */}}
+        {{ range $curTagName, $weightedPage := $weightedPageList }}
+            {{ range $weightedPage.Pages }}
+              {{if not (in $allTags $curTagName) }} {{- /* 其他可用的屬性:  .Permalink  或 .LinkTitle 這是該連結page中，此頁面的title */ -}}
+                <option value="{{$curTagName}}">{{$curTagName}}</option>
+                {{ $allTags = $allTags | append $curTagName }}
+              {{end}}
+            {{end}}
+        {{ end }}
+        </optgroup>
+      {{ end }}
+    </select>
+  </section>
+  <section class="row justify-content-center text-center"
+           style="height:1000px;">  <!-- 調整iframe的高度-->
+    <div class="col-md-10">
+      <table id="searchTable" class="table table-striped table-blue"
+             data-toggle="table"
+             data-search="true"
+             data-search-highlight="true"
+             data-show-toggle="true"
+             data-show-columns="true"
+             data-minimum-count-columns="2"
+             data-show-pagination-switch="true"
+             data-pagination="true"
+             data-page-list="[10, 25, 50, 100, ALL]"
+             data-show-footer="false"
+             data-side-pagination="client"
+             data-show-button-text-not-use="false"
+      >
+        <thead>
+        <tr>
+          <th data-sortable="true" data-width-unit="%" data-width="10" data-field="title">Title</th>
+          <th data-sortable="true" data-width-unit="%" data-width="20" data-field="desc">Description</th>
+          <th data-sortable="true" data-width-unit="%" data-width="10" data-field="tags">Tags</th>
+          <th data-sortable="true" data-width-unit="%" data-width="30" data-field="toc" data-align="left" >TOC</th>
+          <th data-sortable="true" data-width-unit="%" data-width="15" data-field="lastModDate">Modify Date</th>
+          <th data-sortable="true" data-width-unit="%" data-width="15" data-field="createDate">Create Date</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </section>
+</article>
+{{- end -}}
+
+

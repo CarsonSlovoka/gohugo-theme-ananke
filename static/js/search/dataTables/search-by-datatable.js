@@ -48,7 +48,8 @@ function convertTOC2a(tocHTML, baseURI, searchItems = []) {
         obj.tags,
         convertTOC2a(obj.toc, curLink),
         obj.lastModDate,
-        obj.createDate]
+        obj.createDate
+      ]
       myTable.push(curItem)
     })
 
@@ -58,17 +59,17 @@ function convertTOC2a(tocHTML, baseURI, searchItems = []) {
         columns: [
           {title: "Title"},
           {title: "Desc"},
-          { title: "Tags" },
-          { title: "TOC" },
+          {title: "Tags"},
+          {title: "TOC"},
           {title: "lastModDate"},
           {title: "createData"}
         ]
       });
     });
-    window.onload = function() {
-      htmlcollectionInput =  document.getElementsByTagName("input")
+    window.onload = function () {
+      htmlcollectionInput = document.getElementsByTagName("input")
       for (let input of htmlcollectionInput) {  // HTMLCollection
-        if (input.type === "search"){  // <input type="search" class="" placeholder="" aria-controls="app">
+        if (input.type === "search") {  // <input type="search" class="" placeholder="" aria-controls="app">
           input.focus()
         }
       }
