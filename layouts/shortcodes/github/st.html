@@ -1,0 +1,10 @@
+{{- /*
+USAGE:
+
+  {{% github/st mattn go-sqlite3 %}}
+
+*/ -}}
+
+{{- $user := .Get 0 -}}
+{{- $repo := .Get 1 -}}
+[![{{$user}}/{{$repo}}](https://github-readme-stats.vercel.app/api/pin?username={{$user}}&repo={{$repo}})](https://github.com/{{$user}}/{{$repo}})
